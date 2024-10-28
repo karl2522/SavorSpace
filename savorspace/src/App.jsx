@@ -1,8 +1,11 @@
-import LandingPage from './components/LandingPage'
-
+//import LandingPage from './components/LandingPage'
+//import Login from './components/LoginScreen'
+import Register from "./components/SignupScreen"
 function App() {
   return (
-    <LandingPage />
+    //<Login/>
+    <Register/>
+    //<LandingPage />
   )
 }
 
