@@ -1,9 +1,21 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import './styles.css';
+
+const API_URL = 'http://localhost:8080/auth';
+
+const register = (email, password, fullName, imageUrl) => {
+  return axios.post(`${API_URL}/signup`, {
+    email,
+    password,
+    fullName,
+    imageUrl
+  });
+};
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -38,10 +50,16 @@ const Register = () => {
     setIsChecked(e.target.checked);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    // Add any submission logic here
+    try {
+      await register(formData.email, formData.password, formData.fullname, imageUrl);
+      console.log('Registration successful!');
+      // Optionally, redirect or show a success message here
+    } catch (error) {
+      console.error('Registration failed:', error.response.data);
+      // Handle error (e.g., show an error message)
+    }
   };
 
   return (
@@ -80,7 +98,7 @@ const Register = () => {
           <label>Profile Picture</label>
           <div className="profile-upload-container">
             <label htmlFor="file-input" className="custom-file-upload">
-              <IoCloudUploadOutline color='white' size={20}/>  
+              <IoCloudUploadOutline color='white' size={20} />  
             </label>
             <input
               id="file-input"
