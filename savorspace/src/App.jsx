@@ -38,7 +38,7 @@ const App = () => {
       <div>
         <Navbar />
         <Routes>
-          <Route path="/landingpage" element={<LandingPage />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

@@ -46,7 +46,7 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <IoIosArrowBack size={30} color="#000" cursor="pointer" onClick={() => window.location.href = '/landingpage'} />
+      <IoIosArrowBack size={30} color="#000" cursor="pointer" onClick={() => window.location.href = '/'} />
       <div className="form-section">
         <h2>Create an Account</h2>
         <form onSubmit={handleSubmit} className="register-form">
