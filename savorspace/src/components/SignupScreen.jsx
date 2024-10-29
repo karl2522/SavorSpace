@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { IoIosArrowBack } from "react-icons/io";
 import { IoCloudUploadOutline } from "react-icons/io5";
-
 import './styles.css';
-
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -42,10 +41,12 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+    // Add any submission logic here
   };
 
   return (
     <div className="register-container">
+      <IoIosArrowBack size={30} color="#000" cursor="pointer" onClick={() => window.location.href = '/landingpage'} />
       <div className="form-section">
         <h2>Create an Account</h2>
         <form onSubmit={handleSubmit} className="register-form">
@@ -104,9 +105,11 @@ const Register = () => {
           <p>Or register with</p>
           <div className="social-options">
             <button className="google-btn">
-              <FcGoogle/>Google</button>
+              <FcGoogle />Google
+            </button>
             <button className="apple-btn">
-              <FaApple/>Apple</button>
+              <FaApple />Apple
+            </button>
           </div>
         </div>
       </div>

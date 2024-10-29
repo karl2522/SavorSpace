@@ -26,6 +26,7 @@ body {
   height: 80px;
 }
 
+
 .navbar-left {
   display: flex;
   align-items: center;
@@ -65,11 +66,17 @@ body {
   padding: 0;
 }
 
-.navbar li {
-  cursor: pointer;
+
+.navbar li a {
+  color: #000;
+  text-decoration: none;
   transition: color 0.3s ease, transform 0.3s ease; 
-  position: relative; 
 }
+
+.navbar li a:hover {
+  color: #ce2786;
+}
+
 
 .navbar li:hover {
   color: #ce2786;
@@ -77,7 +84,12 @@ body {
   transform: translateY(-2px); 
 }
 
+
 .signup-btn {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
   font-family: "Montserrat", sans-serif;
   background-color: #D6589F;
   color: #fff;
@@ -90,8 +102,9 @@ body {
   font-size: 16px;
   font-weight: 500;
   max-width: 120px;
-  height: 40px;
+  height: 30px;
   box-shadow: 0 5px 10px rgba(0, 0, 0.2, 0.4);
+  text-decoration: none;
 }
 
 .signup-btn:hover {
@@ -358,12 +371,6 @@ body {
   font-size: 14px;
 }
 
-.profile-upload-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-}
 
 .profile-upload-container {
   display: flex;
@@ -407,9 +414,6 @@ body {
 }
 
 
-.custom-file-upload:hover {
-  background-color: #0056b3;
-}
 
 .file-input {
   display: none;
@@ -491,6 +495,7 @@ body {
   font-size: 16px;
   width: 100%;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
 }
 
 .google-btn {

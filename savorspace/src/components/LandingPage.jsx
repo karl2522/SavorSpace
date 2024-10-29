@@ -38,18 +38,6 @@ RecipeCard.propTypes = {
 const LandingPage = () => {
   return (
     <div className="LandingPage">
-      <nav className="navbar">
-        <img src="/src/images/savorspaceLogo.png" alt="SavorSpace Logo" className="logo" />
-        <h1>Savor<span className='highlight'>Space</span></h1>
-        <ul>
-          <li>Home</li>
-          <li>Recipes</li>
-          <li>Community</li>
-          <li>About Us</li>
-        </ul>
-        <button className="signup-btn">Sign up</button>
-      </nav>
-
       <section className="hero">
         <div className="hero-text">
           <h2><span>Savor</span> the flavors, <br /> Share the <span>love</span></h2>

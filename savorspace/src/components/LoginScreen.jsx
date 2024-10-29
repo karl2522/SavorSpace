@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-
 import './styles.css';
 
 const Login = () => {
@@ -26,6 +25,8 @@ const Login = () => {
         <img src="src/images/login-hero.png" alt="Welcome back to SavorSpace" />
         <h3>Welcome back, Chef!</h3>
       </div>
+      <div className="arrow-container">
+      </div>
       <div className="form-section-login">
         <h2 className="login-h2">Login to SavorSpace</h2>
         <form onSubmit={handleSubmit} className="login-form">
@@ -37,7 +38,7 @@ const Login = () => {
             onChange={handleInputChange}
             required
           />
-
+          
           <label>Password</label>
           <input
             type="password"
