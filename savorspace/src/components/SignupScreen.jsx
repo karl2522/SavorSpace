@@ -4,7 +4,7 @@ import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import './styles.css';
+import '../styles/SignupStyles.css';
 
 const API_URL = 'http://localhost:8080/auth';
 

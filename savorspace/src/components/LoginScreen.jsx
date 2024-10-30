@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
-import './styles.css';
+import '../styles/LoginStyles.css';
+
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -29,6 +31,7 @@ const Login = () => {
         <h3>Welcome back, Chef!</h3>
       </div>
       <div className="arrow-container"></div>
+      <IoIosArrowForward className="btn-back" size={30} color="#000" cursor="pointer" onClick={() => window.location.href = '/'}/>
       <div className="form-section-login">
         <h2 className="login-h2">Login to SavorSpace</h2>
         <form onSubmit={handleSubmit} className="login-form">

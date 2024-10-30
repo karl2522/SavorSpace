@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { HiArrowSmRight } from "react-icons/hi";
-import './styles.css';
+import '../styles/MainStyles.css';
 
 // RecipeCard component
 const RecipeCard = ({ image, title, description, onClick }) => {

@@ -1,10 +1,14 @@
+import { Bookmark, Heart } from 'lucide-react';
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { FaRegShareFromSquare } from "react-icons/fa6";
 import { HiArrowSmRight } from "react-icons/hi";
-import './styles.css';
+import '../styles/LandingPageStyles.css';
 
-const RecipeCard = ({ image, title, description }) => {
+
+const RecipeCard = ({ image, title, description, onClick }) => {
   return (
-    <div className="recipe-card">
+    <div className="recipe-card" onClick={onClick}>
       <div className="recipe-image-container">
         <img src={image} alt={title} className="recipe-image" />
       </div>
@@ -29,32 +33,268 @@ const RecipeCard = ({ image, title, description }) => {
   );
 };
 
+const CommunityCard = ({ image, title, description, likes, saves, category}) => {
+  return (
+    <div className="community-card">
+      <div className="card-image">
+        <img src={image} alt={title} />
+        <span className={`category-badge ${category.toLowerCase()}`}>{category}</span>
+      </div>
+      <div className="card-content">
+        <h3 className="card-title">{title}</h3>
+        <div className="card-stats">
+          <div className="stat-group likes">
+            <button className="stat-button">
+              <Heart size={20} />
+              <span>{likes}</span>
+            </button>
+            <div className="hover-content">
+              <p>{description}</p>
+            </div>
+          </div>
+          <div className="stat-group">
+            <button className="stat-button">
+              <Bookmark size={20} />
+              <span>{saves}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ChefCard = ({ image, name, title, shares }) => {
+  return (
+    <div className="chef-card">
+      <div className="chef-image">
+        <img src={image} alt={title} />
+      </div>
+      <div className="chef-content">
+        <h3 className="chef-name">{name}</h3>
+        <div className="chef-title">{title}</div>
+        <div className="shares-container">
+          <div className="chef-shares">{shares}</div>
+            <FaRegShareFromSquare />
+          </div>
+        </div>
+    </div>
+  );
+};
+
+// initial
+const TeamCard = ({ image }) => {
+  return (
+    <div className="team-card">
+      <div className="team-image">
+        <img src={image}/>
+      </div>
+    </div>
+  );
+}
+
+TeamCard.propTypes = {
+  image: PropTypes.string.isRequired,
+}
+
+ChefCard.propTypes = {
+  image: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  shares: PropTypes.string.isRequired,
+};
+
+
+CommunityCard.propTypes = {
+  image: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  likes: PropTypes.string.isRequired,
+  saves: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+};
+
 RecipeCard.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
 
 const LandingPage = () => {
-  return (
+  const recipeCards = [
+    {
+      image: "/src/images/adobo-hero.png",
+      title: "Chicken Adobo",
+      description: "Adobo is a Filipino dish of marinated meat, usually chicken or pork, cooked in vinegar and soy sauce. It's known for its savory and tangy flavor and is often served with rice.",
+    },
+
+    {
+      image: "src/images/sinigang-hero.png",
+      title: "Sinigang na Baboy",
+      description: "Sinigang is a traditional Filipino sour soup made from tamarind, tomatoes, and various vegetables such as eggplant, radish, and spinach. Typically made with pork, shrimp, or beef.",
+    },
+
+    {
+      image: "/src/images/pancit-hero.png",
+      title: "Pancit Canton",
+      description: "Pancit is a beloved Filipino noodle dish that comes in many regional varieties, often made with rice noodles, vegetables, and a choice of proteins like chicken, pork, or shrimp.",
+    }
+  ];
+
+  const communityCards = [
+    {
+      image: "/src/images/graham-card.jpg",
+      title: "Mango Graham",
+      description: "A delightful Filipino dessert made with layers of graham crackers, whipped cream, mangoes, and condensed milk. Perfect for any occasion!",
+      likes: "2.4k",
+      saves: "103",
+      category: "Dessert",
+    },
+
+    {
+      image: "/src/images/bicolexpress-card.avif",
+      title: "Bicol Express",
+      description: "A spicy Filipino dish made with pork, coconut milk, shrimp paste, and chili peppers. A popular dish from the Bicol region.",
+      likes: "1.8k",
+      saves: "87",
+      category: "Main Course"
+    },
+
+    {
+      image: "/src/images/crispypata-card.jpg",
+      title: "Crispy Pata",
+      description: "A Filipino dish of deep fried pork leg, making the skin crispy while keeping the meat tender inside. Served with a soy-vinegar dipping sauce.",
+      likes: "3.2k",
+      saves: "156",
+      category: "Main Course"
+    },
+
+    {
+      image: "/src/images/sisig-card.jpg",
+      title: "Sisig",
+      description: "A sizzling Filipino dish made with chopped pig's face and ears, seasoned with calamansi and chili peppers. A perfect pulutan!",
+      likes: "4.1k",
+      saves: "203",
+      category: "Main Course"
+    },
+
+    {
+      image: "/src/images/maja-card.jpg",
+      title: "Maja Blanca",
+      description: "The Philippines' most celebrated dish - a whole roasted pig with perfectly crispy skin and tender meat inside. A staple at Filipino festivities.",
+      likes: "5.6k",
+      saves: "312",
+      category: "Dessert"
+    }
+  ];
+
+  const chefCard = [
+      {
+        image: "/src/images/chef1.png",
+        name: "Lily Anderson",
+        title: "October's Top Sharer",
+        shares: "234 Recipes Shared",
+      },
+
+      {
+        image: "/src/images/chef2.png",
+        name: "Emma Nguyen",
+        title: "October's Top Sharer",
+        shares: "234 Recipes Shared",
+      },
+
+      {
+        image: "/src/images/chef3.png",
+        name: "Lucas Martinez",
+        title: "October's Top Sharer",
+        shares: "234 Recipes Shared",
+      }
+  ];
+
+  const [currentRecipeIndex, setCurrentRecipeIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentRecipeIndex((prevIndex) => (prevIndex + 1) % recipeCards.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [recipeCards.length]);
+
+  const handleCardClick = () => {
+    setCurrentRecipeIndex((prevIndex) => (prevIndex + 1) % recipeCards.length);
+  };
+
+return (
     <div className="LandingPage">
       <section className="hero">
         <div className="hero-text">
           <h2><span>Savor</span> the flavors, <br /> Share the <span>love</span></h2>
           <p>Join our vibrant community of food lovers where you can share recipes, savor delicious flavors, and celebrate the joy of cooking together. Let&apos;s create tasty memories!</p>
-          <button className="get-started-btn">Get Started</button>
+          <button className="get-started-btn">Explore Recipes</button>
         </div>
         
         <div className="recipe-card-container">
           <RecipeCard
-            image="src/images/adobo-hero.png"
-            title="Chicken Adobo"
-            description="Adobo is a Filipino dish of marinated meat, usually chicken or pork, cooked in vinegar and soy sauce. It's known for its savory and tangy flavor and is often served with rice."
+            image={recipeCards[currentRecipeIndex].image}
+            title={recipeCards[currentRecipeIndex].title}
+            description={recipeCards[currentRecipeIndex].description}
+            onClick={handleCardClick}
           />
+        </div>
+      </section>
+
+      <section className="more-recipes">
+        <h2><span>Community </span>Favorites</h2>
+        <div className="community-cards-container">
+          {communityCards.map((card, index) => (
+            <CommunityCard
+              key={index}
+              image={card.image}
+              title={card.title}
+              description={card.description}
+              likes={card.likes}
+              saves={card.saves}
+              category={card.category}
+            />
+          ))}
+        </div>
+      </section>
+          
+      <section className="chef-container">
+        <h2>SavorSpace <span>All-Chefs</span></h2>
+        <div className="chef-cards-container">
+          {chefCard.map((card, index) => (
+            <ChefCard
+              key={index}
+              image={card.image}
+              name={card.name}
+              title={card.title}
+              shares={card.shares}
+            />
+          ))}
+        </div>
+      </section>
+
+
+      <section className="aboutus-container">
+        <h2>Our <span>Team</span></h2>
+        <div className="chef-cards-container">
+          {chefCard.map((card, index) => (
+            <ChefCard
+              key={index}
+              image={card.image}
+              name={card.name}
+              title={card.title}
+              shares={card.shares}
+            />
+          ))}
         </div>
       </section>
     </div>
   );
 };
+
 
 export default LandingPage;
