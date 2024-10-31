@@ -14,7 +14,7 @@
     justify-content: space-between;
     width: 100%;
     max-width: 1800px;
-    padding: 1rem 2rem;
+    padding: 1rem;
     background-color: #fff;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     height: 80px;
@@ -64,7 +64,7 @@
   
   
   .navbar li a {
-    color: #000;
+    color: #111;
     text-decoration: none;
     transition: color 0.3s ease, transform 0.3s ease; 
   }
@@ -498,7 +498,7 @@
   .chef-container h2 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     text-align: center  ;
-    font-size: 50px;
+    font-size: 60px;
     color: #111;
   }
   
@@ -540,12 +540,289 @@
   }
 
   
+  .shares-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
   .chef-shares {
     font-size: 12px;
+    margin-right: 8px;
   }
-
 
   .chef-content {
     padding: 16px; 
+    text-align: center;
   }
   
+
+  /* TeamCard Styles */
+  .team-container {
+    padding: 2rem;
+  }
+
+  .team-container h2 {
+    font-size: 60px;
+    text-align: center;
+    color: #111;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  .team-container h2 span {
+    color: #D6589F;
+  }
+  
+  .team-cards-container {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  
+  .team-card {
+    width: 300px;
+    background-color: #F3F4F6;
+    border-radius: 24px;
+    padding: 0.5rem;
+    background-color: #D6589F;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .team-image-wrapper {
+    width: 300px;
+    height: 500px;
+    position: relative;
+    margin: 0 auto;
+  }
+  
+  .team-image-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 18px;
+    box-sizing: border-box;
+    object-position: center;    
+  }
+
+  .team-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .team-content {
+    text-align: center;
+    color: #ffff;
+    margin-bottom: 8px;
+  }
+  
+  .team-name {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .team-title {
+    font-size: 14px;
+  }
+
+
+  .questions-section {
+    margin-top: 100px;
+    width: 100%;
+    padding: 4rem 2rem;
+    background-color: #fff;
+  }
+
+  .questions-container {
+    display: flex;
+    flex-direction: row;
+    max-width: 1500px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .questions-title {
+    font-size: 80px;
+    color: #111;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  .questions-title span {
+    color: #D6589F;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .form-input {
+    font-family: "Montserrat", sans-serif;
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #D6589F;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .form-input:focus {
+    border-color: #111;
+  }
+
+  .submit-btn {
+    font-family: "Montserrat", sans-serif;
+    background-color: #D6589F;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: flex-end;
+  }
+
+  .submit-btn:hover {
+    background-color: #ce2786;
+  }
+
+  .footer {
+    margin-top: 200px;
+    width: 100%;
+    background-color: #ffd4e9;
+    padding: 4rem 2rem 1rem;
+    color: #111;
+  }
+  
+  .footer h2 {
+    font-size: 50px !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  .footer h2 span {
+    color: #D6589F;
+  }
+
+
+  .footer-content {
+    max-width: 1800px;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 60px;
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 7rem;
+  }
+
+
+  .footer-logo-img {
+    width: 200px;
+    height: auto;
+    margin-left: 30px;
+  }
+
+  .footer-logo h2 {
+    font-size: 2rem;
+    color: #111;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 8rem;
+    margin-top: 50px;
+  }
+
+  .footer-section h3 {
+    color: #111;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .footer-section ul li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-section ul li a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-section ul li a:hover {
+    color: #D6589F;
+  }
+
+  .footer-bottom {
+    max-width: 1800px;
+    margin: 2rem auto 0;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p {
+    font-size: 14px;
+  }
+
+
+  .back-to-top {
+    background: none;
+    border: none;
+    color: #D6589F;
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+    text-decoration: none;
+  }
+
+  .back-to-top:hover {
+    color: #ce2786;
+  }
+
+  @media (max-width: 768px) {
+    .form-row {
+      flex-direction: column;
+    }
+
+    .footer-content {
+      flex-direction: column;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-section {
+      flex: 1 1 40%;
+    }
+  }
