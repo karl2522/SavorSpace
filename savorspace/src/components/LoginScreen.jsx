@@ -1,8 +1,23 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
+
+const API_URL = 'http://localhost:8080/auth';
+
+const login = async (loginData) => {
+  const response = await axios.post(`${API_URL}/login`, loginData, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  // Store the token in local storage
+  localStorage.setItem('authToken', response.data.token);
+  return response;
+};
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -16,10 +31,16 @@ const Login = () => {
     setLoginData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(loginData);
-    navigate('/homepage');
+    try {
+      await login(loginData);
+      console.log('Login successful!');
+      navigate('/homepage');
+    } catch (error) {
+      console.error('Login failed:', error.response.data);
+      alert('Login failed:', error.response.data);
+    }
   };
 
   return (

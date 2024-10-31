@@ -8,18 +8,26 @@ import './styles.css';
 
 const API_URL = 'http://localhost:8080/auth';
 
-const register = (email, password, fullName, imageUrl) => {
-  return axios.post(`${API_URL}/signup`, {
-    email,
-    password,
-    fullName,
-    imageUrl
+const register = async (formData) => {
+  const data = new FormData();
+  data.append('email', formData.email);
+  data.append('password', formData.password);
+  data.append('fullName', formData.fullName);
+  data.append('profilePic', formData.profilePic);
+
+  const response = await axios.post(`${API_URL}/signup`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
+
+  // Store the token in local storage
+  return response;
 };
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    fullname: '',
+    fullName: '',
     email: '',
     password: '',
     profilePic: null,
@@ -53,12 +61,12 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register(formData.email, formData.password, formData.fullname, imageUrl);
+      await register(formData);
       console.log('Registration successful!');
-      // Optionally, redirect or show a success message here
+      alert('Registration successful!');
     } catch (error) {
       console.error('Registration failed:', error.response.data);
-      // Handle error (e.g., show an error message)
+      alert('Registration failed:', error.response.data);
     }
   };
 
@@ -71,8 +79,8 @@ const Register = () => {
           <label>Full Name</label>
           <input
             type="text"
-            name="fullname"
-            value={formData.fullname}
+            name="fullName"
+            value={formData.fullName}
             onChange={handleInputChange}
             required
           />
