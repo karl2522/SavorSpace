@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
@@ -5,6 +6,19 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import '../styles/LoginStyles.css';
 
+const API_URL = 'http://localhost:8080/auth';
+
+const login = async (loginData) => {
+  const response = await axios.post(`${API_URL}/login`, loginData, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  // Store the token in local storage
+  localStorage.setItem('authToken', response.data.token);
+  return response;
+};
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -18,10 +32,16 @@ const Login = () => {
     setLoginData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(loginData);
-    navigate('/homepage');
+    try {
+      await login(loginData);
+      console.log('Login successful!');
+      navigate('/homepage');
+    } catch (error) {
+      console.error('Login failed:', error.response.data);
+      alert('Login failed: ' + error.response.data);
+    }
   };
 
   return (
@@ -31,7 +51,7 @@ const Login = () => {
         <h3>Welcome back, Chef!</h3>
       </div>
       <div className="arrow-container"></div>
-      <IoIosArrowForward className="btn-back" size={30} color="#000" cursor="pointer" onClick={() => window.location.href = '/'}/>
+      <IoIosArrowForward className="btn-back" size={30} color="#000" cursor="pointer" onClick={() => window.location.href = '/'} />
       <div className="form-section-login">
         <h2 className="login-h2">Login to SavorSpace</h2>
         <form onSubmit={handleSubmit} className="login-form">
