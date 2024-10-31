@@ -1,0 +1,551 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+/* Landing Page Styles */
+.LandingPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1800px;
+    padding: 1rem 2rem;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    height: 80px;
+    justify-self: center;
+  }
+  
+  
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .navbar .logo {
+    height: auto;
+    width: 100%;
+    padding-top: 10px;
+    max-width: 100px; 
+    margin-top: -10px; 
+  }
+  
+  .navbar .highlight {
+    color: #D6589F;
+  }
+  
+  .navbar h1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 50px;
+    margin-left: -250px;
+    color: #111;
+  }
+  
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .navbar ul {
+    font-size: 18px;
+    display: flex;
+    gap: 2rem;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  
+  .navbar li a {
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease; 
+  }
+  
+  .navbar li a:hover {
+    color: #ce2786;
+  }
+  
+  
+  .navbar li:hover {
+    color: #ce2786;
+    font-weight: normal; 
+    transform: translateY(-2px); 
+  }
+  
+  
+  .signup-btn {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-family: "Montserrat", sans-serif;
+    background-color: #D6589F;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 500;
+    max-width: 120px;
+    height: 30px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0.2, 0.4);
+    text-decoration: none;
+  }
+  
+  .signup-btn:hover {
+    background-color: #ce2786;
+    transform: translateY(-2px);
+  }
+  
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .menu-toggle span {
+    width: 30px;
+    height: 3px;
+    background-color: #333;
+    transition: all 0.3s linear;
+  }
+
+  .btn-back {
+    position: absolute;
+    top: 50;
+    right: 0;
+    margin-right: 50px;  
+  }
+  
+  @media (max-width: 768px) {
+    .navbar {
+      flex-wrap: wrap;
+    }
+  
+    .navbar-right {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  
+    .navbar-right.active {
+      display: flex;
+    }
+  
+    .navbar ul {
+      flex-direction: column;
+      width: 100%;
+    }
+  
+    .signup-btn {
+      width: 100%;
+    }
+  
+    .menu-toggle {
+      display: flex;
+    }
+  }
+  
+  .hero {
+    display: flex; 
+    align-items: flex-start; 
+    padding: 2rem;
+    width: 100%;
+    max-width: 1800px; 
+    margin: 0 auto;
+  }
+  
+  .hero-text {
+    flex: 1; 
+    margin-right: 20px; 
+  }
+  
+  .hero h2 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-top: 100px;
+    font-size: 4.5rem;
+    color: #111;
+  }
+  
+  .hero h2 span {
+    color: #D6589F;
+  }
+  
+  .hero p {
+    max-width: 680px;
+  }
+  
+  .get-started-btn {
+    margin-top: 30px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #D6589F;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    max-width: 180px;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 55px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 5px 10px rgba(0, 0, 0.2, 0.4);
+  }
+  
+  .get-started-btn:hover {
+    background-color: #ce2786;
+    transform: translateY(-2px);
+  }
+  
+  .recipe-card-container {
+    padding: 20px;
+  }
+  
+  .recipe-card {
+    margin-top: 70px;
+    margin-right: 200px;
+    max-width: 450px;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: -10px 15px 10px rgba(0.2, 0.2, 0.2, 0.5);
+    position: relative;
+    font-family: Arial, sans-serif;
+  }
+  
+  .recipe-card::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: -10px;
+    bottom: -10px;
+    background-color: #ffffff;
+    z-index: -1;
+    border-radius: 8px;
+    box-shadow: -10px 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .recipe-image-container {
+    width: 100%;
+    max-height: 300px;
+    background-color: #D6589F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .recipe-image {
+    max-width: 280px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .recipe-content {
+    font-family: "Montserrat", sans-serif;
+    padding: 16px;
+    position: relative;
+  }
+  
+  .recipe-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .recipe-cuisine,
+  .recipe-course {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .recipe-meta img {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .recipe-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .recipe-description {
+    width: 350px;
+    font-size: 12px;
+    color: #333;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+  
+  .recipe-button {
+    background-color: #D6589F;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    transform: rotate(-40deg);
+  }
+  
+/* Add these new styles to your existing CSS file */
+
+.community-cards-container {
+    display: flex;
+    gap: 24px;
+    padding: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  
+  .community-cards-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .community-card {
+    width: 280px;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .community-card:hover {
+    transform: translateY(-4px);
+    cursor: pointer;
+  }
+
+  .more-recipes h2 {
+    font-size: 60px !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    color: #111;
+  }
+  
+  .card-image {
+    position: relative;
+    width: 100%;
+    height: 200px;
+  }
+  
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .category-badge {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    background-color: #D6589F;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 12px !important;
+  }
+  
+  .card-content {
+    padding: 16px;
+    color: #fff;
+  }
+  
+  .card-title {
+    margin: 0 0 12px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .card-stats {
+    font-family: "Montserrat", sans-serif !important;
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+  
+  .stat-group {
+    position: relative;
+  }
+  
+  .stat-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    padding: 8px;
+    color: #666;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  }
+  
+  .stat-button:hover {
+    color: #D6589F;
+  }
+  
+  .stat-button svg {
+    transition: transform 0.2s ease;
+  }
+  
+  .stat-button:hover svg {
+    transform: scale(1.1);
+    fill: #D6589F;
+  }
+  
+  /* Hover effect for likes group */
+  .likes {
+    position: relative;
+  }
+  
+  .hover-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+  
+  .hover-content p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #666;
+  }
+  
+  .likes:hover .hover-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(4px);
+  }
+  
+  /* Add smooth transition for heart icon */
+  .likes .stat-button svg {
+    transition: transform 0.3s ease, fill 0.3s ease;
+  }
+  
+  .likes:hover .stat-button svg {
+    transform: scale(1.2);
+    fill: #D6589F;
+  }
+
+  .chef-container {
+    width: 100%;
+    height: auto;
+    padding: 0px 20px 200px 20px;
+  }
+  
+  .chef-cards-container {
+    display: flex;
+    gap: 150px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    justify-content: center; 
+  }
+  
+  .chef-cards-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .chef-container h2 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-align: center  ;
+    font-size: 50px;
+    color: #111;
+  }
+  
+  .chef-container h2 span {
+    color: #D6589F;
+  }
+  
+
+  .chef-card {
+    width: 400px; 
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: -10px 15px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .chef-card img {
+    width: 100%;
+    height: auto; 
+    object-fit: cover; 
+    border-radius: 8px; 
+  }
+  
+  .chef-card h3 {
+    font-size: 24px;
+    margin-top: 16px; /* Adds consistent spacing */
+  }
+  
+  .chef-card::before {
+    box-shadow: -10px 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .chef-title {
+    font-weight: 550;
+    margin-bottom: 10px;
+  }
+
+  
+  .chef-shares {
+    font-size: 12px;
+  }
+
+
+  .chef-content {
+    padding: 16px; 
+  }
+  

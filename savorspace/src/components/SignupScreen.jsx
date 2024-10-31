@@ -4,22 +4,22 @@ import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import './styles.css';
+import '../styles/SignupStyles.css';
 
 const API_URL = 'http://localhost:8080/auth';
 
-const register = (email, password, fullName, imageUrl) => {
-  return axios.post(`${API_URL}/signup`, {
-    email,
-    password,
-    fullName,
-    imageUrl
+const register = async (formData) => {
+  const response = await axios.post(`${API_URL}/signup`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
+  return response.data; // Adjust as necessary based on your response structure
 };
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    fullname: '',
+    fullName: '',
     email: '',
     password: '',
     profilePic: null,
@@ -53,14 +53,29 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register(formData.email, formData.password, formData.fullname, imageUrl);
-      console.log('Registration successful!');
-      // Optionally, redirect or show a success message here
+        const data = new FormData();
+        data.append('fullName', formData.fullname);
+        data.append('email', formData.email);
+        data.append('password', formData.password);
+        if (formData.profilePic) {
+            data.append('profilePic', formData.profilePic);
+        }
+
+        await register(data);
+        console.log('Registration successful!');
+        alert('Registration successful!');
     } catch (error) {
-      console.error('Registration failed:', error.response.data);
-      // Handle error (e.g., show an error message)
+        console.error('Registration failed:', error);
+
+        if (error.response) {
+            console.error('Error data:', error.response.data);
+            alert('Registration failed: ' + (error.response.data.message || error.response.data));
+        } else {
+            alert('Registration failed: ' + error.message);
+        }
     }
-  };
+};
+
 
   return (
     <div className="register-container">
@@ -71,8 +86,8 @@ const Register = () => {
           <label>Full Name</label>
           <input
             type="text"
-            name="fullname"
-            value={formData.fullname}
+            name="fullName"
+            value={formData.fullName}
             onChange={handleInputChange}
             required
           />
