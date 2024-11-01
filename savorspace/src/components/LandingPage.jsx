@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import { HiArrowSmRight } from "react-icons/hi";
 import '../styles/LandingPageStyles.css';
-
+import axios from 'axios';
 
 const RecipeCard = ({ image, title, description, onClick }) => {
   return (
@@ -72,22 +72,30 @@ const ChefCard = ({ image, name, title, shares }) => {
       </div>
       <div className="chef-content">
         <h3 className="chef-name">{name}</h3>
-        <div className="chef-title">{title}</div>
-        <div className="shares-container">
+        <div className="chef-info">
+          <div className="chef-title">{title}</div>
+          <div className="shares-container">
           <div className="chef-shares">{shares}</div>
             <FaRegShareFromSquare />
           </div>
+        </div>
         </div>
     </div>
   );
 };
 
 // initial
-const TeamCard = ({ image }) => {
+const TeamCard = ({ image, name, title }) => {
   return (
     <div className="team-card">
-      <div className="team-image">
-        <img src={image}/>
+      <div className="team-image-wrapper">
+        <div className="team-image-container">
+          <img src={image} alt={name} className="team-image" />
+        </div>
+      </div>
+      <div className="team-content">
+        <h3 className="team-name">{name}</h3>
+        <div className="team-title">{title}</div>
       </div>
     </div>
   );
@@ -95,6 +103,8 @@ const TeamCard = ({ image }) => {
 
 TeamCard.propTypes = {
   image: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 }
 
 ChefCard.propTypes = {
@@ -194,23 +204,58 @@ const LandingPage = () => {
         image: "/src/images/chef1.png",
         name: "Lily Anderson",
         title: "October's Top Sharer",
-        shares: "234 Recipes Shared",
+        shares: "365 Recipes Shared",
       },
 
       {
         image: "/src/images/chef2.png",
         name: "Emma Nguyen",
-        title: "October's Top Sharer",
+        title: "November's Top Sharer",
         shares: "234 Recipes Shared",
       },
 
       {
         image: "/src/images/chef3.png",
         name: "Lucas Martinez",
-        title: "October's Top Sharer",
-        shares: "234 Recipes Shared",
+        title: "December's Top Sharer",
+        shares: "300 Recipes Shared",
       }
   ];
+
+
+  const teamCard = [
+    {
+      image: "/src/images/omen.png",
+      name: "Jared Karl Omen",
+      title: "Full-Stack Developer",
+    },
+
+    {
+      image: "/src/images/capuras.png",
+      name: "Vaness Leonard Capuras",
+      title: "Full-Stack Developer",
+    },
+
+    {
+      image: "/src/images/chavez.png",
+      name: "Jes Emanuel Chavez",
+      title: "Full-Stack Developer",
+    },
+    
+    {
+      image: "/src/images/gadiane.png",
+      name: "John Karl Gadiane",
+      title: "Full-Stack Developer",
+    },
+
+    {
+      image: "/src/images/pejana.png",
+      name: "Mary Therese Pejana",
+      title: "Full-Stack Developer",
+    }
+];
+
+
 
   const [currentRecipeIndex, setCurrentRecipeIndex] = useState(0);
 
@@ -225,6 +270,27 @@ const LandingPage = () => {
   const handleCardClick = () => {
     setCurrentRecipeIndex((prevIndex) => (prevIndex + 1) % recipeCards.length);
   };
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    concern: "",
+  });
+  
+  const handleSubmit =  async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:8080/auth/email', formData);
+      console.log('Email sent successfully');
+      alert('Email sent successfully');
+      setFormData({ firstName: "", lastName: "", email: "", concern: "" });
+    }catch (error) {
+      console.error('Email failed to send:', error);
+      alert('Email failed to send');
+    }
+  };
+  
 
 return (
     <div className="LandingPage">
@@ -277,22 +343,122 @@ return (
         </div>
       </section>
 
-
-      <section className="aboutus-container">
+      <section className="team-container">
         <h2>Our <span>Team</span></h2>
-        <div className="chef-cards-container">
-          {chefCard.map((card, index) => (
-            <ChefCard
+        <div className="team-cards-container">
+          {teamCard.map((card, index) => (
+            <TeamCard
               key={index}
               image={card.image}
               name={card.name}
               title={card.title}
-              shares={card.shares}
             />
           ))}
         </div>
       </section>
+
+      <section className="questions-section">
+        <div className="questions-container">
+          <h2 className="questions-title">
+            <span>Got </span>questions?<br />
+            Let&apos;s <span>Connect!</span>
+          </h2>
+          <form onSubmit={handleSubmit} className="contact-form">
+            <div className="form-row">
+              <input
+                type="text"
+                placeholder="First name"
+                value={formData.firstName}
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                className="form-input"
+              />
+              <input
+                type="text"
+                placeholder="Last name"
+                value={formData.lastName}
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                className="form-input"
+              />
+            </div>
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="form-input"
+            />
+            <input
+              type="text"
+              placeholder="What's your concern?"
+              value={formData.concern}
+              onChange={(e) => setFormData({ ...formData, concern: e.target.value })}
+              className="form-input"
+            />
+            <button type="submit" className="submit-btn">
+              Submit
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <footer className="footer">
+        <div className="footer-content">
+          <div className="footer-logo">
+            <img src="/src/images/savorspaceLogo.png" alt="SavorSpace Logo" className="footer-logo-img" />
+            <h2>Savor<span>Space</span></h2>
+          </div>
+          
+          <div className="footer-links">
+            <div className="footer-section">
+              <h3>About Us</h3>
+              <ul>
+                <li><a href="#">Mission</a></li>
+                <li><a href="#">Team</a></li>
+                <li><a href="#">Partners</a></li>
+              </ul>
+            </div>
+            
+            <div className="footer-section">
+              <h3>Support</h3>
+              <ul>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">FAQs</a></li>
+                <li><a href="#">User Guide</a></li>
+              </ul>
+            </div>
+            
+            <div className="footer-section">
+              <h3>Features</h3>
+              <ul>
+                <li><a href="#">Analytics</a></li>
+                <li><a href="#">Engagement Tools</a></li>
+                <li><a href="#">Community Building</a></li>
+              </ul>
+            </div>
+            
+            <div className="footer-section">
+              <h3>Social</h3>
+              <ul>
+                <li><a href="https://github.com/karl2522/SavorSpace-Frontend">Github</a></li>
+                <li><a href="#">Email</a></li>
+                <li><a href="https://www.linkedin.com/login">LinkedIn</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div className="footer-bottom">
+          <p>© 2024 SavorSpace. All Rights Reserved</p>
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="back-to-top">
+            Back to top
+          </button>
+        </div>
+      </footer>
+
+
     </div>
+
+    
   );
 };
 

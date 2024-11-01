@@ -59,32 +59,9 @@ const HomePage = () => {
   ];
 
   const [currentRecipeIndex, setCurrentRecipeIndex] = useState(0);
-  const [profilePic, setProfilePic] = useState(null);
 
-  // Fetch profile picture on component mount
+  // Automatically change the recipe every 3 seconds
   useEffect(() => {
-    const fetchProfilePic = async () => {
-      try {
-        const token = localStorage.getItem('authToken'); // Retrieve the token from local storage
-        const response = await fetch('http://localhost:8080/users/me', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setProfilePic(`http://localhost:8080${data.imageURL}`); // Set the profile picture URL
-      } catch (error) {
-        console.error('Error fetching profile picture:', error);
-      }
-    };
-
-    fetchProfilePic();
-
-    // Automatically change the recipe every 3 seconds
     const interval = setInterval(() => {
       setCurrentRecipeIndex((prevIndex) => (prevIndex + 1) % recipes.length);
     }, 3000);
@@ -112,14 +89,6 @@ const HomePage = () => {
             description={recipes[currentRecipeIndex].description}
             onClick={handleCardClick}
           />
-          <h1>This is the profile</h1>
-          {profilePic ? (
-            <div className="profile-pic-container">
-              <img src={profilePic} alt="Profile" className="profile-pic" />
-            </div>
-          ) : (
-            <p>Profile not found</p>
-          )}
         </div>
       </section>
     </div>

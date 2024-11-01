@@ -1,30 +1,24 @@
-import axios from 'axios';
+// LoginScreen.js
+
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import '../styles/LoginStyles.css';
-
-const API_URL = 'http://localhost:8080/auth';
+import api from '../api/axiosConfig';
 
 const login = async (loginData) => {
-  const response = await axios.post(`${API_URL}/login`, loginData, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  // Store the token in local storage
+  const response = await api.post('/login', loginData);
   localStorage.setItem('authToken', response.data.token);
+  localStorage.setItem('refreshToken', response.data.refreshToken);
   return response;
 };
 
-const Login = () => {
-  const [loginData, setLoginData] = useState({
-    email: '',
-    password: '',
-  });
+const Login = ({ onLogin }) => {
+  const [loginData, setLoginData] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -32,15 +26,28 @@ const Login = () => {
     setLoginData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const validate = () => {
+    const errors = {};
+    if (!loginData.email) errors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(loginData.email)) errors.email = 'Invalid email address';
+    if (!loginData.password) errors.password = 'Password is required';
+    else if (loginData.password.length < 6) errors.password = 'Password must be at least 6 characters';
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
     try {
       await login(loginData);
-      console.log('Login successful!');
+      onLogin(); // Trigger profile picture update after login
       navigate('/homepage');
     } catch (error) {
-      console.error('Login failed:', error.response.data);
-      alert('Login failed: ' + error.response.data);
+      alert(`Login failed: ${error.response?.data?.message || error.message}`);
     }
   };
 
@@ -63,6 +70,7 @@ const Login = () => {
             onChange={handleInputChange}
             required
           />
+          {errors.email && <span className="error">{errors.email}</span>}
           
           <label>Password</label>
           <input
@@ -72,11 +80,12 @@ const Login = () => {
             onChange={handleInputChange}
             required
           />
+          {errors.password && <span className="error">{errors.password}</span>}
 
           <button type="submit" className="login-btn">Login</button>
         </form>
         <div className="login-options">
-          <span>Don&apos;t have an account? <a href="/register" className="register">Register</a></span>
+          <span>Don't have an account? <a href="/register" className="register">Register</a></span>
           <p>Or login with</p>
           <div className="social-options">
             <button className="google-btn">
@@ -90,6 +99,10 @@ const Login = () => {
       </div>
     </div>
   );
+};
+
+Login.propTypes = {
+  onLogin: PropTypes.func.isRequired,
 };
 
 export default Login;
