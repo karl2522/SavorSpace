@@ -766,7 +766,7 @@
   }
 
   /* Responsive Screen from 1550 screens to 1625 */
-  @media(min-width: 1550px) and (max-width: 1625px) {
+  @media(min-width: 1515px) and (max-width: 1625px) {
     .navbar {
       display: flex;
       align-items: center;
@@ -904,7 +904,7 @@
   }
 
    /* Responsive Screen for 1366 screens*/
-   @media(min-width: 1366px) and (max-width: 1500px){
+   @media(min-width: 1366px) and (max-width: 1514px){
    .navbar {
       display: flex;
       align-items: center;
