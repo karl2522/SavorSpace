@@ -6,6 +6,7 @@
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    overflow-x: hidden;
   }
   
   .navbar {
@@ -279,7 +280,6 @@
     transform: rotate(-40deg);
   }
   
-/* Add these new styles to your existing CSS file */
 
   .community-cards-container {
     display: flex;
@@ -355,7 +355,7 @@
     font-family: "Montserrat", sans-serif !important;
     display: flex;
     justify-content: flex-start;
-    gap: 16px;
+    gap: 15px;
   }
   
   .stat-group {
@@ -765,7 +765,7 @@
     color: #ce2786;
   }
 
-  /* Responsive Screen */
+  /* Responsive Screen from 1550 screens to 1625 */
   @media(min-width: 1550px) and (max-width: 1625px) {
     .navbar {
       display: flex;
@@ -819,11 +819,11 @@
       align-items: center; 
       width: 100%;
       max-width: 1600px; 
-      margin: 0 auto; 
+      margin-left: 10px;
     }
   
     .community-card {
-      max-width: 300px;
+      max-width: 275px;
       background: white;
       border-radius: 16px;
       overflow: hidden;
@@ -832,42 +832,37 @@
 
     /* Chef Cards */
     .chef-cards-container {
-      display: flex;
       gap: 120px;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      justify-content: center;
       max-width: 1400px;
-      width: 100%; 
-      justify-content: center;
-      align-items: center;
       margin: 0 auto;
+    }
+
+    .chef-card {
+      width: 340px;
     }
 
     .team-container {
       width: 100%;
-      max-width: 1625px;
+      max-width: 1500px;
       height: auto;
-      margin: 0 auto; 
+      margin-left: 15px; 
+    }
+
+    .team-container h2 {
+      text-align: center;
     }
     
     /* Team Cards */
     .team-cards-container {
       display: flex;
       gap: 3rem;
-      justify-content: center; 
-      align-items: center;
-      max-width: 1625px;
-      width: 100%; 
-      margin: 0 auto; 
-      flex-wrap: nowrap; 
+      width: 100%;
+      margin: 0 auto;
     }
     
     
     .team-card {
-      width: 250px; 
+      width: 240px; 
       background-color: #D6589F;
       border-radius: 24px;
       padding: 0.5rem;
@@ -877,7 +872,7 @@
     }
 
     .team-image-wrapper {
-      width: 250px;
+      width: 240px;
       height: 500px;
       position: relative;
       margin: 0 auto;
@@ -889,14 +884,232 @@
   
     /* Footer Contents */
     .footer-content {
-      max-width: 1600px;
+      max-width: 1800px;
       display: flex;
       justify-content: space-between;
       margin-right: 60px;
     }
 
     .footer-bottom {
-      max-width: 1500px;
+      max-width: 1480px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+  
+    
+  }
+
+   /* Responsive Screen for 1366 screens*/
+   @media(min-width: 1366px) and (max-width: 1500px){
+   .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1600px;
+      padding: 1rem;
+      background-color: #fff;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      height: 80px;
+      justify-self: center;
+    }
+
+    .navbar ul {
+      font-size: 15px;
+      display: flex;
+      gap: 2rem;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar h1 {
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      font-size: 45px;
+      margin-left: -100px;
+      color: #111;
+    }
+
+    .navbar .logo {
+      height: auto;
+      width: 100%;
+      padding-top: 10px;
+      max-width: 100px; 
+      margin-top: -10px; 
+      margin-left: 20px;
+    }
+
+    .signup-btn {
+      font-size: 14px;
+      max-width: 110px;
+      height: 25px;
+      text-decoration: none;
+    }
+
+    .hero {
+      display: flex; 
+      align-items: flex-start; 
+      padding: 2rem;
+      width: 100%;
+      max-width: 1800px; 
+      margin: 0 auto;
+    }
+
+    .recipe-card {
+      margin-top: 70px;
+      margin-right: 70px;
+      max-width: 400px;
+      width: 100%;
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: -10px 15px 10px rgba(0.2, 0.2, 0.2, 0.5);
+      position: relative;
+      font-family: Arial, sans-serif;
+    }
+
+    /*Community Cards*/
+    .more-recipes {
+      margin: 0 auto;
+      max-width: 1600px;
+      width: 100%;
+    }
+
+    .more-recipes h2 {
+      font-size: 50px !important;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      color: #111;
+    }
+
+    .community-cards-container {
+      max-width: 1600px; 
+      margin-left: 30px;
+    }
+  
+    .community-card {
+      max-width: 230px;
+    }
+
+
+    .card-title {
+      font-size: 20px !important;
+    }
+    
+    .chef-container {
+      width: 100%;
+    }
+
+    /* Chef Cards */
+    .chef-cards-container {
+      gap: 100px;
+      margin-left: 50px;
+      scrollbar-width: none;
+    }
+
+    .chef-card {
+      width: 350px;
+    }
+
+
+    .team-container {
+      width: 100%;
+      margin-left: 30px;
+      max-width: 1425px;
+      height: auto;
+    }
+    
+    /* Team Cards */
+    .team-cards-container {
+      display: flex;
+      gap: 3rem;
+      justify-content: center; 
+      align-items: center;
+      max-width: 1525px;
+      width: 100%; 
+    }
+    
+    .team-card {
+      width: 205px; 
+     
+    }
+
+    .team-image-wrapper {
+      width: 205px;
+      height: 500px;
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .team-name {
+      font-size: 14px;
+    }
+  
+
+    /* Question Form & Footer Contents */
+
+    .questions-container {
+      gap: 2rem;
+      margin-left: 50px;
+    }
+    .questions-title {
+      font-size: 60px;
+    }
+
+    .footer {
+      width: 100% !important;
+    }
+
+    .footer-logo-img {
+      width: 150px;
+    }
+
+    .footer-logo h2 {
+      font-size: 40px !important;
+      color: #111;
+    }
+  
+    .footer-links {
+      display: flex;
+      gap: 7rem;
+      margin-top: 50px;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+    } 
+
+    .footer-section {
+      width: 100px;
+    }
+
+    .footer-section h3 {
+      color: #111;
+      margin-bottom: 1rem;
+      font-size: 14px;
+    }
+  
+    .footer-content {
+      max-width: 1800px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10rem;
+    }
+
+    .footer-bottom {
+      width: 100%;
+      max-width: 1280px;
+    }
+
+    .footer-bottom p{
+      font-size: 14px !important;
+    }
+
+    .back-to-top {
+      font-size: 14px;
     }
 
     .footer-logo {
