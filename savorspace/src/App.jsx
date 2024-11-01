@@ -6,13 +6,16 @@ import LandingPage from './components/LandingPage';
 import Login from './components/LoginScreen';
 import RecipePage from './components/RecipePage';
 import Register from './components/SignupScreen';
+import AdminLogin from './components/AdminLogin'; 
+import AdminSignup from './components/AdminSignup';
+import AdminPanel from './components/AdminPanel'; 
 import testProfilePic from './images/image.png';
 import './styles/MainStyles.css';
 
 // Navbar Component
 const Navbar = ({ profilePic }) => {
   const location = useLocation();
-  const showNavbar = !['/login', '/register'].includes(location.pathname);
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup'].includes(location.pathname);
   const isMainPage = 
     location.pathname === '/homepage' || 
     location.pathname === '/recipes' || 
@@ -100,6 +103,9 @@ const App = () => {
           <Route path="/recipes" element={<RecipePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/admin/login" element={<AdminLogin />} /> 
+          <Route path="/admin/signup" element={<AdminSignup />} /> 
+          <Route path="/admin/panel" element={<AdminPanel />} />
         </Routes>
       </div>
     </Router>
