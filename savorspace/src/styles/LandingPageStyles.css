@@ -21,13 +21,6 @@
     justify-self: center;
   }
   
-  
-  .navbar-left {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
   .navbar .logo {
     height: auto;
     width: 100%;
@@ -45,12 +38,6 @@
     font-size: 50px;
     margin-left: -250px;
     color: #111;
-  }
-  
-  .navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
   }
   
   .navbar ul {
@@ -133,37 +120,7 @@
     right: 0;
     margin-right: 50px;  
   }
-  
-  @media (max-width: 768px) {
-    .navbar {
-      flex-wrap: wrap;
-    }
-  
-    .navbar-right {
-      display: none;
-      width: 100%;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-  
-    .navbar-right.active {
-      display: flex;
-    }
-  
-    .navbar ul {
-      flex-direction: column;
-      width: 100%;
-    }
-  
-    .signup-btn {
-      width: 100%;
-    }
-  
-    .menu-toggle {
-      display: flex;
-    }
-  }
+
   
   .hero {
     display: flex; 
@@ -324,7 +281,7 @@
   
 /* Add these new styles to your existing CSS file */
 
-.community-cards-container {
+  .community-cards-container {
     display: flex;
     gap: 24px;
     padding: 20px;
@@ -808,21 +765,145 @@
     color: #ce2786;
   }
 
-  @media (max-width: 768px) {
-    .form-row {
-      flex-direction: column;
+  /* Responsive Screen */
+  @media(min-width: 1550px) and (max-width: 1625px) {
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1600px;
+      padding: 1rem;
+      background-color: #fff;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      height: 80px;
+      justify-self: center;
     }
 
-    .footer-content {
-      flex-direction: column;
-    }
-
-    .footer-links {
-      flex-wrap: wrap;
+    .navbar ul {
+      font-size: 18 px;
+      display: flex;
       gap: 2rem;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
     }
 
-    .footer-section {
-      flex: 1 1 40%;
+    .navbar h1 {
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      font-size: 50px;
+      margin-left: -100px;
+      color: #111;
     }
+
+    .navbar .logo {
+      height: auto;
+      width: 100%;
+      padding-top: 10px;
+      max-width: 100px; 
+      margin-top: -10px; 
+      margin-left: 20px;
+    }
+
+    /*Community Cards*/
+
+    .community-cards-container {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      justify-content: center; 
+      align-items: center; 
+      width: 100%;
+      max-width: 1600px; 
+      margin: 0 auto; 
+    }
+  
+    .community-card {
+      max-width: 300px;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    /* Chef Cards */
+    .chef-cards-container {
+      display: flex;
+      gap: 120px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      justify-content: center;
+      max-width: 1400px;
+      width: 100%; 
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    .team-container {
+      width: 100%;
+      max-width: 1625px;
+      height: auto;
+      margin: 0 auto; 
+    }
+    
+    /* Team Cards */
+    .team-cards-container {
+      display: flex;
+      gap: 3rem;
+      justify-content: center; 
+      align-items: center;
+      max-width: 1625px;
+      width: 100%; 
+      margin: 0 auto; 
+      flex-wrap: nowrap; 
+    }
+    
+    
+    .team-card {
+      width: 250px; 
+      background-color: #D6589F;
+      border-radius: 24px;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .team-image-wrapper {
+      width: 250px;
+      height: 500px;
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .team-name {
+      font-size: 18px;
+    }
+  
+    /* Footer Contents */
+    .footer-content {
+      max-width: 1600px;
+      display: flex;
+      justify-content: space-between;
+      margin-right: 60px;
+    }
+
+    .footer-bottom {
+      max-width: 1500px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+  
+    
   }

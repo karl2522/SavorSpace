@@ -231,7 +231,7 @@ const LandingPage = () => {
     },
 
     {
-      image: "/src/images/vaness.png",
+      image: "/src/images/capuras.png",
       name: "Vaness Leonard Capuras",
       title: "Full-Stack Developer",
     },
