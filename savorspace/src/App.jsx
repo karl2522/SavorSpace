@@ -6,11 +6,10 @@ import LandingPage from './components/LandingPage';
 import Login from './components/LoginScreen';
 import RecipePage from './components/RecipePage';
 import Register from './components/SignupScreen';
-import testProfilePic from './images/image.png';
 import './styles/MainStyles.css';
 
 // Navbar Component
-const Navbar = ({ profilePic }) => {
+const Navbar = ({ profilePic, handleLogout }) => {
   const location = useLocation();
   const showNavbar = !['/login', '/register'].includes(location.pathname);
   const isMainPage = 
@@ -51,9 +50,10 @@ const Navbar = ({ profilePic }) => {
                 {profilePic ? (
                   <img src={profilePic} alt="Profile" className="navbar-profile-pic" />
                 ) : (
-                  <img src={testProfilePic} alt="Test Profile" className="navbar-profile-pic" /> 
+                  <img src="/src/images/defaultProfile.png" alt="Default Profile" className="navbar-profile-pic" />
                 )}
               </div>
+              <button onClick={handleLogout} className='logout-btn'>Logout</button>
             </div>
           ) : (
             <Link to="/register" className="signup-btn">Sign up</Link>
@@ -64,50 +64,62 @@ const Navbar = ({ profilePic }) => {
   );
 };
 
+Navbar.propTypes = {
+  profilePic: PropTypes.string,
+  handleLogout: PropTypes.func.isRequired,
+};
+
 const App = () => {
   const [profilePic, setProfilePic] = useState(null);
 
-  useEffect(() => {
-    const fetchProfilePic = async () => {
-      try {
-        const token = localStorage.getItem('authToken'); // Retrieve the token from local storage
-        const response = await fetch('http://localhost:8080/users/me', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setProfilePic(`http://localhost:8080${data.imageURL}`); // Set the profile picture URL
-      } catch (error) {
-        console.error('Error fetching profile picture:', error);
-      }
-    };
+  const fetchProfilePic = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
 
-    fetchProfilePic(); // Fetch the profile picture when the component mounts
-  }, []); // Empty dependency array means this runs once on mount
+    try {
+      const response = await fetch('http://localhost:8080/users/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      setProfilePic(`http://localhost:8080${data.imageURL}`);
+    } catch (error) {
+      console.error('Error fetching profile picture:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfilePic();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('refreshToken');
+    setProfilePic(null);
+    window.location.href = '/login';
+  };
+
+  const handleLogin = () => {
+    fetchProfilePic();
+  };
 
   return (
     <Router>
       <div>
-        <Navbar profilePic={profilePic} />
+        <Navbar profilePic={profilePic} handleLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/recipes" element={<RecipePage />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </Router>
   );
-};
-
-Navbar.propTypes = {
-  profilePic: PropTypes.string,
 };
 
 export default App;

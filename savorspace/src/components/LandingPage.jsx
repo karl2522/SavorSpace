@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import { HiArrowSmRight } from "react-icons/hi";
 import '../styles/LandingPageStyles.css';
-
+import axios from 'axios';
 
 const RecipeCard = ({ image, title, description, onClick }) => {
   return (
@@ -278,10 +278,17 @@ const LandingPage = () => {
     concern: "",
   });
   
-  const handleSubmit = (e) => {
+  const handleSubmit =  async (e) => {
     e.preventDefault();
-    console.log("Submitted:", formData);
-    setFormData({ firstName: "", lastName: "", email: "", concern: "" });
+    try {
+      await axios.post('http://localhost:8080/auth/email', formData);
+      console.log('Email sent successfully');
+      alert('Email sent successfully');
+      setFormData({ firstName: "", lastName: "", email: "", concern: "" });
+    }catch (error) {
+      console.error('Email failed to send:', error);
+      alert('Email failed to send');
+    }
   };
   
 
