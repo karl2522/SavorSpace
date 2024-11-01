@@ -14,7 +14,7 @@ const AdminSignup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/admins', admin);
+      await axios.post('http://localhost:8080/api/admins/register', admin);
       alert('Account created successfully!');
     } catch (error) {
       alert('Error creating account: ' + (error.response?.data?.message || error.message));

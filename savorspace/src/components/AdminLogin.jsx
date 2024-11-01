@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/AdminLogin.css';
 import axios from 'axios';
 
 const AdminLogin = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,12 +15,14 @@ const AdminLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8080/api/admins/login', credentials);
-      alert('Login successful!');
+        const response = await axios.post('http://localhost:8080/api/admins/login', credentials);
+        alert('Login successful!');
+        navigate('/admin/panel'); // Redirect to AdminPanel
     } catch (error) {
-      alert('Error logging in: ' + (error.response?.data?.message || error.message));
+        console.error('Error logging in:', error.response || error.message);
+        alert('Error logging in: ' + (error.response?.data?.message || error.message));
     }
-  };
+};
 
   return (
     <div className="login-container">

@@ -34,7 +34,7 @@ const AdminPanel = () => {
                 await axios.put(`http://localhost:8080/api/admins/${admin.id}`, admin);
                 alert('Admin updated!');
             } else {
-                await axios.post('http://localhost:8080/api/admins', admin);
+                await axios.post('http://localhost:8080/api/admins/register', admin);
                 alert('Admin created!');
             }
             setAdmin({ id: '', username: '', email: '', password: '' });
@@ -76,10 +76,10 @@ const AdminPanel = () => {
                     <p>Manage your SavorSpace admin accounts here</p>
                 </div>
             </div>
-            
+
             <div className="main-content">
                 <div className="admin-form-card">
-                    <h2>Create Admin</h2>
+                    <h2>{isEditing ? 'Update Admin' : 'Create Admin'}</h2>
                     <form onSubmit={handleSubmit}>
                         <input
                             type="text"
@@ -123,14 +123,14 @@ const AdminPanel = () => {
                         </thead>
                         <tbody>
                             {admins.map((admin) => (
-                                <tr key={admin.adminid}>
+                                <tr key={admin.id}>
                                     <td>{admin.username}</td>
                                     <td>{admin.email}</td>
                                     <td className="actions">
                                         <button onClick={() => handleEdit(admin)} className="icon-button edit">
                                             <Pencil size={18} />
                                         </button>
-                                        <button onClick={() => handleDelete(admin.adminid)} className="icon-button delete">
+                                        <button onClick={() => handleDelete(admin.id)} className="icon-button delete">
                                             <Trash2 size={18} />
                                         </button>
                                     </td>
