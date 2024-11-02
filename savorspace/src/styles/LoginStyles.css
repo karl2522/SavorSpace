@@ -104,3 +104,8 @@
     transform: translateY(-2px);
   }
   
+  @media (min-width: 1365px) and (max-width: 1574px) {
+    .form-section-login h2 {
+      font-size: 39px;
+    }
+  }

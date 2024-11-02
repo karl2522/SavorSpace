@@ -1,18 +1,20 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import '../styles/SignupStyles.css';
-import api from '../api/axiosConfig';
+
+const API_URL = 'http://localhost:8080/auth';
 
 const register = async (formData) => {
-  const response = await api.post('/signup', formData, {
+  const response = await axios.post(`${API_URL}/signup`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  return response.data;
+  return response.data; // Adjust as necessary based on your response structure
 };
 
 const Register = () => {
@@ -24,7 +26,6 @@ const Register = () => {
   });
   const [imageUrl, setImageUrl] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
-  const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,7 +40,9 @@ const Register = () => {
 
   const fetchImageURL = (file) => {
     const reader = new FileReader();
-    reader.onload = () => setImageUrl(reader.result);
+    reader.onload = () => {
+      setImageUrl(reader.result);
+    };
     reader.readAsDataURL(file);
   };
 
@@ -47,38 +50,32 @@ const Register = () => {
     setIsChecked(e.target.checked);
   };
 
-  const validate = () => {
-    const errors = {};
-    if (!formData.fullName) errors.fullName = 'Full name is required';
-    if (!formData.email) errors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = 'Invalid email address';
-    if (!formData.password) errors.password = 'Password is required';
-    else if (formData.password.length < 6) errors.password = 'Password must be at least 6 characters';
-    if (!isChecked) errors.checkbox = 'You must agree to the terms';
-    return errors;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
     try {
-      const data = new FormData();
-      data.append('fullName', formData.fullName);
-      data.append('email', formData.email);
-      data.append('password', formData.password);
-      if (formData.profilePic) data.append('profilePic', formData.profilePic);
-
-      await register(data);
-      alert('Registration successful!');
+        const data = new FormData();
+        data.append('fullName', formData.fullname);
+        data.append('email', formData.email);
+        data.append('password', formData.password);
+        if (formData.profilePic) {
+            data.append('profilePic', formData.profilePic);
+        }
+        
+        await register(data);
+        console.log('Registration successful!');
+        alert('Registration successful!');
     } catch (error) {
-      alert(`Registration failed: ${error.response?.data?.message || error.message}`);
+        console.error('Registration failed:', error);
+
+        if (error.response) {
+            console.error('Error data:', error.response.data);
+            alert('Registration failed: ' + (error.response.data.message || error.response.data));
+        } else {
+            alert('Registration failed: ' + error.message);
+        }
     }
-  };
+};
+
 
   return (
     <div className="register-container">
@@ -94,7 +91,6 @@ const Register = () => {
             onChange={handleInputChange}
             required
           />
-          {errors.fullName && <span className="error">{errors.fullName}</span>}
 
           <label>Email</label>
           <input
@@ -104,7 +100,6 @@ const Register = () => {
             onChange={handleInputChange}
             required
           />
-          {errors.email && <span className="error">{errors.email}</span>}
 
           <label>Password</label>
           <input
@@ -114,7 +109,6 @@ const Register = () => {
             onChange={handleInputChange}
             required
           />
-          {errors.password && <span className="error">{errors.password}</span>}
 
           <label>Profile Picture</label>
           <div className="profile-upload-container">
@@ -134,9 +128,8 @@ const Register = () => {
 
           <div className="checkbox">
             <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
-            <span>I agree with SavorSpace's Terms, Services, Privacy and Policy</span>
+            <span>I agree with SavorSpace&apos;s Terms, Services, Privacy and Policy</span>
           </div>
-          {errors.checkbox && <span className="error">{errors.checkbox}</span>}
 
           <button type="submit" className="register-btn">Create account</button>
         </form>
@@ -145,10 +138,10 @@ const Register = () => {
           <p>Or register with</p>
           <div className="social-options">
             <button className="google-btn">
-              <FcGoogle /> Google
+              <FcGoogle />Google
             </button>
             <button className="apple-btn">
-              <FaApple /> Apple
+              <FaApple />Apple
             </button>
           </div>
         </div>

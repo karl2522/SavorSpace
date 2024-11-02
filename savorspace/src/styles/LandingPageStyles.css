@@ -313,6 +313,11 @@
     font-size: 60px !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     color: #111;
+    text-align: center;
+  }
+
+  .more-recipes h2 span {
+   color: #D6589F;
   }
   
   .card-image {
@@ -584,7 +589,7 @@
   }
   
   .team-title {
-    font-size: 14px;
+    font-size: 16px;
   }
 
 
@@ -598,7 +603,7 @@
   .questions-container {
     display: flex;
     flex-direction: row;
-    max-width: 1500px;
+    max-width: 1700px;
     margin: 0 auto;
     text-align: center;
   }
@@ -621,7 +626,7 @@
     max-width: 600px;
     margin: 0 auto;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 70px;
   }
 
   .form-row {
@@ -765,7 +770,228 @@
     color: #ce2786;
   }
 
-  /* Responsive Screen from 1550 screens to 1625 */
+
+  /* Responsiveness Styles for Screen Sizes 1716px to 1800px */
+  @media(min-width: 1801px) and (max-width: 1875px) {
+    .navbar {
+      max-width: 1800px;
+    }
+
+    .navbar h1 {
+      margin-left: -160px;
+    }
+
+    .navbar .logo {
+      margin-left: 20px;
+    } 
+
+    .signup-btn {
+      margin-right: 20px;
+    }
+
+    /* Community Card */
+    .community-cards-container {
+      max-width: 1800px; 
+    }
+  
+    .community-card {
+      max-width: 330px;
+    }
+   
+    /* Team Cards */    
+    .team-container {
+      width: 100%;
+      max-width: 1700px;
+      height: auto;
+    }
+    
+    .team-cards-container {
+      display: flex;
+      gap: 3rem;
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+
+    .team-card {
+      width: 285px; 
+    }
+
+    .team-image-wrapper {
+      width: 285px;
+    }
+
+    .team-name {
+      font-size: 22px;
+    }
+
+
+    /* Questions and Footer */
+    .questions-container {
+      gap: 12rem;
+      margin-left: 50px;
+    } 
+
+    .footer-bottom {
+      max-width: 1750px;
+    }
+  
+  } 
+
+
+
+
+  /* Responsiveness Styles for Screen Sizes 1716px to 1800px */
+  @media(min-width: 1716px) and (max-width: 1800px) {
+    .navbar {
+      max-width: 1700px;
+    }
+
+    .navbar h1 {
+      margin-left: -150px;
+    }
+
+    .navbar .logo {
+      margin-left: 20px;
+    }
+
+    .signup-btn {
+      margin-right: 20px;
+    }
+
+    /* Community Card */
+    .community-cards-container {
+      max-width: 1700px; 
+    }
+  
+    .community-card {
+      max-width: 310px;
+    }
+    
+    /* Chef Cards */
+    .chef-cards-container {
+      gap: 150px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .chef-card {
+      width: 400px;
+    }
+
+    /* Team Cards */    
+    .team-container {
+      width: 100%;
+      max-width: 1700px;
+      height: auto;
+    }
+    
+    .team-cards-container {
+      display: flex;
+      gap: 3rem;
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+
+    .team-card {
+      width: 265px; 
+    }
+
+    .team-image-wrapper {
+      width: 265px;
+    }
+
+    .team-name {
+      font-size: 20px;
+    }
+
+    /* Questions and Footer */
+    .questions-container {
+      gap: 12rem;
+      margin-left: 50px;
+    }
+
+    .footer-bottom {
+      max-width: 1700px;
+    }
+  
+  } 
+
+
+  /* Responsiveness Styles for Screen Sizes 1626px to 1715px */
+  @media(min-width: 1626px) and (max-width: 1715px) {
+    .navbar {
+      max-width: 1600px;
+    }
+
+    .navbar h1 {
+      margin-left: -130px;
+    }
+
+    .navbar .logo {
+      margin-left: 20px;
+    }
+
+    .signup-btn {
+      margin-right: 20px;
+    }
+
+    /* Community Card */
+    .community-cards-container {
+      display: flex;
+      gap: 20px;
+      justify-content: center; 
+      align-items: center;  
+      max-width: 1600px; 
+    }
+  
+    .community-card {
+      max-width: 295px;
+    }
+    
+    /* Chef Cards */
+    .chef-cards-container {
+      gap: 150px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .chef-card {
+      width: 380px;
+    }
+
+
+    /* Team Cards */    
+    .team-container {
+      width: 100%;
+      max-width: 1500px;
+      height: auto;
+    }
+    
+    .team-cards-container {
+      display: flex;
+      gap: 3rem;
+      width: 100%;
+      margin: 0 auto;
+    }
+    
+    
+    .team-card {
+      width: 240px; 
+    }
+
+    .team-image-wrapper {
+      width: 240px;
+    }
+
+    .team-name {
+      font-size: 18px;
+    }
+  
+  }
+
+  /* Responsiveness Styles for Screen Sizes 1515px to 1625px */
   @media(min-width: 1515px) and (max-width: 1625px) {
     .navbar {
       display: flex;
@@ -781,7 +1007,7 @@
     }
 
     .navbar ul {
-      font-size: 18 px;
+      font-size: 18px;
       display: flex;
       gap: 2rem;
       list-style-type: none;
@@ -903,8 +1129,8 @@
     
   }
 
-   /* Responsive Screen for 1366 screens*/
-   @media(min-width: 1366px) and (max-width: 1514px){
+  /* Responsiveness Styles for Screen Sizes 1366px to 1514px */
+  @media(min-width: 1366px) and (max-width: 1514px){
    .navbar {
       display: flex;
       align-items: center;
@@ -1120,3 +1346,5 @@
   
     
   }
+
+  

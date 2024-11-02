@@ -1,13 +1,13 @@
 // LoginScreen.js
 
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
-import '../styles/LoginStyles.css';
 import api from '../api/axiosConfig';
+import '../styles/LoginStyles.css';
 
 const login = async (loginData) => {
   const response = await api.post('/login', loginData);
@@ -85,7 +85,7 @@ const Login = ({ onLogin }) => {
           <button type="submit" className="login-btn">Login</button>
         </form>
         <div className="login-options">
-          <span>Don't have an account? <a href="/register" className="register">Register</a></span>
+          <span>Don&apos;t have an account? <a href="/register" className="register">Register</a></span>
           <p>Or login with</p>
           <div className="social-options">
             <button className="google-btn">
