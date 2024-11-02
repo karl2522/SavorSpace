@@ -17,18 +17,13 @@ body {
   padding: 20px;  
 }
 
-.mainpage-buttons {
-  display: flex;
-  gap: 3rem;
-  justify-content: center;
-  align-items: center;
-}
 
 .profile-pic-container {
+  position: relative;
+  cursor: pointer;
   max-width: 95px;
   max-height: 95px;
   border-radius: 50%; 
-  overflow: hidden;   
   border: 2px solid #d6589F;
   display: flex;
   justify-content: center;
@@ -40,4 +35,77 @@ body {
   height: auto;
   border-radius: 50%; 
   object-fit: cover; 
+}
+
+.mainpage-buttons {
+  position: relative;
+}
+
+/* Dropdown Menu - Profile */
+.dropdown-profile {
+  position: absolute;
+  top: calc(100% + 8px); 
+  right: 0;
+  width: 160px;
+  background-color: #D75A97;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: slideDown 0.2s ease-out;
+}
+
+.dropdown-profile button {
+  font-family: "Montserrat", sans-serif;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  color: white;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-profile button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dropdown-profile button:first-child {
+  margin-bottom: 4px;
+}
+
+/* Animation keyframes */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-profile button::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.dropdown-profile button:first-child::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'/%3E%3C/svg%3E");
+}
+
+.dropdown-profile button:last-child::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1'/%3E%3C/svg%3E");
 }

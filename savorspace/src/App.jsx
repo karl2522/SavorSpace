@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
 import HomePage from './components/Homepage';
 import LandingPage from './components/LandingPage';
@@ -12,13 +12,39 @@ import './styles/MainStyles.css';
 const Navbar = ({ profilePic, handleLogout }) => {
   const location = useLocation();
   const showNavbar = !['/login', '/register'].includes(location.pathname);
-  const isMainPage = 
-    location.pathname === '/homepage' || 
-    location.pathname === '/recipes' || 
-    location.pathname === '/community' || 
-    location.pathname === '/aboutus';
+  const isMainPage = ['/homepage', '/recipes', '/community', '/aboutus'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
+
+  const [showDropdown, setShowDropdown] = useState(false);  
+
+  const toggleDropdown = useCallback((e) => {
+    e.stopPropagation(); // Prevent event from bubbling up
+    setShowDropdown(prevState => !prevState);
+    console.log('Toggle dropdown called');
+  }, []);
+
+  // Close the dropdown when clicking outside (optional)
+  const handleOutsideClick = useCallback((e) => {
+    if (!e.target.closest('.profile-pic-container')) {
+      setShowDropdown(false);
+    }
+  }, []);
+  
+
+  useEffect(() => {
+    document.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [handleOutsideClick]);
+
+  useEffect(() => {
+    console.log('Current path:', location.pathname);
+    console.log('isMainPage:', isMainPage);
+    console.log('showNavbar:', showNavbar);
+    console.log('showDropdown:', showDropdown);
+  }, [location.pathname, isMainPage, showNavbar, showDropdown]);
 
   return (
     <>
@@ -47,13 +73,19 @@ const Navbar = ({ profilePic, handleLogout }) => {
           {isMainPage ? (
             <div className="mainpage-buttons">
               <div className="profile-pic-container">
-                {profilePic ? (
-                  <img src={profilePic} alt="Profile" className="navbar-profile-pic" />
-                ) : (
-                  <img src="/src/images/defaultProfile.png" alt="Default Profile" className="navbar-profile-pic" />
+                <img 
+                  src={profilePic || "/src/images/defaultProfile.png"} 
+                  alt="Profile" 
+                  className="navbar-profile-pic" 
+                  onClick={toggleDropdown}
+                />
+                {showDropdown && (
+                  <div className="dropdown-profile">
+                    <button onClick={() => console.log('Edit Profile Clicked')}>Edit Profile</button>
+                    <button onClick={handleLogout}>Logout</button>
+                  </div>
                 )}
               </div>
-              <button onClick={handleLogout} className='logout-btn'>Logout</button>
             </div>
           ) : (
             <Link to="/register" className="signup-btn">Sign up</Link>
