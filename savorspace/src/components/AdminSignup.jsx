@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import adminApi from '../api/AdminConfig'; // Import the configured Axios instance
+import axios from 'axios';
 import '../styles/AdminSignup.css';
+import api from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 
 const registerAdmin = async (formData) => {
-  const response = await adminApi.post(`/create-admin`, formData, {
+  const response = await api.post(`/create-admin`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -69,7 +70,6 @@ export default function AdminSignup() {
       await registerAdmin(data);
       console.log('Admin registration successful!');
       alert('Admin registration successful!');
-      navigate('/admin/login');
     } catch (error) {
       console.error('Admin registration failed:', error);
       if (error.response) {
