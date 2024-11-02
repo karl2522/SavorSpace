@@ -7,6 +7,10 @@ import Login from './components/LoginScreen';
 import RecipePage from './components/RecipePage';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
+import AdminLogin from './components/AdminLogin';
+import AdminSignup from './components/AdminSignup';
+import AdminEdit from './components/AdminDashboard';
+import AdminDashboard from './components/AdminDashboard';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout }) => {
@@ -148,6 +152,9 @@ const App = () => {
           <Route path="/recipes" element={<RecipePage />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/signup" element={<AdminSignup />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Routes>
       </div>
     </Router>

@@ -5,11 +5,10 @@ import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import '../styles/SignupStyles.css';
-
-const API_URL = 'http://localhost:8080/auth';
+import api from '../api/axiosConfig';
 
 const register = async (formData) => {
-  const response = await axios.post(`${API_URL}/signup`, formData, {
+  const response = await api.post(`/signup`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
