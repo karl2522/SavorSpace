@@ -14,7 +14,7 @@ const register = async (formData) => {
       'Content-Type': 'multipart/form-data',
     },
   });
-  return response.data; // Adjust as necessary based on your response structure
+  return response.data; 
 };
 
 const Register = () => {
@@ -26,6 +26,7 @@ const Register = () => {
   });
   const [imageUrl, setImageUrl] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,8 +35,23 @@ const Register = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setFormData((prev) => ({ ...prev, profilePic: file }));
-    fetchImageURL(file);
+    if (file) {
+      const fileSizeInKB = (file.size / 1024).toFixed(2); // Convert bytes to KB and round to 2 decimal places
+      console.log(`Uploaded file size: ${fileSizeInKB} KB`); // Log the file size in KB
+      // Check file size (800KB = 800 * 1024 bytes)
+      if (file.size > 800 * 1024) {
+        alert('File size too large!');
+        setFormData((prev) => ({ ...prev, profilePic: null }));
+        setImageUrl(null);
+      } else {
+        setFormData((prev) => ({ ...prev, profilePic: file }));
+        fetchImageURL(file);
+        setErrorMessage('');
+      }
+    } else {
+      setErrorMessage('');
+      setImageUrl(null);
+    }
   };
 
   const fetchImageURL = (file) => {
@@ -53,29 +69,28 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const data = new FormData();
-        data.append('fullName', formData.fullname);
-        data.append('email', formData.email);
-        data.append('password', formData.password);
-        if (formData.profilePic) {
-            data.append('profilePic', formData.profilePic);
-        }
-        
-        await register(data);
-        console.log('Registration successful!');
-        alert('Registration successful!');
+      const data = new FormData();
+      data.append('fullName', formData.fullName); 
+      data.append('email', formData.email);
+      data.append('password', formData.password);
+      if (formData.profilePic) {
+        data.append('profilePic', formData.profilePic);
+      }
+
+      await register(data);
+      console.log('Registration successful!');
+      alert('Registration successful!');
     } catch (error) {
-        console.error('Registration failed:', error);
+      console.error('Registration failed:', error);
 
-        if (error.response) {
-            console.error('Error data:', error.response.data);
-            alert('Registration failed: ' + (error.response.data.message || error.response.data));
-        } else {
-            alert('Registration failed: ' + error.message);
-        }
+      if (error.response) {
+        console.error('Error data:', error.response.data);
+        alert('Registration failed: ' + (error.response.data.message || error.response.data));
+      } else {
+        alert('Registration failed: ' + error.message);
+      }
     }
-};
-
+  };
 
   return (
     <div className="register-container">
@@ -122,8 +137,9 @@ const Register = () => {
               onChange={handleFileChange}
               className="file-input"
             />
-            <span className="file-name">{formData.profilePic ? formData.profilePic.name : "No file chosen"}</span>
+            <span className="file-name">{formData.profilePic ? formData.profilePic.name : "No file chosen (File size should be 800kb or below)"}</span>
             {imageUrl && <img src={imageUrl} alt="Profile Preview" className="profile-preview" />}
+            {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Display error message */}
           </div>
 
           <div className="checkbox">
