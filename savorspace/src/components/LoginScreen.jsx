@@ -1,5 +1,3 @@
-// LoginScreen.js
-
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FaApple } from "react-icons/fa";

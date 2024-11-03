@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/AdminDashboard.css';
 
@@ -6,6 +7,7 @@ const AdminDashboard = () => {
   const [admin, setAdmin] = useState(null);
   const [users, setUsers] = useState([]);
   const [editUser, setEditUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAdmin();
@@ -14,12 +16,19 @@ const AdminDashboard = () => {
 
   const fetchAdmin = async () => {
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await axios.get('/users/me', {
+      const token = sessionStorage.getItem('adminToken');
+      if (!token) {
+        console.error('No admin token found in sessionStorage');
+        return;
+      }
+      console.log('Admin token:', token);
+  
+      const response = await axios.get('http://localhost:8080/admin/me', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+  
       setAdmin(response.data);
     } catch (error) {
       console.error('Error fetching admin:', error);
@@ -28,12 +37,19 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await axios.get('/admin/users', {
+      const token = sessionStorage.getItem('adminToken');
+      if (!token) {
+        console.error('No admin token found in sessionStorage');
+        return;
+      }
+      console.log('Admin token:', token);
+  
+      const response = await axios.get('http://localhost:8080/admin/users', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+  
       if (response.headers['content-type'] && response.headers['content-type'].includes('application/json')) {
         const userList = response.data.filter(user => user.role === 'USER');
         setUsers(userList);
@@ -45,8 +61,8 @@ const AdminDashboard = () => {
 
   const handleDelete = async (userId) => {
     try {
-      const token = localStorage.getItem('authToken');
-      await axios.delete(`/admin/users/${userId}`, {
+      const token = sessionStorage.getItem('adminToken');
+      await axios.delete(`http://localhost:8080/admin/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -64,8 +80,8 @@ const AdminDashboard = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('authToken');
-      await axios.put(`/admin/users/${editUser.id}`, editUser, {
+      const token = sessionStorage.getItem('adminToken');
+      await axios.put(`http://localhost:8080/admin/users/${editUser.id}`, editUser, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,6 +98,12 @@ const AdminDashboard = () => {
     setEditUser((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleLogout = () => {
+    sessionStorage.removeItem('adminToken');
+    sessionStorage.removeItem('adminRefreshToken');
+    navigate('/');
+  };
+
   return (
     <div className="admin-dashboard-container">
       {admin && (
@@ -90,6 +112,7 @@ const AdminDashboard = () => {
           <p><strong>Full Name:</strong> {admin.fullName}</p>
           <p><strong>Email:</strong> {admin.email}</p>
           <p><strong>Role:</strong> {admin.role}</p>
+          <button onClick={handleLogout}>Logout</button>
         </div>
       )}
       <h1>User Management</h1>

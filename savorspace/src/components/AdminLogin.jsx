@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import '../styles/AdminLogin.css';
-import api from '../api/axiosConfig';
+import api from '../api/AdminConfig';
 
 const loginAdmin = async (loginData) => {
   const response = await api.post('/login-admin', loginData);
-  localStorage.setItem('authToken', response.data.token);
-  localStorage.setItem('refreshToken', response.data.refreshToken);
+  if(response.data.token) {
+    sessionStorage.setItem('adminToken', response.data.token);
+    sessionStorage.setItem('adminRefreshToken', response.data.refreshToken);
+    console.log('Admin login successful:', response.data);
+  }else {
+    throw new Error('No token found in response');
+  }
   return response;
 };
 

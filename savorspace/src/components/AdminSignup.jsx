@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import '../styles/AdminSignup.css';
-import api from '../api/axiosConfig';
+import api from '../api/AdminConfig';
 import { useNavigate } from 'react-router-dom';
 
 const registerAdmin = async (formData) => {
@@ -70,6 +69,7 @@ export default function AdminSignup() {
       await registerAdmin(data);
       console.log('Admin registration successful!');
       alert('Admin registration successful!');
+      navigate('/admin/login');
     } catch (error) {
       console.error('Admin registration failed:', error);
       if (error.response) {
