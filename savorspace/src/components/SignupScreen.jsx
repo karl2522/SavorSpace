@@ -65,8 +65,24 @@ const Register = () => {
     setIsChecked(e.target.checked);
   };
 
+  const validate = () => {
+    const errors = {};
+    if (!formData.fullName) errors.fullName = 'Full name is required';
+    if (!formData.email) errors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = 'Invalid email address';
+    if (!formData.password) errors.password = 'Password is required';
+    else if (formData.password.length < 6) errors.password = 'Password must be at least 6 characters';
+    if (!isChecked) errors.checkbox = 'You must agree to the terms';
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validate();
+    if(Object.keys(validationErrors).length > 0) {
+      setErrrors(validationErrors);
+      return;
+    }
     try {
       const data = new FormData();
       data.append('fullName', formData.fullName); 
