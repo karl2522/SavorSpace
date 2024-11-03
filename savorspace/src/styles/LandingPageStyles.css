@@ -27,7 +27,7 @@
     width: 100%;
     padding-top: 10px;
     max-width: 100px; 
-    margin-top: -10px; 
+    margin-top: 10px; 
   }
   
   .navbar .highlight {
@@ -283,7 +283,7 @@
 
   .community-cards-container {
     display: flex;
-    gap: 24px;
+    gap: 3rem;
     padding: 20px;
     overflow-x: auto;
     scroll-behavior: smooth;
@@ -302,12 +302,19 @@
     border-radius: 16px;
     overflow: hidden;
     flex-shrink: 0;
+    transition: transform 0.3s ease;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
   }
 
   .community-card:hover {
     transform: translateY(-4px);
     cursor: pointer;
   }
+
+  .more-recipes {
+    margin-top: 150px;
+  }
+
 
   .more-recipes h2 {
     font-size: 60px !important;
@@ -438,6 +445,7 @@
   }
 
   .chef-container {
+    margin-top: 150px;
     width: 100%;
     height: auto;
     padding: 0px 20px 200px 20px;
@@ -450,7 +458,7 @@
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    justify-content: center; 
+    justify-content: center;
   }
   
   .chef-cards-container::-webkit-scrollbar {
@@ -468,16 +476,20 @@
     color: #D6589F;
   }
   
-
   .chef-card {
     width: 400px; 
     background: white;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: -10px 15px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     transition: transform 0.2s ease;
     flex-shrink: 0;
     text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .chef-card:hover {
+    transform: translateY(-6px);
   }
 
   .chef-card img {
@@ -552,6 +564,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+  }
+
+  .team-card:hover {
+    transform: translateY(-8px);
   }
   
   .team-image-wrapper {
@@ -1027,7 +1045,7 @@
       width: 100%;
       padding-top: 10px;
       max-width: 100px; 
-      margin-top: -10px; 
+      margin-top: 10px; 
       margin-left: 20px;
     }
 
@@ -1165,7 +1183,7 @@
       width: 100%;
       padding-top: 10px;
       max-width: 100px; 
-      margin-top: -10px; 
+      margin-top: 10px; 
       margin-left: 20px;
     }
 
@@ -1201,8 +1219,9 @@
     /*Community Cards*/
     .more-recipes {
       margin: 0 auto;
-      max-width: 1600px;
+      max-width: 1700px;
       width: 100%;
+      margin-top: 150px;
     }
 
     .more-recipes h2 {
@@ -1212,19 +1231,21 @@
     }
 
     .community-cards-container {
-      max-width: 1600px; 
+      max-width: 1700px; 
       margin-left: 30px;
     }
   
     .community-card {
-      max-width: 230px;
+      max-width: 210px;
     }
-
 
     .card-title {
-      font-size: 20px !important;
+      font-size: 16px !important;
     }
     
+    .card-stats {
+      font-size: 14px !important;
+    }
     .chef-container {
       width: 100%;
     }

@@ -1,11 +1,10 @@
-import axios from 'axios';
 import { useState } from 'react';
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import '../styles/SignupStyles.css';
 import api from '../api/axiosConfig';
+import '../styles/SignupStyles.css';
 
 const register = async (formData) => {
   const response = await api.post(`/signup`, formData, {
