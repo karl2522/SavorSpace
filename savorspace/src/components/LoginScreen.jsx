@@ -80,7 +80,7 @@ const Login = ({ onLogin }) => {
           />
           {errors.password && <span className="error">{errors.password}</span>}
 
-          <button type="submit" className="login-btn">Login</button>
+          <button type="submit" className="login-btn">Log In</button>
         </form>
         <div className="login-options">
           <span>Don&apos;t have an account? <a href="/register" className="register">Register</a></span>

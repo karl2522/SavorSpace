@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
+import AdminDashboard from './components/AdminDashboard';
+import AdminLogin from './components/AdminLogin';
+import AdminSignup from './components/AdminSignup';
 import HomePage from './components/Homepage';
 import LandingPage from './components/LandingPage';
 import Login from './components/LoginScreen';
+import NotFound from './components/NotFound';
 import RecipePage from './components/RecipePage';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
-import AdminLogin from './components/AdminLogin';
-import AdminSignup from './components/AdminSignup';
-import AdminDashboard from './components/AdminDashboard';
-import NotFound from './components/NotFound';
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated}) => {
   const location = useLocation();
@@ -72,7 +72,7 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated}) => {
               <Link to="/aboutus" style={location.pathname === '/aboutus' ? activeLinkStyle : {}}>About Us</Link>
             </li>
           </ul>
-          { isAuthenticated && isMainPage ? (
+          {isAuthenticated && isMainPage ? (
             <div className="mainpage-buttons">
               <div className="profile-pic-container">
                 <img 
@@ -90,12 +90,15 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated}) => {
               </div>
             </div>
           ) : (
-            <Link to="/register" className="signup-btn">Sign up</Link>
+            <div className="auth-buttons">
+              <Link to="/register" className="signup-btn">Sign up</Link>
+              <Link to="/login" className="signin-btn">Log in</Link>
+            </div>
           )}
         </nav>
       )}
     </>
-  );
+  );  
 };
 
 Navbar.propTypes = {
