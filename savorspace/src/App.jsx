@@ -10,6 +10,7 @@ import './styles/MainStyles.css';
 import AdminLogin from './components/AdminLogin';
 import AdminSignup from './components/AdminSignup';
 import AdminDashboard from './components/AdminDashboard';
+import NotFound from './components/NotFound';
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated}) => {
   const location = useLocation();
@@ -156,6 +157,7 @@ const App = () => {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/signup" element={<AdminSignup />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path='/404' element={<NotFound />} />
         </Routes>
       </div>
     </Router>
