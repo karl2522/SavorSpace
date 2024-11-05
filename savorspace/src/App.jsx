@@ -9,11 +9,9 @@ import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
 import AdminLogin from './components/AdminLogin';
 import AdminSignup from './components/AdminSignup';
-import AdminEdit from './components/AdminDashboard';
 import AdminDashboard from './components/AdminDashboard';
-
 // Navbar Component
-const Navbar = ({ profilePic, handleLogout }) => {
+const Navbar = ({ profilePic, handleLogout, isAuthenticated}) => {
   const location = useLocation();
   const showNavbar = !['/login', '/register'].includes(location.pathname);
   const isMainPage = ['/homepage', '/recipes', '/community', '/aboutus'].includes(location.pathname);
@@ -21,7 +19,6 @@ const Navbar = ({ profilePic, handleLogout }) => {
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
 
   const [showDropdown, setShowDropdown] = useState(false);  
-
   const toggleDropdown = useCallback((e) => {
     e.stopPropagation(); // Prevent event from bubbling up
     setShowDropdown(prevState => !prevState);
@@ -74,7 +71,7 @@ const Navbar = ({ profilePic, handleLogout }) => {
               <Link to="/aboutus" style={location.pathname === '/aboutus' ? activeLinkStyle : {}}>About Us</Link>
             </li>
           </ul>
-          {isMainPage ? (
+          { isAuthenticated && isMainPage ? (
             <div className="mainpage-buttons">
               <div className="profile-pic-container">
                 <img 
@@ -103,10 +100,12 @@ const Navbar = ({ profilePic, handleLogout }) => {
 Navbar.propTypes = {
   profilePic: PropTypes.string,
   handleLogout: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 const App = () => {
   const [profilePic, setProfilePic] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const fetchProfilePic = async () => {
     const token = localStorage.getItem('authToken');
@@ -122,6 +121,7 @@ const App = () => {
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       setProfilePic(`http://localhost:8080${data.imageURL}`);
+      setIsAuthenticated(true);
     } catch (error) {
       console.error('Error fetching profile picture:', error);
     }
@@ -135,6 +135,7 @@ const App = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('refreshToken');
     setProfilePic(null);
+    setIsAuthenticated(false);
     window.location.href = '/login';
   };
 
@@ -145,7 +146,7 @@ const App = () => {
   return (
     <Router>
       <div>
-        <Navbar profilePic={profilePic} handleLogout={handleLogout} />
+        <Navbar profilePic={profilePic} isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/homepage" element={<HomePage />} />

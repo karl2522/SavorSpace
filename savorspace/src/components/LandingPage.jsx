@@ -234,6 +234,7 @@ const LandingPage = () => {
       image: "/src/images/capuras.png",
       name: "Vaness Leonard Capuras",
       title: "Full-Stack Developer",
+      link: "https://penguinmanportfolio.netlify.app/",
     },
 
     {
