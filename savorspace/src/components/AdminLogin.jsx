@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/AdminLogin.css';
 import api from '../api/AdminConfig';
+import '../styles/AdminLogin.css';
 
 const loginAdmin = async (loginData) => {
   const response = await api.post('/login-admin', loginData);

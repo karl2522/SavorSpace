@@ -1,10 +1,9 @@
-import React from 'react';
-import '../styles/AboutUs.css';
-import omenImage from '../images/omen.png';
 import capurasImage from '../images/capuras.png';
-import pejanaImage from '../images/pejana.png';
-import gadianeImage from '../images/gadiane.png';
 import chavezImage from '../images/chavez.png';
+import gadianeImage from '../images/gadiane.png';
+import omenImage from '../images/omen.png';
+import pejanaImage from '../images/pejana.png';
+import '../styles/AboutUs.css';
 
 export default function AboutUs() {
   const teamMembers = [
@@ -119,7 +118,7 @@ export default function AboutUs() {
 
       <section className="join-section">
         <h2>Join Our Culinary Community</h2>
-        <p>Whether you're a seasoned chef or a curious beginner, there's a place for you at SavorSpace. Start your flavorful journey today!</p>
+        <p>Whether you&apos;re a seasoned chef or a curious beginner, there&apos;s a place for you at SavorSpace. Start your flavorful journey today!</p>
         <button className="sign-up-button">Sign Up Now</button>
       </section>
 
