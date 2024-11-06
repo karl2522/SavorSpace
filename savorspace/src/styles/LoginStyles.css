@@ -105,8 +105,7 @@
   }
   
   .login-btn:hover {
-    background-color: #c04b89;
-    transform: translateY(-2px);
+    background-color: #ce2786;
   }
   
   @media (min-width: 1365px) and (max-width: 1574px) {

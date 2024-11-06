@@ -124,7 +124,6 @@
 
 .register-btn:hover {
   background-color: #ce2786;
-  transform: translateY(-2px);
 }
 
 .social-options {
@@ -148,7 +147,7 @@
 }
 
 
-.google-btn, .apple-btn {
+.google-btn, .github-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -175,13 +174,14 @@
   color: #fff;
 }
 
-.apple-btn {
+.github-btn {
   background-color: #000;
   color: #fff;
   border: 2px solid #000;
+  text-decoration: none;
 }
 
-.apple-btn:hover {
+.github-btn:hover {
   background-color: #333;
   border-color: #333;
 }
@@ -324,7 +324,7 @@
   }
   
   
-  .google-btn, .apple-btn {
+  .google-btn, .github-btn {
     font-size: 14px;
     width: 100%;
   }

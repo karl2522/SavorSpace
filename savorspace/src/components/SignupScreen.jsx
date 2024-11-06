@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
-import { IoCloudUploadOutline } from "react-icons/io5";
+import { IoCloudUploadOutline, IoLogoGithub } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
 import api from '../api/axiosConfig';
 import '../styles/SignupStyles.css';
@@ -194,9 +193,8 @@ const Register = () => {
             <button className="google-btn">
               <FcGoogle />Google
             </button>
-            <button className="apple-btn">
-              <FaApple />Apple
-            </button>
+            <a href="http://localhost:8080/oauth2/authorization/github" className="github-btn">
+            <IoLogoGithub />Github</a>
           </div>
         </div>
       </div>

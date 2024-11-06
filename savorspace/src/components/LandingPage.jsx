@@ -1,10 +1,10 @@
+import axios from 'axios';
 import { Bookmark, Heart } from 'lucide-react';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import { HiArrowSmRight } from "react-icons/hi";
 import '../styles/LandingPageStyles.css';
-import axios from 'axios';
 
 const RecipeCard = ({ image, title, description, onClick }) => {
   return (
@@ -299,7 +299,8 @@ return (
         <div className="hero-text">
           <h2><span>Savor</span> the flavors, <br /> Share the <span>love</span></h2>
           <p>Join our vibrant community of food lovers where you can share recipes, savor delicious flavors, and celebrate the joy of cooking together. Let&apos;s create tasty memories!</p>
-          <button className="get-started-btn">Explore Recipes</button>
+          <button className="explore-recipes-btn">Explore Recipes</button>
+          <button className="get-started-btn">Get Started</button>
         </div>
         
         <div className="recipe-card-container">
@@ -423,17 +424,17 @@ return (
               <h3>Support</h3>
               <ul>
                 <li><a href="#">Contact</a></li>
-                <li><a href="#">FAQs</a></li>
-                <li><a href="#">User Guide</a></li>
+                <li><a>FAQs</a></li>
+                <li><a>User Guide</a></li>
               </ul>
             </div>
             
             <div className="footer-section">
               <h3>Features</h3>
               <ul>
-                <li><a href="#">Analytics</a></li>
-                <li><a href="#">Engagement Tools</a></li>
-                <li><a href="#">Community Building</a></li>
+                <li><a>Analytics</a></li>
+                <li><a>Engagement Tools</a></li>
+                <li><a>Community Building</a></li>
               </ul>
             </div>
             
@@ -441,7 +442,7 @@ return (
               <h3>Social</h3>
               <ul>
                 <li><a href="https://github.com/karl2522/SavorSpace-Frontend">Github</a></li>
-                <li><a href="#">Email</a></li>
+                <li><a href="">Facebook</a></li>
                 <li><a href="https://www.linkedin.com/login">LinkedIn</a></li>
               </ul>
             </div>

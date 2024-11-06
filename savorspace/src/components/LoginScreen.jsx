@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowForward } from "react-icons/io";
+import { IoLogoGithub } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import '../styles/LoginStyles.css';
@@ -90,7 +90,7 @@ const Login = ({ onLogin }) => {
               <FcGoogle /> Google
             </button>
             <button className="apple-btn">
-              <FaApple /> Apple
+            <IoLogoGithub />Github
             </button>
           </div>
         </div>
