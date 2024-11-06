@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { MdErrorOutline } from "react-icons/md";
 import api from '../api/axiosConfig';
 import '../styles/SignupStyles.css';
 
@@ -25,6 +26,29 @@ const Register = () => {
   const [imageUrl, setImageUrl] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showFileSizeError, setShowFileSizeError] = useState(false);  
+  const errorRef = useRef(null); // Ref for the error message
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (errorRef.current && !errorRef.current.contains(event.target)) {
+        setShowFileSizeError(false); // Hide error message when clicking outside
+      }
+    };
+
+    // Add click event listener
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside); // Cleanup listener
+    };
+  }, []);
+
+  useEffect(() => {
+    if (showFileSizeError) {
+      const timer = setTimeout(() => setShowFileSizeError(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showFileSizeError]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +62,7 @@ const Register = () => {
       console.log(`Uploaded file size: ${fileSizeInKB} KB`); // Log the file size in KB
       // Check file size (800KB = 800 * 1024 bytes)
       if (file.size > 800 * 1024) {
-        alert('File size too large!');
+        setShowFileSizeError(true);
         setFormData((prev) => ({ ...prev, profilePic: null }));
         setImageUrl(null);
       } else {
@@ -79,7 +103,7 @@ const Register = () => {
     e.preventDefault();
     const validationErrors = validate();
     if(Object.keys(validationErrors).length > 0) {
-      setErrrors(validationErrors);
+      setErrorMessage(validationErrors);
       return;
     }
     try {
@@ -164,7 +188,7 @@ const Register = () => {
           <button type="submit" className="register-btn">Create account</button>
         </form>
         <div className="login-options">
-          <span>Already have an account? <a href="/login" className="login">Login</a></span>
+          <span>Already have an account? <a href="/login" className="login">Log in</a></span>
           <p>Or register with</p>
           <div className="social-options">
             <button className="google-btn">
@@ -180,6 +204,10 @@ const Register = () => {
         <img src="src/images/signup-hero.png" alt="Savor the flavor, Share the love" />
         <h3>Savor the flavor, <br />Share the love</h3>
       </div>
+      {showFileSizeError && (
+        <div ref={errorRef} className="file-size-error"><MdErrorOutline size={30}/>
+        File size too large!</div>
+      )}
     </div>
   );
 };

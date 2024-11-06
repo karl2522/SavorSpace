@@ -1,5 +1,9 @@
 /*Login Screen Styles */
 
+*{
+  font-family: "Montserrat", sans-serif;
+}
+
 .login-container {
     max-width: 2000px;
     padding: 50px 50px 50px 50px;
@@ -51,6 +55,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom: 100px;
   }
   
   .form-section-login h2 {
@@ -108,4 +113,20 @@
     .form-section-login h2 {
       font-size: 39px;
     }
+    
+    .login-hero {
+      max-width: 400px;
+    }
+    .login-hero img {
+      max-height: 500px;
+    }
+
+    .login-hero h3 {
+      font-size: 36px;
+    }
+
+    .form-section-login {
+      margin-bottom: 150px !important;
+    }
+
   }

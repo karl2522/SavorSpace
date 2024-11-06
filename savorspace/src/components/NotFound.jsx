@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const NotFound = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -50,7 +50,7 @@ const NotFound = () => {
         </div>
       </div>
       <div className="footer">
-        <p>Don't worry, our chefs are cooking up something extraordinary!</p>
+        <p>Don&apos;t worry, our chefs are cooking up something extraordinary!</p>
       </div>
 
       <style jsx>{`
