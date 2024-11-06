@@ -90,11 +90,6 @@
   display: none;
 }
 
-.file-name {
-  color: #666;
-  font-size: 14px;
-}
-
 .profile-preview {
   margin-top: 10px;
   width: 40px;
@@ -226,6 +221,26 @@
 
 }
 
+.file-size-error {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1.5px solid rgba(255, 0, 0, 1);
+  color: #111;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 1;
+  z-index: 1000;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 10px; 
+  transition: opacity 0.5s ease-in-out;
+}
+
 /*Responsiveness for Screen 1366px to 1567px */
 @media (min-width: 1365px) and (max-width: 1567px) {
   .register-container {
@@ -313,5 +328,5 @@
     font-size: 14px;
     width: 100%;
   }
-  
+
 }
