@@ -11,6 +11,9 @@ import NotFound from './components/NotFound';
 import RecipePage from './components/RecipePage';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
+import AboutUs from './components/AboutUs';
+import axios from 'axios'; // Import axios
+
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated}) => {
   const location = useLocation();
@@ -111,29 +114,24 @@ const App = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const fetchProfilePic = async () => {
-    const token = localStorage.getItem('authToken');
-    if (!token) return;
+  useEffect(() => {
+    fetchProfilePic();
+  }, []);
 
+  const fetchProfilePic = async () => {
     try {
-      const response = await fetch('http://localhost:8080/users/me', {
+      const token = localStorage.getItem('authToken');
+      const response = await axios.get('/users/profile-pic', {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
-      setProfilePic(`http://localhost:8080${data.imageURL}`);
+      setProfilePic(response.data.profilePic);
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Error fetching profile picture:', error);
     }
   };
-
-  useEffect(() => {
-    fetchProfilePic();
-  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
@@ -160,6 +158,7 @@ const App = () => {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/signup" element={<AdminSignup />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/about-us" element={<AboutUs />} /> {/* Add route for AboutUs */}
           <Route path='/404' element={<NotFound />} />
         </Routes>
       </div>
