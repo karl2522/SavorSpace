@@ -12,13 +12,13 @@ import RecipePage from './components/RecipePage';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
 import AboutUs from './components/AboutUs';
-import axios from 'axios'; // Import axios
+import axios from 'axios'; 
 
 // Navbar Component
-const Navbar = ({ profilePic, handleLogout, isAuthenticated}) => {
+const Navbar = ({ profilePic, handleLogout, isAuthenticated, username}) => {
   const location = useLocation();
   const showNavbar = !['/login', '/register'].includes(location.pathname);
-  const isMainPage = ['/homepage', '/recipes', '/community', '/aboutus'].includes(location.pathname);
+  const isMainPage = ['/homepage', '/recipes', '/community', '/about-us'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
 
@@ -71,8 +71,18 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated}) => {
             <li className={location.pathname === '/community' ? 'active' : ''}>
               <Link to="/community" style={location.pathname === '/community' ? activeLinkStyle : {}}>Community</Link>
             </li>
-            <li className={location.pathname === '/aboutus' ? 'active' : ''}>
-              <Link to="/aboutus" style={location.pathname === '/aboutus' ? activeLinkStyle : {}}>About Us</Link>
+            <li className={location.pathname === '/about-us' ? 'active' : ''}>
+              <Link to="/about-us" style={location.pathname === '/about-us' ? activeLinkStyle : {}}>About Us</Link>
+            </li>
+            <li className={location.pathname === '/about-us' ? 'active' : ''}>
+                <span style={{ 
+                    fontWeight: 'bold',
+                    marginLeft: '50px',
+                    fontSize: '2.0rem',
+                    fontFamily: "'Poppins', sans-serif",
+                }}>
+                  {username}
+                </span>
             </li>
           </ul>
           {isAuthenticated && isMainPage ? (
@@ -99,7 +109,7 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated}) => {
             </div>
           )}
         </nav>
-      )}
+      )}  
     </>
   );  
 };
@@ -113,30 +123,37 @@ Navbar.propTypes = {
 const App = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    fetchProfilePic();
-  }, []);
+  const [username, setUsername] = useState('');
 
   const fetchProfilePic = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await axios.get('/users/profile-pic', {
+      const response = await fetch('http://localhost:8080/users/me', {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
-      setProfilePic(response.data.profilePic);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      setProfilePic(`http://localhost:8080${data.imageURL}`);
+      setUsername(data.fullName);
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Error fetching profile picture:', error);
     }
   };
 
+  useEffect(() => {
+    fetchProfilePic();
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('refreshToken');
     setProfilePic(null);
+    setUsername('');
     setIsAuthenticated(false);
     window.location.href = '/login';
   };
@@ -148,7 +165,7 @@ const App = () => {
   return (
     <Router>
       <div>
-        <Navbar profilePic={profilePic} isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
+        <Navbar profilePic={profilePic} username={username} isAuthenticated={isAuthenticated} handleLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/homepage" element={<HomePage />} />
@@ -158,7 +175,7 @@ const App = () => {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/signup" element={<AdminSignup />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/about-us" element={<AboutUs />} /> {/* Add route for AboutUs */}
+          <Route path="/about-us" element={<AboutUs />} /> {}
           <Route path='/404' element={<NotFound />} />
         </Routes>
       </div>
