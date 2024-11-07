@@ -1,11 +1,16 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoLogoGithub } from "react-icons/io5";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router-dom';
 import api from '../api/axiosConfig';
 import '../styles/LoginStyles.css';
+
+
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 
 const login = async (loginData) => {
   const response = await api.post('/login', loginData);
@@ -16,12 +21,33 @@ const login = async (loginData) => {
 
 const Login = ({ onLogin }) => {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
+  const query = useQuery();
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  useEffect(() => {
+    const token = query.get('token');
+    const refreshToken = query.get('refreshToken');
+
+    if(token && refreshToken) {
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('refreshToken', refreshToken);
+      navigate('/homepage');
+    }
+  }, [query, navigate]);
+
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+  };
+
+  const handleGithubLogin = (e) => {
+    e.preventDefault();
+    window.location.href = 'http://localhost:8080/oauth2/authorization/github';
   };
 
   const validate = () => {
@@ -41,9 +67,15 @@ const Login = ({ onLogin }) => {
       return;
     }
     try {
-      await login(loginData);
-      onLogin(); // Trigger profile picture update after login
+      const response = await login(loginData);
+      onLogin(); 
       navigate('/homepage');
+      if(response.token) {
+        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('refreshToken', response.refreshToken);
+      }
+      navigate('/homepage');
+      alert('Login successful!');
     } catch (error) {
       alert(`Login failed: ${error.response?.data?.message || error.message}`);
     }
@@ -86,12 +118,14 @@ const Login = ({ onLogin }) => {
           <span>Don&apos;t have an account? <a href="/register" className="register">Register</a></span>
           <p>Or login with</p>
           <div className="social-options">
-            {/* href button for github login and google login*/}
-            <a href="#" className="google-btn">
-              <FcGoogle />Google
-            </a>
-            <a href="http://localhost:8080/oauth2/authorization/github" className="github-btn">
-            <IoLogoGithub />Github</a>
+            <button onClick={handleGoogleLogin} className="google-btn">
+              <FcGoogle />
+              <span>Google</span>
+            </button>
+            <button onClick={handleGithubLogin} className="github-btn">
+              <IoLogoGithub />
+              <span>Github</span>
+            </button>
           </div>
         </div>
       </div>

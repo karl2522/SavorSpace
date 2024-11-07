@@ -5,6 +5,11 @@ import { IoCloudUploadOutline, IoLogoGithub } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
 import api from '../api/axiosConfig';
 import '../styles/SignupStyles.css';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 
 const register = async (formData) => {
   const response = await api.post(`/signup`, formData, {
@@ -16,6 +21,8 @@ const register = async (formData) => {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
+  const query = useQuery();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -49,9 +56,29 @@ const Register = () => {
     }
   }, [showFileSizeError]);
 
+  useEffect(() => {
+    const token = query.get('token');
+    const refreshToken = query.get('refreshToken');
+
+    if (token && refreshToken) {
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('refreshToken', refreshToken);
+      navigate('/homepage'); // Redirect to dashboard or another page after storing tokens
+    }
+  }, [query, navigate]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+  };
+
+  const handleGithubLogin = (e) => {
+    e.preventDefault();
+    window.location.href = 'http://localhost:8080/oauth2/authorization/github';
   };
 
   const handleFileChange = (e) => {
@@ -113,9 +140,13 @@ const Register = () => {
       if (formData.profilePic) {
         data.append('profilePic', formData.profilePic);
       }
-
-      await register(data);
+      const response = await register(data);
       console.log('Registration successful!');
+      if(response.token) {
+        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('refreshToken', response.refreshToken);
+      }
+      navigate('/homepage');
       alert('Registration successful!');
     } catch (error) {
       console.error('Registration failed:', error);
@@ -131,7 +162,7 @@ const Register = () => {
 
   return (
     <div className="register-container">
-      <IoIosArrowBack size={30} color="#000" cursor="pointer" onClick={() => window.location.href = '/'} />
+      <IoIosArrowBack size={30} color="#000" cursor="pointer" onClick={() => navigate('/')} />
       <div className="form-section">
         <h2>Create an Account</h2>
         <form onSubmit={handleSubmit} className="register-form">
@@ -190,10 +221,14 @@ const Register = () => {
           <span>Already have an account? <a href="/login" className="login">Log in</a></span>
           <p>Or register with</p>
           <div className="social-options">
-            <a href="#" className="google-btn">
-              <FcGoogle />Google</a>
-            <a href="http://localhost:8080/oauth2/authorization/github" className="github-btn">
-            <IoLogoGithub />Github</a>
+            <button onClick={handleGoogleLogin} className="google-btn">
+              <FcGoogle />
+              <span>Google</span>
+            </button>
+            <button onClick={handleGithubLogin} className="github-btn">
+              <IoLogoGithub />
+              <span>Github</span>
+            </button>
           </div>
         </div>
       </div>
