@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import '../styles/AdminSignup.css';
-import api from '../api/AdminConfig';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../api/AdminConfig';
+import '../styles/AdminSignup.css';
 
 const registerAdmin = async (formData) => {
   const response = await api.post(`/create-admin`, formData, {

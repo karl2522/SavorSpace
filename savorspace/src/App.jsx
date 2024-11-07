@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
+import AboutUs from './components/AboutUs';
 import AdminDashboard from './components/AdminDashboard';
 import AdminLogin from './components/AdminLogin';
 import AdminSignup from './components/AdminSignup';
@@ -11,13 +12,11 @@ import NotFound from './components/NotFound';
 import RecipePage from './components/RecipePage';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
-import AboutUs from './components/AboutUs';
-import axios from 'axios'; 
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated, username}) => {
   const location = useLocation();
-  const showNavbar = !['/login', '/register'].includes(location.pathname);
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup'].includes(location.pathname);
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
@@ -74,16 +73,6 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated, username}) => {
             <li className={location.pathname === '/about-us' ? 'active' : ''}>
               <Link to="/about-us" style={location.pathname === '/about-us' ? activeLinkStyle : {}}>About Us</Link>
             </li>
-            <li className={location.pathname === '/about-us' ? 'active' : ''}>
-                <span style={{ 
-                    fontWeight: 'bold',
-                    marginLeft: '50px',
-                    fontSize: '2.0rem',
-                    fontFamily: "'Poppins', sans-serif",
-                }}>
-                  {username}
-                </span>
-            </li>
           </ul>
           {isAuthenticated && isMainPage ? (
             <div className="mainpage-buttons">
@@ -96,7 +85,7 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated, username}) => {
                 />
                 {showDropdown && (
                   <div className="dropdown-profile">
-                    <button onClick={() => console.log('Edit Profile Clicked')}>Edit Profile</button>
+                    <button onClick={() => console.log('Edit Profile Clicked')}>Profile</button>
                     <button onClick={handleLogout}>Logout</button>
                   </div>
                 )}
@@ -118,6 +107,7 @@ Navbar.propTypes = {
   profilePic: PropTypes.string,
   handleLogout: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
+  username: PropTypes.string.isRequired,
 };
 
 const App = () => {

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { FaApple } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowForward } from "react-icons/io";
+import { IoLogoGithub } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import '../styles/LoginStyles.css';
@@ -86,12 +86,12 @@ const Login = ({ onLogin }) => {
           <span>Don&apos;t have an account? <a href="/register" className="register">Register</a></span>
           <p>Or login with</p>
           <div className="social-options">
-            <button className="google-btn">
-              <FcGoogle /> Google
-            </button>
-            <button className="apple-btn">
-              <FaApple /> Apple
-            </button>
+            {/* href button for github login and google login*/}
+            <a href="#" className="google-btn">
+              <FcGoogle />Google
+            </a>
+            <a href="http://localhost:8080/oauth2/authorization/github" className="github-btn">
+            <IoLogoGithub />Github</a>
           </div>
         </div>
       </div>

@@ -79,7 +79,7 @@ const HomePage = () => {
         <div className="hero-text">
           <h2><span>Savor</span> the flavors, <br /> Share the <span>love</span></h2>
           <p>Join our vibrant community of food lovers where you can share recipes, savor delicious flavors, and celebrate the joy of cooking together. Let&apos;s create tasty memories!</p>
-          <button className="get-started-btn" aria-label="Explore Recipes">Explore Recipes</button>
+          <button className="explore-recipes-btn" aria-label="Explore Recipes">Explore Recipes</button>
         </div>
         
         <div className="recipe-card-container">

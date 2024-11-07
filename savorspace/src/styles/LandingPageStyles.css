@@ -39,6 +39,7 @@
   font-size: 50px;
   margin-left: -250px;
   color: #111;
+  margin-bottom: 30px;
 }
 
 .navbar ul {
@@ -172,14 +173,30 @@
   max-width: 680px;
 }
 
+.explore-recipes-btn {
+  background-color: #D6589F;
+  color: #fff;
+  border: none;
+  box-shadow: 0 5px 10px rgba(0, 0, 0.2, 0.4);
+}
+
 .get-started-btn {
+  border: 1px solid #D6589F;
+  color: #111;
+  margin-left: 20px;
+}
+
+.get-started-btn:hover {
+  background-color: #ce2786;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.explore-recipes-btn, .get-started-btn {
   margin-top: 30px;
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
   font-weight: 500;
-  background-color: #D6589F;
-  color: #fff;
-  border: none;
   padding: 10px;
   width: 100%;
   max-width: 180px;
@@ -187,10 +204,9 @@
   cursor: pointer;
   height: 55px;
   transition: color 0.3s ease, transform 0.3s ease;
-  box-shadow: 0 5px 10px rgba(0, 0, 0.2, 0.4);
 }
 
-.get-started-btn:hover {
+.explore-recipes-btn:hover {
   background-color: #ce2786;
   transform: translateY(-2px);
 }
