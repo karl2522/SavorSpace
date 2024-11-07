@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
-import { Link, Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
+import { Link, Route, BrowserRouter as Router, Routes, useLocation, useNavigate } from 'react-router-dom';
 import AboutUs from './components/AboutUs';
 import AdminDashboard from './components/AdminDashboard';
 import AdminLogin from './components/AdminLogin';
@@ -9,6 +9,7 @@ import HomePage from './components/Homepage';
 import LandingPage from './components/LandingPage';
 import Login from './components/LoginScreen';
 import NotFound from './components/NotFound';
+import ProfilePage from './components/ProfilePage';
 import RecipePage from './components/RecipePage';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
@@ -16,7 +17,8 @@ import './styles/MainStyles.css';
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated, username }) => {
   const location = useLocation();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup'].includes(location.pathname);
+  const navigate = useNavigate();
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile'].includes(location.pathname);
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
@@ -47,6 +49,11 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated, username }) => {
     console.log('showNavbar:', showNavbar);
     console.log('showDropdown:', showDropdown);
   }, [location.pathname, isMainPage, showNavbar, showDropdown]);
+
+  const handleProfilePage = () => {
+    navigate('/profile');
+    setShowDropdown(false); // Close the dropdown
+  };
 
   return (
     <>
@@ -83,7 +90,7 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated, username }) => {
                 />
                 {showDropdown && (
                   <div className="dropdown-profile">
-                    <button onClick={() => console.log('Edit Profile Clicked')}>Profile</button>
+                    <button onClick={handleProfilePage}>Profile</button>
                     <button onClick={handleLogout}>Logout</button>
                   </div>
                 )}
@@ -156,6 +163,8 @@ const App = () => {
     fetchProfilePic();
   };
 
+
+
   return (
     <Router>
       <div>
@@ -164,6 +173,7 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/recipes" element={<RecipePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin/login" element={<AdminLogin />} />
