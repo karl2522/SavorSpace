@@ -190,9 +190,8 @@ const Register = () => {
           <span>Already have an account? <a href="/login" className="login">Log in</a></span>
           <p>Or register with</p>
           <div className="social-options">
-            <button className="google-btn">
-              <FcGoogle />Google
-            </button>
+            <a href="#" className="google-btn">
+              <FcGoogle />Google</a>
             <a href="http://localhost:8080/oauth2/authorization/github" className="github-btn">
             <IoLogoGithub />Github</a>
           </div>

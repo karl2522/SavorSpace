@@ -86,12 +86,12 @@ const Login = ({ onLogin }) => {
           <span>Don&apos;t have an account? <a href="/register" className="register">Register</a></span>
           <p>Or login with</p>
           <div className="social-options">
-            <button className="google-btn">
-              <FcGoogle /> Google
-            </button>
-            <button className="apple-btn">
-            <IoLogoGithub />Github
-            </button>
+            {/* href button for github login and google login*/}
+            <a href="#" className="google-btn">
+              <FcGoogle />Google
+            </a>
+            <a href="http://localhost:8080/oauth2/authorization/github" className="github-btn">
+            <IoLogoGithub />Github</a>
           </div>
         </div>
       </div>
