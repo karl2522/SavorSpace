@@ -14,27 +14,25 @@ import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
 
 // Navbar Component
-const Navbar = ({ profilePic, handleLogout, isAuthenticated, username}) => {
+const Navbar = ({ profilePic, handleLogout, isAuthenticated, username }) => {
   const location = useLocation();
   const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup'].includes(location.pathname);
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  const [showDropdown, setShowDropdown] = useState(false);  
   const toggleDropdown = useCallback((e) => {
-    e.stopPropagation(); // Prevent event from bubbling up
+    e.stopPropagation();
     setShowDropdown(prevState => !prevState);
     console.log('Toggle dropdown called');
   }, []);
 
-  // Close the dropdown when clicking outside (optional)
   const handleOutsideClick = useCallback((e) => {
     if (!e.target.closest('.profile-pic-container')) {
       setShowDropdown(false);
     }
   }, []);
-  
 
   useEffect(() => {
     document.addEventListener('click', handleOutsideClick);
@@ -127,7 +125,13 @@ const App = () => {
       });
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
-      setProfilePic(`http://localhost:8080${data.imageURL}`);
+      
+      // Check if the URL is absolute (starts with http) or relative, and format it accordingly
+      const profilePicUrl = data.imageURL.startsWith('http') 
+        ? data.imageURL 
+        : `http://localhost:8080${data.imageURL}`;
+      
+      setProfilePic(profilePicUrl);
       setUsername(data.fullName);
       setIsAuthenticated(true);
     } catch (error) {
