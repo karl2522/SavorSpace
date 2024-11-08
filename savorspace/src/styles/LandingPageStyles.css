@@ -1130,7 +1130,7 @@
   
   
   .team-card {
-    width: 240px; 
+    width: 220px; 
     background-color: #D6589F;
     border-radius: 24px;
     padding: 0.5rem;
@@ -1140,7 +1140,7 @@
   }
 
   .team-image-wrapper {
-    width: 240px;
+    width: 220px;
     height: 500px;
     position: relative;
     margin: 0 auto;
@@ -1171,23 +1171,28 @@
   
 }
 
-/* Responsiveness Styles for Screen Sizes 1366px to 1514px */
-@media(min-width: 1366px) and (max-width: 1514px){
+/* Responsiveness Styles for Max Screen Size 1366px*/
+@media (max-width: 1366px){
+
+  .LandingPage {
+    overflow: hidden;
+    padding: 10px;
+  }
   .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 1600px;
+    max-width: 1310px;
     padding: 1rem;
     background-color: #fff;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    height: 80px;
+    height: 70px;
     justify-self: center;
   }
 
   .navbar ul {
-    font-size: 15px;
+    font-size: 14px;
     display: flex;
     gap: 2rem;
     list-style-type: none;
@@ -1197,7 +1202,7 @@
 
   .navbar h1 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    font-size: 45px;
+    font-size: 40px;
     margin-left: -100px;
     color: #111;
   }
@@ -1206,30 +1211,38 @@
     height: auto;
     width: 100%;
     padding-top: 10px;
-    max-width: 100px; 
+    max-width: 90px; 
     margin-top: 10px; 
     margin-left: 20px;
   }
 
-  .signup-btn {
-    font-size: 14px;
-    max-width: 110px;
-    height: 25px;
+  .signup-btn, .signin-btn {
+    font-size: 12px;
+    max-width: 90px;
     text-decoration: none;
   }
 
   .hero {
     display: flex; 
     align-items: flex-start; 
-    padding: 2rem;
+    padding: 20px;
     width: 100%;
     max-width: 1800px; 
     margin: 0 auto;
   }
 
+  .hero h2 {
+    font-size: 3.5rem;
+  }
+
+  .hero p {
+    max-width: 600px;
+    font-size: 14px;
+  }
+
   .recipe-card {
     margin-top: 70px;
-    margin-right: 70px;
+    margin-right: 100px;
     max-width: 400px;
     width: 100%;
     background-color: #ffffff;
@@ -1238,6 +1251,16 @@
     box-shadow: -10px 15px 10px rgba(0.2, 0.2, 0.2, 0.5);
     position: relative;
     font-family: Arial, sans-serif;
+  }
+
+  .recipe-image {
+    width: 60% !important;
+  }
+
+  .explore-recipes-btn, .get-started-btn {
+    font-size: 14px;
+    max-width: 150px;
+    height: 50px;
   }
 
   /*Community Cards*/
@@ -1267,9 +1290,6 @@
     font-size: 16px !important;
   }
   
-  .card-stats {
-    font-size: 14px !important;
-  }
   .chef-container {
     width: 100%;
   }
@@ -1282,7 +1302,7 @@
   }
 
   .chef-card {
-    width: 350px;
+    width: 280px;
   }
 
 
@@ -1310,7 +1330,7 @@
 
   .team-image-wrapper {
     width: 205px;
-    height: 500px;
+    height: 400px;
     position: relative;
     margin: 0 auto;
   }
@@ -1330,10 +1350,6 @@
     font-size: 60px;
   }
 
-  .footer {
-    width: 100% !important;
-  }
-
   .footer-logo-img {
     width: 150px;
   }
@@ -1345,7 +1361,7 @@
 
   .footer-links {
     display: flex;
-    gap: 7rem;
+    gap: 5rem;
     margin-top: 50px;
   }
 
@@ -1367,7 +1383,7 @@
     max-width: 1800px;
     display: flex;
     justify-content: space-between;
-    gap: 10rem;
+    gap: 12rem;
   }
 
   .footer-bottom {

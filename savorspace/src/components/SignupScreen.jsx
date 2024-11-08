@@ -196,7 +196,7 @@ const Register = () => {
           <label>Profile Picture</label>
           <div className="profile-upload-container">
             <label htmlFor="file-input" className="custom-file-upload">
-              <IoCloudUploadOutline color='white' size={20} />  
+              <IoCloudUploadOutline color='white' size={15} />  
             </label>
             <input
               id="file-input"
