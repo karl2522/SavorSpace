@@ -1,0 +1,161 @@
+.profile-container {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.profile-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    max-height: 80px;
+    margin-bottom: 40px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-top h1 {
+    font-size: 45px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.highlight {
+    color: #D6589F;
+}
+
+.back-button {
+    position: absolute;
+    left: 55px;
+    margin-top: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.settings-button {
+    position: absolute;
+    right: 55px;
+    margin-top: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.profile-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+.profile-main {
+    display: flex;
+    gap: 4rem;
+    align-items: flex-start;
+}
+
+.profile-avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 2px solid #D6589F;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-details h2 {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.join-date {
+    color: #111;
+    margin-bottom: 4px;
+}
+
+.profession {
+    color: #D6589F;
+    font-weight: 500;
+}
+
+.edit-profile {
+    margin-top: 50px;
+    padding: 8px 20px;
+    border: 1px solid #D6589F;
+    border-radius: 10px;
+    background: none;
+    cursor: pointer;
+    width: 100%;
+    color: #111;
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.edit-profile:hover {
+    color: #fff;
+    background-color: #D6589F;
+}
+
+.stats-container {
+    display: flex;
+    gap: 16rem;
+    margin-left: auto;
+    align-self: flex-start;
+    margin-left: 200px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-top: 0;
+}
+
+.stat-item:not(:last-child) {
+    position: relative;
+    padding-right: 2rem;
+}
+
+.stat-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100%;
+    width: 2px;
+    background-color: #e0e0e0;  
+}
+
+.stat-number {
+    font-size: 75px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    line-height: 0; 
+}
+
+.stat-label {
+    margin-top: 70px;
+    color: #D6589F;
+    font-size: 22px;
+}

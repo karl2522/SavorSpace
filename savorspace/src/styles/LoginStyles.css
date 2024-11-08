@@ -108,7 +108,7 @@
     background-color: #ce2786;
   }
   
-  @media (min-width: 1365px) and (max-width: 1574px) {
+  @media (max-width: 1574px) {
     .form-section-login h2 {
       font-size: 39px;
     }
@@ -128,4 +128,11 @@
       margin-bottom: 150px !important;
     }
 
+  }
+
+
+  @media (max-width: 1366px) {
+    .login-container {
+      max-height: 700px;
+    }
   }

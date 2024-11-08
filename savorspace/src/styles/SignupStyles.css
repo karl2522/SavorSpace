@@ -242,7 +242,7 @@
 }
 
 /*Responsiveness for Screen 1366px to 1567px */
-@media (min-width: 1365px) and (max-width: 1567px) {
+@media (max-width: 1567px) {
   .register-container {
     justify-content: center;
     max-width: 1800px;
@@ -329,4 +329,64 @@
     width: 100%;
   }
 
+}
+
+
+@media (max-width: 1366px) {
+  .register-hero {
+    max-width: 400px;
+    max-height: 480px;
+  }
+
+  .register-hero img {
+    max-width: 500px;
+    max-height: 480px;
+  }
+
+  .register-hero h3 {
+    font-size: 30px;
+  }
+
+  .form-section {
+    max-height: 500px;
+  }
+
+  .form-section h2 {
+    font-size: 30px; 
+  }
+  
+  .register-form {
+    gap: 10px;
+  }
+  .register-form label {
+    font-size: 12px;
+
+  }
+
+  
+  .register-form input[type="text"],
+  .register-form input[type="email"],
+  .register-form input[type="password"] {
+    font-family: "Montserrat", sans-serif;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #d6589f;
+    font-size: 10px !important;
+  }
+
+  .file-name {
+    font-size: 12px;
+  }
+
+  .checkbox {
+    font-size: 10px;
+  }
+
+  .login-options {
+    font-size: 12px;
+  }
+
+  .login-options .login{
+    font-size: 13px;
+  }
 }

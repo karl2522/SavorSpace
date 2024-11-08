@@ -38,8 +38,8 @@ const trendingItems = [
     title: 'Pansit Bam-i',
     description: 'Pansit Bam-i is a traditional Filipino noodle dish, popular in the Visayas region, known for its unique combination of two types of noodles: canton (egg noodles) and sotanghon (glass noodles). This flavorful stir-fry is loaded with a mix of vegetables, savory pork, tender chicken, and shrimp, all seasoned with garlic, soy sauce, and spices.',
     author: {
-    name: 'Lily Anderson',
-    avatar: 'src/images/trend-chef1.png'
+    name: 'Lucas Martinez',
+    avatar: 'src/images/trend-chef3.png'
     },
     cookingTime: '30 mins',
     difficulty: 'Intermediate'
