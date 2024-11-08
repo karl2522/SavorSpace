@@ -138,11 +138,13 @@ const App = () => {
       setRole(data.role);
       setIsAuthenticated(true);
 
+
       if(data.role) {
         console.log('User role:', data.role);
       }else {
         console.log('User role not found');
       }
+      console.log('User data: ', data);
     } catch (error) {
       console.error('Error fetching profile picture:', error);
     }
@@ -192,7 +194,7 @@ const App = () => {
           element={<PrivateRoute path= "/admin/signup" element={<AdminSignup />} isAuthenticated={isAuthenticated} role={role} />} />
           <Route 
           path="/admin/dashboard" 
-          element={<PrivateRoute path="/admin/dashboard" element={<AdminDashboard />} isAuthenticated={isAuthenticated} role={role} />} />
+          element={<AdminDashboard />} />
           <Route path="/about-us" element={<AboutUs />} /> {}
           <Route path='/404' element={<NotFound />} />
         </Routes>

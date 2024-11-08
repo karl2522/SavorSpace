@@ -8,6 +8,7 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [editUser, setEditUser] = useState(null);
   const navigate = useNavigate();
+  const [role, setRole] = useState('');
 
   useEffect(() => {
     fetchAdmin();
@@ -30,6 +31,7 @@ const AdminDashboard = () => {
       });
   
       setAdmin(response.data);
+      setRole(response.data.role);
     } catch (error) {
       console.error('Error fetching admin:', error);
     }

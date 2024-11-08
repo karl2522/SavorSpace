@@ -41,7 +41,7 @@ const NotFound = () => {
         </p>
 
         <div className="button-container">
-          <a href="/login" className="button primary" onClick={handleShake}>
+          <a href="/homepage" className="button primary" onClick={handleShake}>
             🏠 Back to Kitchen
           </a>
           <button onClick={() => { handleShake(); window.location.reload(); }} className="button secondary">

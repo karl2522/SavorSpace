@@ -4,15 +4,24 @@ import api from '../api/AdminConfig';
 import '../styles/AdminLogin.css';
 
 const loginAdmin = async (loginData) => {
-  const response = await api.post('/login-admin', loginData);
-  if(response.data.token) {
-    sessionStorage.setItem('adminToken', response.data.token);
-    sessionStorage.setItem('adminRefreshToken', response.data.refreshToken);
-    console.log('Admin login successful:', response.data);
+  try {
+    const response = await api.post('/login-admin', loginData);
+    console.log('API RESPONSE:', response.data);
+    if(response.data.token) {
+      sessionStorage.setItem('adminToken', response.data.token);
+      sessionStorage.setItem('adminRefreshToken', response.data.refreshToken);
+      console.log('Admin login successful:', response.data);
   }else {
     throw new Error('No token found in response');
   }
   return response;
+  }catch(error) {
+    console.error('Admin login failed:', error);
+    if(error.response) {
+      throw new Error('API Erorr Response:', error.response.data.message);
+    }
+    throw error;
+  }
 };
 
 export default function AdminLogin() {
