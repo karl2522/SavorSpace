@@ -148,14 +148,15 @@
 }
 
 .stat-number {
-    font-size: 75px;
+    font-size: 60px;
     font-weight: bold;
     margin-bottom: 4px;
-    line-height: 0; 
+    line-height: 0;
 }
 
 .stat-label {
-    margin-top: 70px;
+    margin-top: 60px;
     color: #D6589F;
     font-size: 22px;
+    font-weight: 500;
 }
