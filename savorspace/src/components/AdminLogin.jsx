@@ -66,7 +66,7 @@ export default function AdminLogin() {
           </div>
         </div>
         <h1 className="login-title">
-          Login to <span className="highlight">Savor</span>Space
+          Login as <span className="highlight">Admin</span>
         </h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -100,7 +100,7 @@ export default function AdminLogin() {
       </div>
       <div className="welcome-container">
         <div className="welcome-content">
-          <h2>Hello, Friend!</h2>
+          <h2>Hello, Admin!</h2>
           <p>Tell us more about you and start your journey with us</p>
           <button className="sign-up-btn" onClick={() => navigate('/admin/signup')}>Sign up</button>
         </div>

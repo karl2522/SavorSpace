@@ -84,7 +84,7 @@ export default function AdminSignup() {
     <div className="signup-container">
       <div className="welcome-container">
         <div className="welcome-content">
-          <h2>Welcome Back!</h2>
+          <h2>Welcome Back Admin!</h2>
           <p>Enter your Account details to keep connecting with us</p>
           <button className="sign-in-btn" onClick={() => navigate('/admin/login')}>Sign in</button>
         </div>
