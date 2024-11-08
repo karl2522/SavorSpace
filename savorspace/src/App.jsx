@@ -9,11 +9,11 @@ import HomePage from './components/Homepage';
 import LandingPage from './components/LandingPage';
 import Login from './components/LoginScreen';
 import NotFound from './components/NotFound';
+import PrivateRoute from './components/PrivateRoute';
 import ProfilePage from './components/ProfilePage';
 import RecipePage from './components/RecipePage';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
-import PrivateRoute from './components/PrivateRoute';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated, username }) => {
