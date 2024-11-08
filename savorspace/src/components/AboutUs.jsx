@@ -4,6 +4,7 @@ import gadianeImage from '../images/gadiane.png';
 import omenImage from '../images/omen.png';
 import pejanaImage from '../images/pejana.png';
 import '../styles/AboutUs.css';
+import { Link } from 'react-router-dom';
 
 export default function AboutUs() {
   const teamMembers = [
@@ -74,7 +75,9 @@ export default function AboutUs() {
       <header className="hero-section">
         <h1>About Savor<span>Space</span></h1>
         <p>Bringing food lovers together, one recipe at a time</p>
+        <Link to="/register">
         <button className="join-button">join our community</button>
+        </Link>
       </header>
 
       <section className="mission-section">
@@ -119,7 +122,9 @@ export default function AboutUs() {
       <section className="join-section">
         <h2>Join Our Culinary Community</h2>
         <p>Whether you&apos;re a seasoned chef or a curious beginner, there&apos;s a place for you at SavorSpace. Start your flavorful journey today!</p>
-        <button className="sign-up-button">Sign Up Now</button>
+        <Link to="/register">
+          <button className="sign-up-button">Sign Up Now</button>
+        </Link>
       </section>
 
       <footer className="contact-section">
