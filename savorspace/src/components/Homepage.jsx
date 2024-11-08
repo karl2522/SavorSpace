@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { HiArrowSmRight } from "react-icons/hi";
 import '../styles/MainStyles.css';
+import { Link } from 'react-router-dom';
 
 // RecipeCard component
 const RecipeCard = ({ image, title, description, onClick }) => {
@@ -79,7 +80,9 @@ const HomePage = () => {
         <div className="hero-text">
           <h2><span>Savor</span> the flavors, <br /> Share the <span>love</span></h2>
           <p>Join our vibrant community of food lovers where you can share recipes, savor delicious flavors, and celebrate the joy of cooking together. Let&apos;s create tasty memories!</p>
+          <Link to="/recipes">
           <button className="explore-recipes-btn" aria-label="Explore Recipes">Explore Recipes</button>
+          </Link>
         </div>
         
         <div className="recipe-card-container">
