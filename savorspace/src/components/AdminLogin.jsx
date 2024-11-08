@@ -4,15 +4,24 @@ import api from '../api/AdminConfig';
 import '../styles/AdminLogin.css';
 
 const loginAdmin = async (loginData) => {
-  const response = await api.post('/login-admin', loginData);
-  if(response.data.token) {
-    sessionStorage.setItem('adminToken', response.data.token);
-    sessionStorage.setItem('adminRefreshToken', response.data.refreshToken);
-    console.log('Admin login successful:', response.data);
+  try {
+    const response = await api.post('/login-admin', loginData);
+    console.log('API RESPONSE:', response.data);
+    if(response.data.token) {
+      sessionStorage.setItem('adminToken', response.data.token);
+      sessionStorage.setItem('adminRefreshToken', response.data.refreshToken);
+      console.log('Admin login successful:', response.data);
   }else {
     throw new Error('No token found in response');
   }
   return response;
+  }catch(error) {
+    console.error('Admin login failed:', error);
+    if(error.response) {
+      throw new Error('API Erorr Response:', error.response.data.message);
+    }
+    throw error;
+  }
 };
 
 export default function AdminLogin() {
@@ -66,7 +75,7 @@ export default function AdminLogin() {
           </div>
         </div>
         <h1 className="login-title">
-          Login to <span className="highlight">Savor</span>Space
+          Login as <span className="highlight">Admin</span>
         </h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -100,7 +109,7 @@ export default function AdminLogin() {
       </div>
       <div className="welcome-container">
         <div className="welcome-content">
-          <h2>Hello, Friend!</h2>
+          <h2>Hello, Admin!</h2>
           <p>Tell us more about you and start your journey with us</p>
           <button className="sign-up-btn" onClick={() => navigate('/admin/signup')}>Sign up</button>
         </div>

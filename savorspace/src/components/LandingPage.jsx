@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import { HiArrowSmRight } from "react-icons/hi";
 import '../styles/LandingPageStyles.css';
+import { Link } from 'react-router-dom';
 
 const RecipeCard = ({ image, title, description, onClick }) => {
   return (
@@ -299,8 +300,12 @@ return (
         <div className="hero-text">
           <h2><span>Savor</span> the flavors, <br /> Share the <span>love</span></h2>
           <p>Join our vibrant community of food lovers where you can share recipes, savor delicious flavors, and celebrate the joy of cooking together. Let&apos;s create tasty memories!</p>
+          <Link to="/recipes">
           <button className="explore-recipes-btn">Explore Recipes</button>
+          </Link>
+          <Link to="/register">
           <button className="get-started-btn">Get Started</button>
+          </Link>
         </div>
         
         <div className="recipe-card-container">

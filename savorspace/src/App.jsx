@@ -13,6 +13,7 @@ import ProfilePage from './components/ProfilePage';
 import RecipePage from './components/RecipePage';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
+import PrivateRoute from './components/PrivateRoute';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated, username }) => {
@@ -119,6 +120,7 @@ const App = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
+  const [role, setRole] = useState('');
 
   const fetchProfilePic = async () => {
     const token = localStorage.getItem('authToken');
@@ -140,7 +142,16 @@ const App = () => {
       
       setProfilePic(profilePicUrl);
       setUsername(data.fullName);
+      setRole(data.role);
       setIsAuthenticated(true);
+
+
+      if(data.role) {
+        console.log('User role:', data.role);
+      }else {
+        console.log('User role not found');
+      }
+      console.log('User data: ', data);
     } catch (error) {
       console.error('Error fetching profile picture:', error);
     }
@@ -150,11 +161,20 @@ const App = () => {
     fetchProfilePic();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('refreshToken');
+    try {
+      await fetch('http://localhost:8080/auth/logout/github', {
+        method: 'GET',
+        credentials: 'include',
+      });
+    }catch (error) {
+      console.error('Error logging out:', error);
+    }
     setProfilePic(null);
     setUsername('');
+    setRole('');
     setIsAuthenticated(false);
     window.location.href = '/login';
   };
@@ -176,9 +196,15 @@ const App = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/signup" element={<AdminSignup />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route
+           path="/admin/login" 
+           element={<PrivateRoute path="/admin/login" element={<AdminLogin />} isAuthenticated={isAuthenticated} role={role} />} />
+          <Route 
+          path="/admin/signup" 
+          element={<PrivateRoute path= "/admin/signup" element={<AdminSignup />} isAuthenticated={isAuthenticated} role={role} />} />
+          <Route 
+          path="/admin/dashboard" 
+          element={<AdminDashboard />} />
           <Route path="/about-us" element={<AboutUs />} /> {}
           <Route path='/404' element={<NotFound />} />
         </Routes>
