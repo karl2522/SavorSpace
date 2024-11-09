@@ -12,6 +12,7 @@ import NotFound from './components/NotFound';
 import PrivateRoute from './components/PrivateRoute';
 import ProfilePage from './components/ProfilePage';
 import RecipePage from './components/RecipePage';
+import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
 
@@ -19,7 +20,7 @@ import './styles/MainStyles.css';
 const Navbar = ({ profilePic, handleLogout, isAuthenticated, username }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile'].includes(location.pathname);
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/profile/settings'].includes(location.pathname);
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
@@ -194,6 +195,7 @@ const App = () => {
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/recipes" element={<RecipePage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/settings" element={<SettingsPage />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
           <Route
