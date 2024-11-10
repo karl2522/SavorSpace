@@ -26,9 +26,10 @@
 .side-nav {
     width: 250px;
     border-right: 1px solid #eee;
-    padding: 20px 0;
+    padding: 20px;
     display: flex;
     flex-direction: column;
+    margin-top: 100px;
 }
 
 .nav-header {
