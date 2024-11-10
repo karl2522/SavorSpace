@@ -28,7 +28,7 @@ export default function SettingsPage() {
           General
           </Link>
           
-          <Link to="/settings/profile" className={isActive('/settings/profile')}>
+          <Link to="settings/edit-profile" className={isActive('/settings/edit-profile')}>
           <LuUser2 size={25}/>
           Profile
           </Link>
