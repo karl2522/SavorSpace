@@ -18,6 +18,7 @@
     font-size: 45px;
     font-weight: 700;
     text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .highlight {
@@ -55,6 +56,7 @@
     display: flex;
     gap: 4rem;
     align-items: flex-start;
+    margin-top: 50px;
 }
 
 .profile-avatar {
@@ -81,11 +83,14 @@
     margin-bottom: 8px;
 }
 
+
 .profile-details {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
+
 
 .join-date {
     color: #111;
@@ -118,10 +123,10 @@
 
 .stats-container {
     display: flex;
-    gap: 16rem;
+    gap: 5rem;
     margin-left: auto;
     align-self: flex-start;
-    margin-left: 200px;
+    margin-left: 120px  ;
 }
 
 .stat-item {
@@ -129,34 +134,114 @@
     flex-direction: column;
     text-align: left;
     margin-top: 0;
-}
+    background-color: #D6589F; 
+    border-radius: 15px; 
+    padding: 20px; 
+    width: 150px;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 
-.stat-item:not(:last-child) {
-    position: relative;
-    padding-right: 2rem;
-}
-
-.stat-item:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 100%;
-    width: 2px;
-    background-color: #e0e0e0;  
 }
 
 .stat-number {
-    font-size: 60px;
+    font-size: 50px;
     font-weight: bold;
     margin-bottom: 4px;
     line-height: 0;
+    color: #f9f9f9;
+    text-align: center;
 }
 
 .stat-label {
-    margin-top: 60px;
-    color: #D6589F;
+    margin-top: 30px;
+    color: #fff;
     font-size: 22px;
     font-weight: 500;
+    text-align: center;
+}
+
+/* Mother Div */ 
+.user-recipes {
+    margin-top: 150px;
+    display: flex;
+    gap: 10rem;
+    flex-direction: row;
+    width: 100%;   
+}
+
+.view-all {
+    margin-left: 400px;
+    text-align: right;
+    background: none;
+    border: none;
+    color: #D6589F;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* Latest Recipes */
+.latest-recipes {
+    max-width: 800px;
+}
+
+.latest-recipes-header, .popular-recipes-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+
+.latest-recipes h2 {
+    font-size: 32px;
+    flex-grow: 1;
+    margin: 0;
+}
+
+
+.latest-recipes h2 span {
+    color: #D6589F;
+}
+
+.latest-recipes-container {
+    display: flex;  
+    flex-direction: row;
+    gap: 100px;
+}
+
+.recipe-item {
+    margin-top: 20px;
+    margin-left: 40px;
+    max-width: 250px;
+}
+
+.recipe-item img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.latest-recipes-container p {
+    font-size: 16px;
+    margin: 0;
+    margin-top: 20px;
+}
+
+
+/* Popular Recipes */
+.popular-recipes {
+    max-width: 800px;
+}
+
+.popular-recipes h2 {
+    font-size: 32px;
+    margin: 0;
+}
+
+.popular-recipes h2 span {
+    color: #D6589F;
 }
