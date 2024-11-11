@@ -5,6 +5,7 @@ import AboutUs from './components/AboutUs';
 import AdminDashboard from './components/AdminDashboard';
 import AdminLogin from './components/AdminLogin';
 import AdminSignup from './components/AdminSignup';
+import EditProfileSettings from './components/EditProfileSettings';
 import HomePage from './components/Homepage';
 import LandingPage from './components/LandingPage';
 import Login from './components/LoginScreen';
@@ -20,7 +21,7 @@ import './styles/MainStyles.css';
 const Navbar = ({ profilePic, handleLogout, isAuthenticated, username }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/profile/settings'].includes(location.pathname);
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/profile/settings', '/profile/settings/edit-profile'].includes(location.pathname);
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
@@ -195,7 +196,12 @@ const App = () => {
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/recipes" element={<RecipePage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile/settings" element={<SettingsPage />} />
+            <Route path="/profile/settings" element={<SettingsPage />}>
+              {/* Routes for Settings Sections */}
+              <Route path="general" element={<div>General Settings</div>} />
+              <Route path="edit-profile" element={<EditProfileSettings />} />
+            </Route>
+          <Route path="edit-profile" element={<EditProfileSettings />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
           <Route

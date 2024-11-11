@@ -16,6 +16,10 @@ export default function ProfilePage() {
     navigate('/profile/settings');
   };
 
+  const handleHome = () => {
+    navigate('/homepage');
+  };
+
   
   useEffect(() => {
     const fetchProfilePic = async () => {
@@ -52,12 +56,12 @@ export default function ProfilePage() {
   return (
     <div className="profile-container">
       <div className="profile-top">
-        <button className="back-button">
+        <button className="back-button" onClick={handleHome}>
           <IoIosArrowBack size={30} />
         </button>
         <h1>My <span className="highlight">Profile</span></h1>
         <button className="settings-button" onClick={handleSettings}>
-          <IoSettingsOutline size={30} />
+          <IoSettingsOutline size={30}/>
         </button>
       </div>
 
@@ -78,7 +82,7 @@ export default function ProfilePage() {
           <div className="stats-container">
             <div className="stat-item">
               <p className="stat-number">50</p>
-              <p className="stat-label">Followers</p>
+              <p className="stat-label">Recipes</p>
             </div>
             <div className="stat-item">
               <p className="stat-number">50</p>
@@ -86,7 +90,7 @@ export default function ProfilePage() {
             </div>
             <div className="stat-item">
               <p className="stat-number">50</p>
-              <p className="stat-label">Recipes</p>
+              <p className="stat-label">Comments</p>
             </div>
           </div>
         </div>
