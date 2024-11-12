@@ -135,4 +135,27 @@
     .login-container {
       max-height: 700px;
     }
+
+    .login-hero {
+      max-width: 400px;
+      height: 450px;
+      margin-top: 0;
+    }
+
+    .login-hero h3 {
+      font-size: 30px;
+    }
+
+    .form-section-login {
+      max-width: 400px;
+      margin-top: 50px;
+    }
+
+    .form-section-login h2 {
+      font-size: 30px;
+    }
+
+    .login-options .register {
+      font-size: 12px;
+    }
   }
