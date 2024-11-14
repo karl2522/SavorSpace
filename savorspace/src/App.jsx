@@ -184,9 +184,7 @@ const App = () => {
   const handleLogin = () => {
     fetchProfilePic();
   };
-
-
-
+  
   return (
     <Router>
       <div>

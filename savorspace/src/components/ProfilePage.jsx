@@ -10,6 +10,7 @@ export default function ProfilePage() {
   const [role, setRole] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const [joinDate, setJoinDate] = useState('');
 
 
   const handleSettings = () => {
@@ -40,7 +41,16 @@ export default function ProfilePage() {
         if (!response.ok) throw new Error('Network response was not ok');
         
         const data = await response.json();
-        
+        const formatDate = (dateString) => {
+          const date = new Date(dateString);
+          return `Joined ${date.toLocaleString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+          })}`;
+        };
+
+        setJoinDate(formatDate(data.createdAt));
         const profilePicUrl = data.imageURL.startsWith('http') 
           ? data.imageURL 
           : `http://localhost:8080${data.imageURL}`;
@@ -80,7 +90,7 @@ export default function ProfilePage() {
           </div>
           <div className="profile-details">
             <h2>Hi, {username || 'User001'}</h2>
-            <p className="join-date">Joined June 22, 2024</p>
+            <p className="join-date">{joinDate}</p>
             <p className="profession">{role || 'Chef'}</p>
           </div>
           <div className="stats-container">
