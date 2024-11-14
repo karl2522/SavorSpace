@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import '../styles/AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -107,82 +107,63 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="admin-dashboard-container">
-      {admin && (
-        <div className="admin-info">
-          <h2>Admin Information</h2>
-          <p><strong>Full Name:</strong> {admin.fullName}</p>
-          <p><strong>Email:</strong> {admin.email}</p>
-          <p><strong>Role:</strong> {admin.role}</p>
-          <button onClick={handleLogout}>Logout</button>
+    <div className="admin-dashboard">
+      <aside className="sidebar">
+        <div className="logo">
+          <img src="/src/images/savorspaceLogo.png" alt="SavorSpace Logo" className="logo-image" />
+          <div className="logo-text">
+            <h2>SavorSpace</h2>
+            <p>Admin</p>
+          </div>
         </div>
-      )}
-      <h1>User Management</h1>
-      <table className="user-table">
-        <thead>
-          <tr>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.fullName}</td>
-              <td>{user.email}</td>
-              <td>{user.role}</td>
-              <td>
-                <button onClick={() => handleEdit(user)}>Edit</button>
-                <button onClick={() => handleDelete(user.id)}>Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {editUser && (
-        <div className="edit-form">
-          <h2>Edit User</h2>
-          <form onSubmit={handleUpdate}>
-            <div className="form-group">
-              <label htmlFor="fullName">Full Name</label>
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                value={editUser.fullName}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={editUser.email}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="role">Role</label>
-              <input
-                type="text"
-                id="role"
-                name="role"
-                value={editUser.role}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <button type="submit">Update User</button>
-          </form>
-        </div>
-      )}
+        <nav className="sidebar-nav">
+          <ul>
+            <li><Link to="/admin/dashboard" className="active">Dashboard</Link></li>
+            <li><Link to="/admin/ManageUser">User Account</Link></li>
+            <li><Link to="/admin/ManagePosts">User Posts</Link></li>
+            <li><Link to="/admin/ManageComments">User Comments</Link></li>
+            <li><Link to="/admin/ManageNotifications">Notifications</Link></li>
+            <li><button onClick={handleLogout}>Logout</button></li>
+          </ul>
+        </nav>
+        {admin && (
+          <div className="admin-profile">
+            <img src="/placeholder.svg?height=80&width=80" alt="Admin Avatar" className="admin-avatar" />
+            <h3>{admin.fullName}</h3>
+            <p>{admin.email}</p>
+          </div>
+        )}
+      </aside>
+      <main className="main-content">
+        <header className="dashboard-header">
+          <h1>Dashboard</h1>
+          <p>Hello Admin, {admin?.fullName}!</p>
+        </header>
+        <section className="stats-container">
+          <div className="stat-card">
+            <h2>23</h2>
+            <p>Active <span>Users</span></p>
+          </div>
+          <div className="stat-card">
+            <h2>53</h2>
+            <p>Recipes <span>Posted</span></p>
+          </div>
+          <div className="stat-card">
+            <h2>34</h2>
+            <p>User <span>Comments</span></p>
+          </div>
+        </section>
+        <section className="charts-container">
+          <div className="chart">
+            <h3>New User Activity</h3>
+            <img src="/src/images/multi-series-line-chart.png" alt="New User Activity Chart" />
+          </div>
+          <div className="chart">
+            <h3>Recipe Posting Trends</h3>
+            <img src="/src/images/multi-series-line-chart.png" alt="Recipe Posting Trends Chart" />
+          </div>
+        </section>
+      </main> 
     </div>
   );
 };

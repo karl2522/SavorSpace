@@ -15,13 +15,15 @@ import ProfilePage from './components/ProfilePage';
 import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
+import AdminManageAccounts from './components/AdminManageAccounts';
 import './styles/MainStyles.css';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/admin/dashboard', '/admin/ManageUser'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
+
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
@@ -205,6 +207,7 @@ const App = () => {
           <Route path="edit-profile" element={<EditProfileSettings />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/admin/ManageUser" element={<AdminManageAccounts />} />
           <Route
            path="/admin/login" 
            element={<PrivateRoute path="/admin/login" element={<AdminLogin />} isAuthenticated={isAuthenticated} role={role} />} />
