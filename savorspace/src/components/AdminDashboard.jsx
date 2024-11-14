@@ -50,7 +50,7 @@ const AdminDashboard = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      }); 
   
       if (response.headers['content-type'] && response.headers['content-type'].includes('application/json')) {
         const userList = response.data.filter(user => user.role === 'USER');
