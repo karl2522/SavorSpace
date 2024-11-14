@@ -21,7 +21,7 @@ import './styles/MainStyles.css';
 const Navbar = ({ profilePic, handleLogout, isAuthenticated, username }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/profile/settings','/admin/dashboard', '/admin/ManageUser'].includes(location.pathname);
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/admin/dashboard', '/admin/ManageUser'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
