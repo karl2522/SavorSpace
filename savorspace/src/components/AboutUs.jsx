@@ -23,7 +23,7 @@ export default function AboutUs() {
     {
       name: "Vaness Capuras",
       role: "UI/UX Designer",
-      description: "Alexandra is a creative UI/UX Designer with a passion for crafting intuitive and visually appealing user experiences. She has a strong background in graphic design and front-end development.",
+      description: "Vaness brings a fresh perspective to UI/UX design, combining her graphic design expertise with a user-centered approach to create seamless and engaging digital experiences.",
       expertise: "Sketch Figma AdobeXD CSS HTML",
       projects: [
         "Website Redesign for Tech Company",
@@ -35,7 +35,7 @@ export default function AboutUs() {
     {
       name: "Mary Therese Pejana",
       role: "UI/UX Designer",
-      description: "Alexandra is a creative UI/UX Designer with a passion for crafting intuitive and visually appealing user experiences. She has a strong background in graphic design and front-end development.",
+      description: "Hana has a keen eye for detail and a deep understanding of user behavior, which she leverages to build interfaces that are both functional and aesthetically pleasing.",
       expertise: "Sketch Figma AdobeXD CSS HTML",
       projects: [
         "Website Redesign for Tech Company",
@@ -47,7 +47,7 @@ export default function AboutUs() {
     {
       name: "John Karl Gadiane",
       role: "UI/UX Designer",
-      description: "Alexandra is a creative UI/UX Designer with a passion for crafting intuitive and visually appealing user experiences. She has a strong background in graphic design and front-end development.",
+      description: "John Karl is a forward-thinking designer known for his ability to blend creativity with technical expertise, resulting in intuitive and efficient user interfaces.",
       expertise: "Sketch Figma AdobeXD CSS HTML",
       projects: [
         "Website Redesign for Tech Company",
@@ -59,7 +59,7 @@ export default function AboutUs() {
     { 
       name: "Jes Chavez",
       role: "UI/UX Designer",
-      description: "Alexandra is a creative UI/UX Designer with a passion for crafting intuitive and visually appealing user experiences. She has a strong background in graphic design and front-end development.",
+      description: "Jes is dedicated to crafting user experiences that are not only visually appealing but also accessible, creating products that serve diverse user needs.",
       expertise: "Sketch Figma AdobeXD CSS HTML",
       projects: [
         "Website Redesign for Tech Company",
