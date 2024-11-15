@@ -7,7 +7,6 @@ const EditProfileSettings = () => {
     const [setUsername] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
-    const [showModal, setShowModal] = useState(false);
     const [userId, setUserId] = useState(null);
     const [formData, setFormData] = useState({
         fullName: '',

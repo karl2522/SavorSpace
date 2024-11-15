@@ -98,7 +98,7 @@
     background-color: #d6589f;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     font-weight: 500;
     transition: color 0.3s ease, transform 0.3s ease; 
@@ -113,7 +113,7 @@
     width: 100%;
     background-color: #d6589f;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px;
     color: #fff;
     font-size: 14px;
@@ -125,6 +125,8 @@
   .reactivate-btn:hover {
     background-color: #ce2786;
   }
+
+  
 
   @media (max-width: 1574px) {
     .form-section-login h2 {
