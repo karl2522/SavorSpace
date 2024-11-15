@@ -17,13 +17,14 @@ import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
 import ReactivateAccount from './components/ReactivateAccount';
 import AccountDeactivation from './components/DeactivationAccount';
+import AdminManageAccounts from './components/AdminManageAccounts';
 import './styles/MainStyles.css';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/admin/ManageUser','/admin/dashboard'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
@@ -233,6 +234,9 @@ const App = () => {
           <Route 
           path="/admin/dashboard" 
           element={<AdminDashboard />} />
+          <Route 
+          path="/admin/ManageUser" 
+          element={<AdminManageAccounts />} />
           <Route path="/about-us" element={<AboutUs />} /> {}
           <Route path='/404' element={<NotFound />} />
           <Route path='/reactivate-account' element={<ReactivateAccount />} />
