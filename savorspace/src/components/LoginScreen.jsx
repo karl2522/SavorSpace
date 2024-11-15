@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoLogoGithub } from "react-icons/io5";
-import { useNavigate, useLocation} from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import '../styles/LoginStyles.css';
 
@@ -150,13 +150,12 @@ const Login = ({ onLogin }) => {
             </button>
             <button onClick={handleGithubLogin} className="github-btn">
               <IoLogoGithub />
-              <span>Github</span>
-            </button>
-
-            <button onClick={handleReactivate} className='reactivate-btn'>
-              <span>Reactivate Account</span>
+              <span>Github</span> 
             </button>
           </div>
+          <button onClick={handleReactivate} className='reactivate-btn'>
+              <span>Reactivate Account</span>
+            </button>
         </div>
       </div>
     </div>

@@ -1,25 +1,22 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/DeActivateStyles.css';
 
 const AccountDeactivation = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
     const handleDeactivate = async (e) => {
         e.preventDefault();
         
-        // Show confirmation dialog
-        const confirmed = window.confirm(
-            "Are you sure you want to deactivate your account? You won't be able to access your account until you reactivate it."
-        );
+        setShowModal(true);  // Show the modal after the user submits the form
+    };
 
-        if (!confirmed) {
-            return;
-        }
-
+    const confirmDeactivation = async () => {
         setIsLoading(true);
         setError('');
 
@@ -55,7 +52,12 @@ const AccountDeactivation = () => {
             setError(error.message);
         } finally {
             setIsLoading(false);
+            setShowModal(false);  
         }
+    };
+
+    const handleCancelDeactivation = () => {
+        setShowModal(false); 
     };
 
     return (
@@ -70,7 +72,7 @@ const AccountDeactivation = () => {
                 </ul>
             </div>
             <form onSubmit={handleDeactivate}>
-                <div className="form-group">
+                <div className="form-deactivate">
                     <label>Email</label>
                     <input
                         type="email"
@@ -79,7 +81,7 @@ const AccountDeactivation = () => {
                         required
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-deactivate">
                     <label>Password</label>
                     <input
                         type="password"
@@ -96,7 +98,19 @@ const AccountDeactivation = () => {
                 >
                     {isLoading ? 'Deactivating...' : 'Deactivate Account'}
                 </button>
+                <button className="deactivate-cancel" onClick={() => navigate('/profile')}>Cancel Deactivation</button>
             </form>
+            {showModal && (
+                <div className="modal-deactivate">
+                    <div className="modal-content">
+                        <h3>Are you sure you want to deactivate your account?</h3>
+                        <div className="button-container">
+                            <button className="yes-button" onClick={confirmDeactivation}>YES</button>
+                            <button className="no-button" onClick={handleCancelDeactivation}>NO</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/DeActivateStyles.css';
 
 const AccountReactivation = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
     const handleReactivate = async (e) => {
         e.preventDefault();
+        setShowModal(true);
+
+    };
+
+
+    const confirmReactivation = async () => {
         setIsLoading(true);
         setError('');
 
@@ -44,14 +52,19 @@ const AccountReactivation = () => {
             setError(error.message);
         } finally {
             setIsLoading(false);
+            setShowModal(false);
         }
     };
+
+    const handleCancelReactivation = () => {
+        setShowModal(false);
+    }
 
     return (
         <div className="reactivate-account-container">
             <h2>Reactivate Your Account</h2>
             <form onSubmit={handleReactivate}>
-                <div className="form-group">
+                <div className="form-deactivate">
                     <label>Email</label>
                     <input
                         type="email"
@@ -60,7 +73,7 @@ const AccountReactivation = () => {
                         required
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-deactivate">
                     <label>Password</label>
                     <input
                         type="password"
@@ -70,10 +83,22 @@ const AccountReactivation = () => {
                     />
                 </div>
                 {error && <div className="error-message">{error}</div>}
-                <button type="submit" disabled={isLoading}>
+                <button className="reactivate-btn1" type="submit" disabled={isLoading}>
                     {isLoading ? 'Reactivating...' : 'Reactivate Account'}
                 </button>
+                <button className="reactivate-cancel" onClick={() => navigate('/login')}>Cancel Reactivation</button>
             </form>
+            {showModal && (
+                <div className="modal-deactivate">
+                    <div className="modal-content">
+                        <h3>Are you sure you want to deactivate your account?</h3>
+                        <div className="button-container">
+                            <button className="yes-button-reactivate" onClick={confirmReactivation}>YES</button>
+                            <button className="no-button-reactivate" onClick={handleCancelReactivation}>NO</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

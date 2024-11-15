@@ -140,7 +140,7 @@
     margin-top: 50px;
     font-size: 16px;
     border-radius: 12px;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .upload-button:hover {
@@ -148,3 +148,19 @@
     color: white;
 }
 
+.deact-btn {
+    margin-top: 30px;
+    background-color: #D6589F;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.deact-btn:hover {
+    background-color: #ce2786;
+}

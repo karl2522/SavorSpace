@@ -4,9 +4,10 @@ import '../styles/EditProfileStyles.css';
 
 const EditProfileSettings = () => {
     const [profilePic, setProfilePic] = useState(null);
-    const [username, setUsername] = useState('');
+    const [setUsername] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [showModal, setShowModal] = useState(false);
     const [userId, setUserId] = useState(null);
     const [formData, setFormData] = useState({
         fullName: '',
@@ -128,12 +129,9 @@ const EditProfileSettings = () => {
 
     const handleDeactivate = (e) => {
         e.preventDefault();
-
-        if(window.confirm('Are you sure you want to proceed to account deactivation? This will temporarly disable your account!')) {
-            navigate('/deactivate-account');
-        }
         navigate('/deactivate-account');
-      }
+      };
+
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -347,8 +345,8 @@ const EditProfileSettings = () => {
                             >
                             Cancel
                             </button>
-                        <button onClick={handleDeactivate}>Deactivate the account</button>
                         </div>
+                        <button className="deact-btn"onClick={handleDeactivate}>Deactivate Account</button>
                     </form>
                 </div>
             </div>
