@@ -15,6 +15,8 @@ import ProfilePage from './components/ProfilePage';
 import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
+import ReactivateAccount from './components/ReactivateAccount';
+import AccountDeactivation from './components/DeactivationAccount';
 import './styles/MainStyles.css';
 
 // Navbar Component
@@ -233,6 +235,8 @@ const App = () => {
           element={<AdminDashboard />} />
           <Route path="/about-us" element={<AboutUs />} /> {}
           <Route path='/404' element={<NotFound />} />
+          <Route path='/reactivate-account' element={<ReactivateAccount />} />
+          <Route path='/deactivate-account' element={<AccountDeactivation />} />
         </Routes>
       </div>
     </Router>

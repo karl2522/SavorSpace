@@ -126,6 +126,15 @@ const EditProfileSettings = () => {
         }));
     };
 
+    const handleDeactivate = (e) => {
+        e.preventDefault();
+
+        if(window.confirm('Are you sure you want to proceed to account deactivation? This will temporarly disable your account!')) {
+            navigate('/deactivate-account');
+        }
+        navigate('/deactivate-account');
+      }
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -338,6 +347,7 @@ const EditProfileSettings = () => {
                             >
                             Cancel
                             </button>
+                        <button onClick={handleDeactivate}>Deactivate the account</button>
                         </div>
                     </form>
                 </div>

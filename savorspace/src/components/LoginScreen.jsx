@@ -72,6 +72,10 @@ const Login = ({ onLogin }) => {
     window.location.href = 'http://localhost:8080/oauth2/authorization/github';
   };
 
+  const handleReactivate = () => {
+    navigate('/reactivate-account');
+  }
+
   const validate = () => {
     const errors = {};
     if (!loginData.email) errors.email = 'Email is required';
@@ -147,6 +151,10 @@ const Login = ({ onLogin }) => {
             <button onClick={handleGithubLogin} className="github-btn">
               <IoLogoGithub />
               <span>Github</span>
+            </button>
+
+            <button onClick={handleReactivate} className='reactivate-btn'>
+              <span>Reactivate Account</span>
             </button>
           </div>
         </div>
