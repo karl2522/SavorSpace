@@ -4,7 +4,9 @@ import { Link, Route, BrowserRouter as Router, Routes, useLocation, useNavigate 
 import AboutUs from './components/AboutUs';
 import AdminDashboard from './components/AdminDashboard';
 import AdminLogin from './components/AdminLogin';
+import AdminManageAccounts from './components/AdminManageAccounts';
 import AdminSignup from './components/AdminSignup';
+import AccountDeactivation from './components/DeactivationAccount';
 import EditProfileSettings from './components/EditProfileSettings';
 import HomePage from './components/Homepage';
 import LandingPage from './components/LandingPage';
@@ -12,19 +14,17 @@ import Login from './components/LoginScreen';
 import NotFound from './components/NotFound';
 import PrivateRoute from './components/PrivateRoute';
 import ProfilePage from './components/ProfilePage';
+import ReactivateAccount from './components/ReactivateAccount';
 import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
-import ReactivateAccount from './components/ReactivateAccount';
-import AccountDeactivation from './components/DeactivationAccount';
-import AdminManageAccounts from './components/AdminManageAccounts';
 import './styles/MainStyles.css';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/admin/ManageUser','/admin/dashboard'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
