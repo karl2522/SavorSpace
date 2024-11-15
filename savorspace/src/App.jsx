@@ -27,6 +27,17 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
   const [showDropdown, setShowDropdown] = useState(false);
 
+  const defaultProfilePic = "/src/images/defaultProfiles.png";
+  const [imgSrc, setImgSrc] = useState(profilePic || defaultProfilePic);
+
+  useEffect(() => {
+    setImgSrc(profilePic || defaultProfilePic);
+  }, [profilePic]);
+
+  const handleImageError = () => {
+    console.log("Image failed to load, using default");
+    setImgSrc(defaultProfilePic);
+  }
   const toggleDropdown = useCallback((e) => {
     e.stopPropagation();
     setShowDropdown(prevState => !prevState);
@@ -86,10 +97,11 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
             <div className="mainpage-buttons">
               <div className="profile-pic-container">
                 <img 
-                  src={profilePic || "/src/images/defaultProfile.png"} 
+                  src={imgSrc} 
                   alt="Profile" 
                   className="navbar-profile-pic" 
                   onClick={toggleDropdown}
+                  onError={handleImageError}
                 />
                 {showDropdown && (
                   <div className="dropdown-profile">
@@ -136,17 +148,20 @@ const App = () => {
       });
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
-      
-      // Check if the URL is absolute (starts with http) or relative, and format it accordingly
-      const profilePicUrl = data.imageURL.startsWith('http') 
-        ? data.imageURL 
-        : `http://localhost:8080${data.imageURL}`;
-      
-      setProfilePic(profilePicUrl);
+
       setUsername(data.fullName);
       setRole(data.role);
       setIsAuthenticated(true);
-
+      
+      // Check if the URL is absolute (starts with http) or relative, and format it accordingly
+      if(data.imageURL) {
+        const profilePicURL = data.imageURL.startsWith('http')
+          ? data.imageURL
+          : `http://localhost:8080${data.imageURL}`;
+        setProfilePic(profilePicURL);
+      }else {
+        setProfilePic(null);
+      }
 
       if(data.role) {
         console.log('User role:', data.role);

@@ -12,6 +12,19 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const [joinDate, setJoinDate] = useState('');
 
+  const defaultProfilePic = "/src/images/defaultProfiles.png";
+
+  const [imgSrc, setImgSrc] = useState(profilePic || defaultProfilePic);
+
+  useEffect(() => {
+    setImgSrc(profilePic || defaultProfilePic);
+  }, [profilePic]);
+
+  const handleImageError = () => {
+    console.log("Image failed to load, using default");
+    setImgSrc(defaultProfilePic);
+  }
+
 
   const handleSettings = () => {
     navigate('/profile/settings/general');
@@ -51,14 +64,21 @@ export default function ProfilePage() {
         };
 
         setJoinDate(formatDate(data.createdAt));
-        const profilePicUrl = data.imageURL.startsWith('http') 
-          ? data.imageURL 
-          : `http://localhost:8080${data.imageURL}`;
-        
-        setProfilePic(profilePicUrl);
+
         setUsername(data.fullName);
         setRole(data.role);
         setIsAuthenticated(true);
+
+        if(data.imageURL) {
+          const profilePicUrl = data.imageURL.startsWith('http') 
+            ? data.imageURL 
+            : `http://localhost:8080${data.imageURL}`;
+          console.log('Profile pic URL:', profilePicUrl);
+          setProfilePic(profilePicUrl);
+        }else {
+          console.log('Profile pic not found');
+          setProfilePic(null);
+        }
       } catch (error) {
         console.error('Failed to fetch profile data:', error);
       }
@@ -83,8 +103,9 @@ export default function ProfilePage() {
         <div className="profile-main">
           <div className="profile-avatar">
             <img 
-              src={profilePic || "/src/images/omen.png"} 
-              alt="Profile" 
+              src={imgSrc}
+              alt="Profile"
+              onError={handleImageError} 
             />
             <button className="edit-profile" onClick={handleEditProfile }>Edit Profile</button>
           </div>

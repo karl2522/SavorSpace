@@ -22,7 +22,22 @@ const EditProfileSettings = () => {
 
     const [passwordError, setPasswordError] = useState('');
     const [updateMessage, setUpdateMessage] = useState('');
-        
+    
+    const defaultProfilePic = "/src/images/defaultProfiles.png";
+    
+  
+    const [imgSrc, setImgSrc] = useState(profilePic || defaultProfilePic);
+
+    const handleImageError = () => {
+        console.log("Image failed to load, using default");
+        setImgSrc(defaultProfilePic);
+    }
+    useEffect(() => {
+        setImgSrc(profilePic || defaultProfilePic);
+    }, [profilePic]);
+
+
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -80,14 +95,19 @@ const EditProfileSettings = () => {
 
             const data = await response.json();
 
-            const profilePicUrl = data.imageURL?.startsWith('http')
-                ? data.imageURL
-                : `http://localhost:8080${data.imageURL}`;
-
-            setProfilePic(profilePicUrl);
             setUsername(data.fullName);
             setUserId(data.id);
             setIsAuthenticated(true);
+
+            if(data.imageURL) {
+                const profilePicUrl = data.imageURL?.startsWith('http')
+                    ? data.imageURL
+                    : `http://localhost:8080${data.imageURL}`;
+                setProfilePic(profilePicUrl);
+            }else {
+                setProfilePic(null);
+            }
+            
             setFormData({
                 fullName: data.fullName,
                 email: data.email,
@@ -217,7 +237,7 @@ const EditProfileSettings = () => {
         <div className="edit-profile-container">
                 <div className="edit-profile-main">
                     <div className="edit-profile-avatar">
-                        <img src={profilePic || "/src/images/omen.png"} alt="Profile" />
+                        <img src={imgSrc} alt="Profile" onError={handleImageError} />
                         <input
                                 type="file"
                                 accept="image/*"
