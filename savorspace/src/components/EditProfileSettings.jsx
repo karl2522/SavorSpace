@@ -199,7 +199,7 @@ const EditProfileSettings = () => {
             const updatedData = await response.json();
             setUsername(updatedData.fullName);
 
-            const newProfilePicUrl = updatedData.imageURL?.startsWith('http')
+            const newProfilePicUrl = updatedData.imageURL?.startsWith('https')
                 ? updatedData.imageURL
                 : `http://localhost:8080${updatedData.imageURL}`;
             setProfilePic(newProfilePicUrl);
@@ -207,7 +207,6 @@ const EditProfileSettings = () => {
             setSelectedFile(null);
             fetchProfileData();
             setUpdateMessage('Profile updated successfully');
-
         } catch (error) {
             console.error('Error updating profile:', error);
             setPasswordError(error.message);
