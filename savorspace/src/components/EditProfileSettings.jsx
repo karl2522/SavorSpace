@@ -6,6 +6,7 @@ const EditProfileSettings = () => {
     const [profilePic, setProfilePic] = useState(null);
     const [username, setUsername] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
     const [userId, setUserId] = useState(null);
     const [formData, setFormData] = useState({
         fullName: '',
@@ -21,7 +22,22 @@ const EditProfileSettings = () => {
 
     const [passwordError, setPasswordError] = useState('');
     const [updateMessage, setUpdateMessage] = useState('');
-        
+    
+    const defaultProfilePic = "/src/images/defaultProfiles.png";
+    
+  
+    const [imgSrc, setImgSrc] = useState(profilePic || defaultProfilePic);
+
+    const handleImageError = () => {
+        console.log("Image failed to load, using default");
+        setImgSrc(defaultProfilePic);
+    }
+    useEffect(() => {
+        setImgSrc(profilePic || defaultProfilePic);
+    }, [profilePic]);
+
+
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -79,14 +95,19 @@ const EditProfileSettings = () => {
 
             const data = await response.json();
 
-            const profilePicUrl = data.imageURL?.startsWith('http')
-                ? data.imageURL
-                : `http://localhost:8080${data.imageURL}`;
-
-            setProfilePic(profilePicUrl);
             setUsername(data.fullName);
             setUserId(data.id);
             setIsAuthenticated(true);
+
+            if(data.imageURL) {
+                const profilePicUrl = data.imageURL?.startsWith('http')
+                    ? data.imageURL
+                    : `http://localhost:8080${data.imageURL}`;
+                setProfilePic(profilePicUrl);
+            }else {
+                setProfilePic(null);
+            }
+            
             setFormData({
                 fullName: data.fullName,
                 email: data.email,
@@ -105,16 +126,22 @@ const EditProfileSettings = () => {
         }));
     };
 
+    const handleDeactivate = (e) => {
+        e.preventDefault();
+
+        if(window.confirm('Are you sure you want to proceed to account deactivation? This will temporarly disable your account!')) {
+            navigate('/deactivate-account');
+        }
+        navigate('/deactivate-account');
+      }
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
+            setSelectedFile(file); // update it dawg
             const reader = new FileReader();
             reader.onloadend = () => {
-                setProfilePic(reader.result);
-                setFormData(prev => ({
-                    ...prev,
-                    imageURL: reader.result
-                }));
+                setProfilePic(reader.result);// para set yung image
             };
             reader.readAsDataURL(file);
         }
@@ -171,19 +198,27 @@ const EditProfileSettings = () => {
             if (!meResponse.ok) throw new Error('Failed to get user data');
             const userData = await meResponse.json();
 
-            const updateData = {
+            const formDataToSend = new FormData();
+
+            const userUpdatedData = {
                 fullName: formData.fullName,
                 email: formData.email,
-                imageURL: formData.imageURL
             };
+            formDataToSend.append('user', new Blob([JSON.stringify(userUpdatedData)], {
+                type: 'application/json'
+            }));
+
+            if(selectedFile) {
+                formDataToSend.append('profilePic', selectedFile);
+            }
 
             const response = await fetch(`http://localhost:8080/users/${userData.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    //'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(updateData)
+                body: formDataToSend
             });
 
             if (!response.ok) {
@@ -192,10 +227,15 @@ const EditProfileSettings = () => {
 
             const updatedData = await response.json();
             setUsername(updatedData.fullName);
-            setProfilePic(updatedData.imageURL);
+
+            const newProfilePicUrl = updatedData.imageURL?.startsWith('https')
+                ? updatedData.imageURL
+                : `http://localhost:8080${updatedData.imageURL}`;
+            setProfilePic(newProfilePicUrl);
+
+            setSelectedFile(null);
             fetchProfileData();
             setUpdateMessage('Profile updated successfully');
-
         } catch (error) {
             console.error('Error updating profile:', error);
             setPasswordError(error.message);
@@ -206,7 +246,7 @@ const EditProfileSettings = () => {
         <div className="edit-profile-container">
                 <div className="edit-profile-main">
                     <div className="edit-profile-avatar">
-                        <img src={profilePic || "/src/images/omen.png"} alt="Profile" />
+                        <img src={imgSrc} alt="Profile" onError={handleImageError} />
                         <input
                                 type="file"
                                 accept="image/*"
@@ -220,7 +260,7 @@ const EditProfileSettings = () => {
                         </button>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="edit-profile-form">
+                    <form onSubmit={handleSubmit} className="edit-profile-form" encType="multipart/form-data">
                         <div className="form-names">
                             <div className="form-profile">
                                 <label>Full Name</label>
@@ -307,6 +347,7 @@ const EditProfileSettings = () => {
                             >
                             Cancel
                             </button>
+                        <button onClick={handleDeactivate}>Deactivate the account</button>
                         </div>
                     </form>
                 </div>

@@ -102,7 +102,7 @@ export default function AdminLogin() {
             />
             {errors.password && <span className="error">{errors.password}</span>}
           </div>
-          <button type="submit" className="sign-in-btn">
+          <button type="submit" className="sign-in-btn-login">
             Sign in
           </button>
         </form>

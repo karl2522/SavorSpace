@@ -15,18 +15,32 @@ import ProfilePage from './components/ProfilePage';
 import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
+import ReactivateAccount from './components/ReactivateAccount';
+import AccountDeactivation from './components/DeactivationAccount';
+import AdminManageAccounts from './components/AdminManageAccounts';
 import './styles/MainStyles.css';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
-  const isMainPage = ['/homepage', '/recipes', '/community', '/about-us'].includes(location.pathname);
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/admin/ManageUser','/admin/dashboard'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
+  const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
   const [showDropdown, setShowDropdown] = useState(false);
 
+  const defaultProfilePic = "/src/images/defaultProfiles.png";
+  const [imgSrc, setImgSrc] = useState(profilePic || defaultProfilePic);
+
+  useEffect(() => {
+    setImgSrc(profilePic || defaultProfilePic);
+  }, [profilePic]);
+
+  const handleImageError = () => {
+    console.log("Image failed to load, using default");
+    setImgSrc(defaultProfilePic);
+  }
   const toggleDropdown = useCallback((e) => {
     e.stopPropagation();
     setShowDropdown(prevState => !prevState);
@@ -86,10 +100,11 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
             <div className="mainpage-buttons">
               <div className="profile-pic-container">
                 <img 
-                  src={profilePic || "/src/images/defaultProfile.png"} 
+                  src={imgSrc} 
                   alt="Profile" 
                   className="navbar-profile-pic" 
                   onClick={toggleDropdown}
+                  onError={handleImageError}
                 />
                 {showDropdown && (
                   <div className="dropdown-profile">
@@ -136,17 +151,20 @@ const App = () => {
       });
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
-      
-      // Check if the URL is absolute (starts with http) or relative, and format it accordingly
-      const profilePicUrl = data.imageURL.startsWith('http') 
-        ? data.imageURL 
-        : `http://localhost:8080${data.imageURL}`;
-      
-      setProfilePic(profilePicUrl);
+
       setUsername(data.fullName);
       setRole(data.role);
       setIsAuthenticated(true);
-
+      
+      // Check if the URL is absolute (starts with http) or relative, and format it accordingly
+      if(data.imageURL) {
+        const profilePicURL = data.imageURL.startsWith('http')
+          ? data.imageURL
+          : `http://localhost:8080${data.imageURL}`;
+        setProfilePic(profilePicURL);
+      }else {
+        setProfilePic(null);
+      }
 
       if(data.role) {
         console.log('User role:', data.role);
@@ -216,8 +234,13 @@ const App = () => {
           <Route 
           path="/admin/dashboard" 
           element={<AdminDashboard />} />
+          <Route 
+          path="/admin/ManageUser" 
+          element={<AdminManageAccounts />} />
           <Route path="/about-us" element={<AboutUs />} /> {}
           <Route path='/404' element={<NotFound />} />
+          <Route path='/reactivate-account' element={<ReactivateAccount />} />
+          <Route path='/deactivate-account' element={<AccountDeactivation />} />
         </Routes>
       </div>
     </Router>

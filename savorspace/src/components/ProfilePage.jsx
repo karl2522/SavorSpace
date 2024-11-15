@@ -10,6 +10,20 @@ export default function ProfilePage() {
   const [role, setRole] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const [joinDate, setJoinDate] = useState('');
+
+  const defaultProfilePic = "/src/images/defaultProfiles.png";
+
+  const [imgSrc, setImgSrc] = useState(profilePic || defaultProfilePic);
+
+  useEffect(() => {
+    setImgSrc(profilePic || defaultProfilePic);
+  }, [profilePic]);
+
+  const handleImageError = () => {
+    console.log("Image failed to load, using default");
+    setImgSrc(defaultProfilePic);
+  }
 
 
   const handleSettings = () => {
@@ -40,15 +54,31 @@ export default function ProfilePage() {
         if (!response.ok) throw new Error('Network response was not ok');
         
         const data = await response.json();
-        
-        const profilePicUrl = data.imageURL.startsWith('http') 
-          ? data.imageURL 
-          : `http://localhost:8080${data.imageURL}`;
-        
-        setProfilePic(profilePicUrl);
+        const formatDate = (dateString) => {
+          const date = new Date(dateString);
+          return `Joined ${date.toLocaleString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+          })}`;
+        };
+
+        setJoinDate(formatDate(data.createdAt));
+
         setUsername(data.fullName);
         setRole(data.role);
         setIsAuthenticated(true);
+
+        if(data.imageURL) {
+          const profilePicUrl = data.imageURL.startsWith('http') 
+            ? data.imageURL 
+            : `http://localhost:8080${data.imageURL}`;
+          console.log('Profile pic URL:', profilePicUrl);
+          setProfilePic(profilePicUrl);
+        }else {
+          console.log('Profile pic not found');
+          setProfilePic(null);
+        }
       } catch (error) {
         console.error('Failed to fetch profile data:', error);
       }
@@ -73,14 +103,15 @@ export default function ProfilePage() {
         <div className="profile-main">
           <div className="profile-avatar">
             <img 
-              src={profilePic || "/src/images/omen.png"} 
-              alt="Profile" 
+              src={imgSrc}
+              alt="Profile"
+              onError={handleImageError} 
             />
             <button className="edit-profile" onClick={handleEditProfile }>Edit Profile</button>
           </div>
           <div className="profile-details">
             <h2>Hi, {username || 'User001'}</h2>
-            <p className="join-date">Joined June 22, 2024</p>
+            <p className="join-date">{joinDate}</p>
             <p className="profession">{role || 'Chef'}</p>
           </div>
           <div className="stats-container">
