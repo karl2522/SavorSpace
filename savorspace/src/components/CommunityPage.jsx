@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../styles/PostingPage.css';
 
+
+const BACKEND_URL = 'http://localhost:8080';
+
 const PostingPage = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
@@ -126,85 +129,331 @@ const PostingPage = () => {
     }
   };
 
-
-  const StarRating = ({ rating, onRatingChange, readOnly = false }) => {
-    const [hover, setHover] = useState(0);
-    const stars = [1, 2, 3, 4, 5];
-
-    return (
-        <div className="star-rating">
-            {stars.map((star) => (
-                <span 
-                    key={star}
-                    className={`star 
-                        ${star <= (hover || rating) ? 'filled' : ''} 
-                        ${readOnly ? 'read-only' : ''}`
-                    }
-                    onClick={() => !readOnly && onRatingChange(star)}
-                    onMouseEnter={() => !readOnly && setHover(star)}
-                    onMouseLeave={() => !readOnly && setHover(0)}
-                >
-                    ★
-                </span>
-            ))}
-            <span className="rating-number">({rating})</span>
-        </div>
-    );
-};
-
-  const RecipeComments = ({ comments, onAddComment }) => {
+const RecipeComments = ({ recipeId }) => {
+    const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const token = localStorage.getItem('authToken');
+    const [currentUser, setCurrentUser] = useState(null);
 
-    const handleSubmit = (e) => {
+    const fetchCurrentUser = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/users/me', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+
+            if(response.ok) {
+                const userData = await response.json();
+                setCurrentUser(userData);
+            }
+        }catch(error) {
+            console.error('Failed to fetch current user:', error);
+        }
+    }
+
+    const fetchComments = async () => {
+      if (!recipeId) {
+          console.error('No recipe ID provided');
+          return;
+      }
+      
+      try {
+          console.log('Fetching comments for recipe:', recipeId);
+          console.log('Using token:', token ? 'Token present' : 'No token');
+  
+          const response = await fetch(`http://localhost:8080/api/comments/recipe/${recipeId}`, {
+              method: 'GET',
+              headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              }
+          });
+  
+          console.log('Response status:', response.status);
+          const responseText = await response.text();
+          console.log('Raw response text:', responseText);
+  
+          if (!response.ok) {
+              throw new Error(`Server error: ${responseText}`);
+          }
+  
+          let data;
+          try {
+              data = JSON.parse(responseText);
+              console.log('Parsed comments:', data);
+          } catch (e) {
+              console.error('Failed to parse JSON:', e);
+              throw new Error('Invalid JSON response from server');
+          }
+  
+          // Transform the data to match the CommentDTO structure
+          const formattedComments = Array.isArray(data) ? data.map(comment => ({
+              commentID: comment.commentID, // Match the case from CommentDTO
+              content: comment.content,
+              createdAt: comment.createdAt, // Match the case from CommentDTO
+              flagged: comment.flagged,
+              recipeID: comment.recipeID, // Match the case from CommentDTO
+              userID: comment.userID, // Match the case from CommentDTO
+              username: comment.username,
+              userEmail: comment.userEmail,
+              userImageURL: comment.userImageURL || '/src/images/defaultProfiles.png'
+          })) : [];
+  
+          console.log('Formatted comments:', formattedComments);
+          setComments(formattedComments);
+          
+      } catch (error) {
+          console.error('Error fetching comments:', error);
+          setComments([]);
+      }
+  };
+
+  useEffect(() => {
+    if(recipeId) {
+        console.log('Fetching comments for recipe:', recipeId);
+        fetchComments();
+    }
+  }, [recipeId]);
+
+  useEffect(() => {
+    if(token) {
+        fetchCurrentUser();
+    }
+  }, [token]);
+  
+    
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (newComment.trim()) {
-            onAddComment(newComment);
+        if (!token || !recipeId) {
+            alert('Please login to comment');
+            return;
+        }
+        if (!newComment.trim()) return;
+    
+        setIsLoading(true);
+        try {
+            const commentData = {
+                content: newComment.trim(),
+                recipeID: parseInt(recipeId)
+            };
+            
+            console.log('Sending comment data:', commentData);
+    
+            const response = await fetch(`http://localhost:8080/api/comments/recipe/${recipeId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(commentData)
+            });
+    
+            const responseText = await response.text();
+            console.log('Post comment response:', responseText);
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}, message: ${responseText}`);
+            }
+    
             setNewComment('');
+            await fetchComments();
+        } catch (error) {
+            console.error('Error posting comment:', error);
+            alert('Failed to post comment. Please try again.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    return (
-        <div className="recipe-comments">
-            <h4>Comments</h4>
-            
-            {/* Add Comment Form */}
+    useEffect(() => {
+      if (comments.length > 0) {
+          comments.forEach(comment => {
+              console.log(`Comment ${comment.commentID} image details:`, {
+                  userID: comment.userID,
+                  username: comment.username,
+                  imageURL: comment.userImageURL,
+                  fullImageURL: comment.userImageURL ? `${BACKEND_URL}${comment.userImageURL}` : null
+              });
+          });
+      }
+  }, [comments]);
+    const handleDeleteComment = async (commentId) => {
+        if (!token) {
+            alert('Please login to delete comments');
+            return;
+        }
+
+        if (window.confirm('Are you sure you want to delete this comment?')) {
+            try {
+                const response = await fetch(`http://localhost:8080/api/comments/${commentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!response.ok) {
+                  const errorData = await response.json();
+                  throw new Error(errorData.message || 'Failed to delete comment');
+              }
+      
+              // Remove the deleted comment from the state
+              setComments(prevComments => 
+                  prevComments.filter(comment => comment.commentID !== commentId)
+              );
+            } catch (error) {
+                console.error('Error deleting comment:', error);
+            }
+        }
+    };
+
+    const formatDate = (dateTime) => {
+      if (!dateTime) return 'Invalid date';
+      
+      try {
+          let date;
+          
+          // If dateTime is an array [year, month, day, hour, minute, second, nano]
+          if (Array.isArray(dateTime)) {
+              const [year, month, day, hour, minute] = dateTime;
+              // Note: JavaScript months are 0-based, so subtract 1 from month
+              date = new Date(year, month - 1, day, hour, minute);
+          } else {
+              // If it's a string, parse it directly
+              date = new Date(dateTime);
+          }
+  
+          // Check if date is valid
+          if (isNaN(date.getTime())) {
+              console.error('Invalid date value:', dateTime);
+              return 'Invalid date';
+          }
+  
+          return date.toLocaleString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+          });
+      } catch (error) {
+          console.error('Date formatting error:', error, dateTime);
+          return 'Invalid date';
+      }
+  };
+
+  return (
+    <div className="recipe-comments">
+        <h4>Comments</h4>
+
+        {/* Add Comment Form - Only show if user is logged in */}
+        {token ? (
             <form onSubmit={handleSubmit} className="comment-form">
                 <textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     placeholder="Add a comment..."
                     className="comment-input"
+                    disabled={isLoading}
                 />
-                <button type="submit" className="comment-submit">
-                    Post Comment
+                <button 
+                    type="submit" 
+                    className="comment-submit"
+                    disabled={isLoading || !newComment.trim()}
+                >
+                    {isLoading ? 'Posting...' : 'Post Comment'}
                 </button>
             </form>
+        ) : (
+            <p>Please login to comment</p>
+        )}
 
-            {/* Comments List */}
-            <div className="comments-list">
-                {comments.map((comment, index) => (
-                    <div key={index} className="comment">
+        {/* Comments List */}
+        <div className="comments-list">
+            {comments.length === 0 ? (
+                <p>No comments yet. Be the first to comment!</p>
+            ) : (
+                comments.map((comment) => (
+                    <div key={comment.commentID} className="comment">
                         <div className="comment-header">
                             <img
-                                src={comment.user.imageURL || "/src/images/defaultProfiles.png"}
-                                alt={comment.user.username}
+                                src={comment.userImageURL ? `${BACKEND_URL}${comment.userImageURL}` : '/src/images/defaultProfiles.png'}
+                                alt={comment.username || 'User'}
                                 className="comment-user-pic"
+                                onError={(e) => {
+                                    console.error('Failed to load image:', comment.userImageURL);
+                                    e.target.src = "/src/images/defaultProfiles.png";
+                                }}
                             />
-                            <span className="comment-username">{comment.user.username}</span>
-                            <span className="comment-date">{new Date(comment.date).toLocaleDateString()}</span>
+                            <span className="comment-username">
+                                {comment.username || comment.userEmail || 'Anonymous'}
+                            </span>
+                            <span className="comment-date">
+                                {formatDate(comment.createdAt)}
+                            </span>
+                            {currentUser && currentUser.id === comment.userID && (
+                                <button 
+                                    className="delete-comment"
+                                    onClick={() => handleDeleteComment(comment.commentID)}
+                                >
+                                    Delete
+                                </button>
+                            )}
                         </div>
-                        <p className="comment-text">{comment.text}</p>
+                        <p className="comment-text">{comment.content}</p>
                     </div>
-                ))}
-            </div>
+                ))
+            )}
         </div>
-    );
+    </div>
+  );
+};
+
+RecipeComments.propTypes = {
+    recipeId: PropTypes.number.isRequired
+};
+
+
+const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
+  const [hover, setHover] = useState(0);
+  const stars = [1, 2, 3, 4, 5];
+
+  return (
+      <div className="rating-container">
+          <div className="star-rating">
+              {stars.map(star => (
+                  <span
+                      key={star}
+                      className={`star ${star <= (hover || rating) ? 'filled' : ''}`}
+                      onClick={() => onRatingChange(star)}
+                      onMouseEnter={() => setHover(star)}
+                      onMouseLeave={() => setHover(0)}
+                      style={{ cursor: 'pointer' }}
+                  >
+                      ★
+                  </span>
+              ))}
+          </div>
+          <div className="rating-stats">
+              <span className="rating-value">Rating: {rating || 0}</span>
+              <span className="total-ratings">
+              </span>
+          </div>
+      </div>
+  );
 };
 
   const RecipeCard = ({ recipe }) => {
     const [imageError, setImageError] = useState(false);
-    const [currentRating, setCurrentRating] = useState(recipe.rating || 0);
+    const [currentRating, setCurrentRating] = useState(recipe.averageRating || 0);
     const [userRating, setUserRating] = useState(null);
+    const [totalRatings, setTotalRatings] = useState(0);
+    const [averageRating, setAverageRating] = useState(recipe.rating || 0);
+    const [rating, setRating] = useState(recipe.averageRating || 0);
+
 
     const token = localStorage.getItem('authToken');
 
@@ -223,20 +472,25 @@ const PostingPage = () => {
     const currentUserId = getUserIdFromToken();
 
     const fetchUserRating = async () => {
+      if(!currentUserId || !token) return;
+
         try {
             const response = await fetch(
-                `http://localhost:8080/api/ratings/recipe/${recipe.recipeID}/user/${currentUserId}`,
+                `http://localhost:8080/api/ratings/recipe/${recipe.recipeID}`,
             {
                 headers: {
-                    'Athorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`
                 }
             }
         );
         
         if(response.ok) {
-            const data = await response.json();
-            setCurrentRating(data.averageRating || 0);
-            setUserRating(data.rating || 0);
+          const data = await response.json();
+          console.log('Fetched rating data: ', data);
+          setRating(data.rating || 0 || data.averageRating);
+          setTotalRatings(data.totalRatings || 0);
+        }else {
+          console.error('Failed to fetch rating:', await response.text());
         }
     }catch(error) {
         console.error('Failed to fetch user rating:', error);
@@ -249,38 +503,52 @@ const PostingPage = () => {
             return;
         }
 
+        setRating(newRating);
+
         try {
 
             const params = new URLSearchParams({
-                recipeID: recipe.recipeID,
+                recipeId: recipe.recipeID,
                 rating: newRating
-            });
+            }).toString();
 
             const response = await fetch(`http://localhost:8080/api/ratings/rate?${params}`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 },
             });
 
             if(response.ok) {
-                const data = await response.json();
-                setCurrentRating(data.rating || newRating);
-                alert('Rating updated successfully');
-                console.log('Rating updated successfully: ', data);
+              const data = await response.json();
+              console.log('Rating updated:', data);
+              setRating(newRating || data.averageRating);
+              setTotalRatings(data.totalRatings || 0);
+
+              if(recipe.averageRating !== undefined) {
+                recipe.averageRating = data.averageRating;
+              }
+
+              localStorage.setItem(`recipe-${recipe.recipeID}-rating`, newRating);
+              alert('Rating updated successfully');
             }else {
+                const errorText = await response.text();
                 console.error('Failed to update rating: ', await response.text());
+                throw new Error(errorText);
             }
         }catch(error) {
             console.error('Failed to rate recipe:', error);
+            alert('Failed to update rating. Please try again.');
         }
     }
 
     useEffect(() => {
-        if(currentUserId) {
-            fetchUserRating();
-        }
-    }, [recipe.recipeID]);
+      const savedRating = localStorage.getItem(`recipe-${recipe.recipeID}-rating`);
+      if (savedRating) {
+          setRating(Number(savedRating));
+      }
+  }, []); // Empty dependency array means this runs once on mount
 
 
     // Clean up double uploads in path
@@ -390,16 +658,13 @@ const PostingPage = () => {
 
                 <div className="recipe-engagement">
                     <StarRating 
-                        rating={currentRating}
+                        rating={rating}
                         onRatingChange={handleRatingChange}
+                        totalRatings={totalRatings}
                     />
                     
                     <RecipeComments 
-                        comments={recipe.comments || []}
-                        onAddComment={(commentText) => {
-                            // Handle new comment
-                            console.log('New comment:', commentText);
-                        }}
+                        recipeId={recipe.recipeID || recipe.id}
                     />
                 </div>
 
@@ -411,6 +676,14 @@ const PostingPage = () => {
         </div>
     );
 };
+
+StarRating.propTypes = {
+  rating: PropTypes.number,
+  userRating: PropTypes.number,
+  onRatingChange: PropTypes.func.isRequired,
+  readOnly: PropTypes.bool
+};
+
 
 
   RecipeCard.propTypes = {
