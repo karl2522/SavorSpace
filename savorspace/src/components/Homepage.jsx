@@ -84,7 +84,7 @@ const HomePage = () => {
           <button className="explore-recipes-btn" aria-label="Explore Recipes">Explore Recipes</button>
           </Link>
         </div>
-        
+          
         <div className="recipe-card-container">
           <RecipeCard
             image={recipes[currentRecipeIndex].image}

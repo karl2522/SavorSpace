@@ -4,10 +4,11 @@ import '../styles/EditProfileStyles.css';
 
 const EditProfileSettings = () => {
     const [profilePic, setProfilePic] = useState(null);
-    const [setUsername] = useState('');
+    const [username, setUsername] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [userId, setUserId] = useState(null);
+
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',

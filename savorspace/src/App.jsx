@@ -18,6 +18,7 @@ import ReactivateAccount from './components/ReactivateAccount';
 import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
+import PostingPage from './components/CommunityPage';
 import './styles/MainStyles.css';
 
 // Navbar Component
@@ -213,6 +214,7 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/recipes" element={<RecipePage />} />
+          <Route path="/community" element={<PostingPage />} />
           <Route path="/profile" element={<ProfilePage />} />
             <Route path="/profile/settings" element={<SettingsPage />}>
               {/* Routes for Settings Sections */}

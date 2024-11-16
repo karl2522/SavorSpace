@@ -153,6 +153,9 @@ const Login = ({ onLogin }) => {
               <span>Github</span> 
             </button>
           </div>
+          <div className="login-options">
+            <span>Deactivated Account? Activate it here!</span>
+          </div>
           <button onClick={handleReactivate} className='reactivate-btn'>
               <span>Reactivate Account</span>
             </button>
