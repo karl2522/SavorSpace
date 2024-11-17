@@ -158,7 +158,10 @@ const Login = ({ onLogin }) => {
           </div>
           <button onClick={handleReactivate} className='reactivate-btn'>
               <span>Reactivate Account</span>
-            </button>
+          </button>
+          <div className="forgot-password">
+            <a href="/forgot-password" className="forgot-password-link">Forgot Password?</a>
+          </div>
         </div>
       </div>
     </div>

@@ -19,6 +19,7 @@ import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
 import PostingPage from './components/CommunityPage';
+import ForgotPasswordForm from './components/ForgotPassword';
 import './styles/MainStyles.css';
 
 // Navbar Component
@@ -243,6 +244,7 @@ const App = () => {
           <Route path='/404' element={<NotFound />} />
           <Route path='/reactivate-account' element={<ReactivateAccount />} />
           <Route path='/deactivate-account' element={<AccountDeactivation />} />
+          <Route path='/forgot-password' element= {<ForgotPasswordForm />} />
         </Routes>
       </div>
     </Router>
