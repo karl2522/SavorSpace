@@ -117,15 +117,15 @@ export default function ProfilePage() {
           <div className="stats-container">
             <div className="stat-item">
               <p className="stat-number">50</p>
-              <p className="stat-label">Recipes</p>
+              <p className="stat-labels">Recipes</p>
             </div>
             <div className="stat-item">
               <p className="stat-number">50</p>
-              <p className="stat-label">Rates</p>
+              <p className="stat-labels">Rates</p>
             </div>
             <div className="stat-item">
               <p className="stat-number">50</p>
-              <p className="stat-label">Comments</p>
+              <p className="stat-labels">Comments</p>
             </div>
           </div>
         </div>
@@ -141,12 +141,12 @@ export default function ProfilePage() {
             <div className="latest-recipes-container">
               <div className="recipe-item">
                 <img src="/src/images/adobo-trend.webp" alt="Recipe 1" />
-                <p className="recipe-title">Spaghetti Carbonara</p>
+                <p className="profile-recipe-title">Spaghetti Carbonara</p>
               </div>
 
               <div className="recipe-item">
                 <img src="/src/images/adobo-trend.webp" alt="Recipe 1" />
-                <p className="recipe-title">Spaghetti Carbonara</p>
+                <p className="profile-recipe-title">Spaghetti Carbonara</p>
               </div>
             </div>
 
@@ -161,12 +161,12 @@ export default function ProfilePage() {
             <div className="latest-recipes-container">
               <div className="recipe-item">
                 <img src="/src/images/sinigang-trend.webp" alt="Recipe 2" />
-                <p className="recipe-title">Chicken Alfredo</p>
+                <p className="profile-recipe-title">Chicken Alfredo</p>
               </div>
 
               <div className="recipe-item">
                 <img src="/src/images/sinigang-trend.webp" alt="Recipe 2" />
-                <p className="recipe-title">Chicken Alfredo</p>
+                <p className="profile-recipe-title">Chicken Alfredo</p>
               </div>
             </div>
         </div>

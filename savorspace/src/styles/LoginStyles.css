@@ -87,8 +87,15 @@
   
   .login-options .register {
     font-size: 14px;
+    display: inline-block;
     color: #d6589f;
     font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .login-options .register:hover {
+    color: #ce2786;
+    transform: translateY(-1px);
   }
   
   .login-btn {
@@ -180,40 +187,25 @@
     }
   }
 
-  .forgot-password {
-    font-size: 14px;
+.forgot-password {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.forgot-password-link {
+    font-size: 13px;
     color: #d6589f;
     font-weight: 600;
-    margin-top: 20px;
     text-decoration: none;
     transition: all 0.3s ease;
-    display: inline-block;
-    position: relative;
 }
 
-.forgot-password::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 1px;
-    bottom: -2px;
-    left: 0;
-    background-color: #ce2786;
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
 
-.forgot-password:hover,
-.forgot-password:focus {
+.forgot-password-link:hover {
     color: #ce2786;
     transform: translateY(-1px);
 }
-
-.forgot-password:hover::after,
-.forgot-password:focus::after {
-    transform: scaleX(1);
-}
-
 
 
 .loading-overlay {

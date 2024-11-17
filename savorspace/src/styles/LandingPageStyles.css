@@ -215,7 +215,7 @@
   padding: 20px;
 }
 
-.recipe-card {
+.recipe-cards {
   margin-top: 70px;
   margin-right: 200px;
   max-width: 420px;
@@ -228,7 +228,7 @@
   font-family: Arial, sans-serif;
 }
 
-.recipe-card::before {
+.recipe-cards::before {
   content: "";
   position: absolute;
   top: 10px;
@@ -1240,7 +1240,7 @@
     font-size: 14px;
   }
 
-  .recipe-card {
+  .recipe-cards {
     margin-top: 70px;
     margin-right: 100px;
     max-width: 400px;

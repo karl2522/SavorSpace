@@ -173,6 +173,9 @@ const Login = ({ onLogin }) => {
 
           <button type="submit" className="login-btn">Log In</button>
         </form>
+          <div className="forgot-password">
+            <a href="/forgot-password" className="forgot-password-link">Forgot Password?</a>
+          </div>
         <div className="login-options">
           <span>Don&apos;t have an account? <a href="/register" className="register">Register</a></span>
           <p>Or login with</p>
@@ -192,9 +195,6 @@ const Login = ({ onLogin }) => {
           <button onClick={handleReactivate} className='reactivate-btn'>
               <span>Reactivate Account</span>
           </button>
-          <div className="forgot-password">
-            <a href="/forgot-password" className="forgot-password-link">Forgot Password?</a>
-          </div>
         </div>
       </div>
     </div>
