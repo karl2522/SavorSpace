@@ -214,7 +214,7 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/recipes" element={<RecipePage />} />
-          <Route path="/community" element={<PostingPage />} />
+          <Route path="/community" element={<PostingPage isAuthenticated={isAuthenticated} />} />
           <Route path="/profile" element={<ProfilePage />} />
             <Route path="/profile/settings" element={<SettingsPage />}>
               {/* Routes for Settings Sections */}

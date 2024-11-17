@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback} from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../styles/PostingPage.css';
@@ -448,32 +448,64 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
 
   const RecipeCard = ({ recipe }) => {
     const [imageError, setImageError] = useState(false);
-    const [currentRating, setCurrentRating] = useState(recipe.averageRating || 0);
-    const [userRating, setUserRating] = useState(null);
     const [totalRatings, setTotalRatings] = useState(0);
-    const [averageRating, setAverageRating] = useState(recipe.rating || 0);
     const [rating, setRating] = useState(recipe.averageRating || 0);
-
+    const [isEditing, setIsEditing] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [editedRecipe, setEditedRecipe] = useState({
+      title: recipe.title,
+      description: recipe.description,
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
+      imageURL: recipe.imageURL
+    })
 
     const token = localStorage.getItem('authToken');
 
-    const getUserIdFromToken = () => {
-        if(!token) return null;
-        try {
+    const fetchCurrentUser = useCallback(async () => {
+      if (!token || isLoading === false) return; // Prevent multiple fetches
 
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            return payload.id;
-        }catch(error) {
-            console.error('Failed to parse token:', error);
-            return null;
-        }
-    }
+      try {
+          const response = await fetch('http://localhost:8080/users/me', {
+              headers: {
+                  'Authorization': `Bearer ${token}`,
+              }
+          });
 
-    const currentUserId = getUserIdFromToken();
+          if(response.ok) {
+              const userData = await response.json();
+              setCurrentUser(userData);
+          } else {
+              setError('Failed to fetch user data');
+          }
+      } catch(error) {
+          setError(error.message);
+      } finally {
+          setIsLoading(false);
+      }
+  }, [token]); // Only depend on token
+
+  // Fetch current user when component mounts
+  useEffect(() => {
+      let mounted = true;
+
+      if (token && isLoading) {
+          fetchCurrentUser().catch(err => {
+              if (mounted) {
+                  console.error('Error fetching user:', err);
+                  setIsLoading(false);
+              }
+          });
+      }
+
+      return () => {
+          mounted = false;
+      };
+  }, [fetchCurrentUser, token, isLoading]);
 
     const fetchUserRating = async () => {
-      if(!currentUserId || !token) return;
-
+      if(!token) return;
         try {
             const response = await fetch(
                 `http://localhost:8080/api/ratings/recipe/${recipe.recipeID}`,
@@ -596,85 +628,252 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
         }
     };
 
+    const handleEdit = () => {
+      setIsEditing(true);
+    }
+
+    const handleCancel = () => {
+      setIsEditing(false);
+      setEditedRecipe({
+        title: recipe.title,
+        description: recipe.description,
+        ingredients: recipe.ingredients,
+        instructions: recipe.instructions,
+        imageURL: recipe.imageURL
+      });
+    }
+
+    const handleSave = async () => {
+      if (!token) {
+          alert('Please log in to update recipes');
+          return;
+      }
+
+      try {
+          const response = await fetch(`http://localhost:8080/recipes/${recipe.recipeID}`, {
+              method: 'PUT',
+              headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(editedRecipe)
+          });
+
+          if (response.ok) {
+              recipe.title = editedRecipe.title;
+              recipe.description = editedRecipe.description;
+              recipe.ingredients = editedRecipe.ingredients;
+              recipe.instructions = editedRecipe.instructions;
+              recipe.imageURL = editedRecipe.imageURL;
+              
+              setIsEditing(false);
+              alert('Recipe updated successfully');
+          } else {
+              throw new Error('Failed to update recipe');
+          }
+      } catch (error) {
+          console.error('Error updating recipe:', error);
+          alert('Failed to update recipe. Please try again.');
+      }
+  };
+
+    const handleDelete = async () => {
+      if(!token) {
+        alert('Please log in to delete recipes');
+        return;
+      }
+
+      if(!window.confirm('Are you sure you want to delete this recipe?')) {
+        return;
+      }
+
+      try {
+
+        const response = await fetch(`http://localhost:8080/recipes/${recipe.recipeID}`, {
+          method: 'DELETE',
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if(response.ok) {
+          alert('Recipe deleted successfully');
+          window.location.reload();
+        }else {
+            throw new Error('Failed to delete recipe');
+        }
+      }catch (error) {
+        console.error('Failed to delete recipe:', error);
+        alert('Failed to delete recipe. Please try again.');
+      }
+    };
     return (
-        <div className="recipe-card">
-            {/* Recipe Image */}
-            {recipe.imageURL && (
-                <div className="recipe-image-container">
-                    <img
-                        src={imageURL}
-                        alt={recipe.title}
-                        className="recipe-image"
-                        onError={(e) => {
-                            console.error('Failed to load image:', imageURL);
-                            e.target.style.display = 'none';
-                        }}
-                    />
-                </div>
-            )}
+      <div className="recipe-card">
+          {recipe.imageURL && (
+              <div className="recipe-image-container">
+                  <img
+                      src={imageURL}
+                      alt={recipe.title}
+                      className="recipe-image"
+                      onError={(e) => {
+                          console.error('Failed to load image:', imageURL);
+                          e.target.style.display = 'none';
+                      }}
+                  />
+              </div>
+          )}
 
-            <div className="recipe-content">
-                {}
-                <h3 className="recipe-title">{recipe.title}</h3>
+          <div className="recipe-content">
+              {isEditing ? (
+                  // Edit Mode
+                  <>
+                      <input
+                          type="text"
+                          className="edit-title"
+                          value={editedRecipe.title}
+                          onChange={(e) => setEditedRecipe({
+                              ...editedRecipe,
+                              title: e.target.value
+                          })}
+                      />
 
-                {/* User Info */}
-                <div className="user-info">
-                    <img
-                        src={recipe.user?.imageURL
-                            ? getImageURL(recipe.user?.imageURL)
-                            : "/src/images/defaultProfiles.png"
-                        }
-                        alt={`${recipe.user?.name || 'User'}'s profile`}
-                        className="profile-pic"
-                        onError={(e) => {
-                            console.log('Profile image failed to load:', recipe.user?.imageURL);
-                            setImageError(true);
-                            e.target.src = "/src/images/defaultProfiles.png";
-                        }}
-                    />
-                    <span className="username">
-                        {recipe.user?.username || recipe.user?.name || 'Unknown User'}
-                    </span>
-                </div>
+                      <div className="user-info">
+                          <img
+                              src={recipe.user?.imageURL
+                                  ? getImageURL(recipe.user?.imageURL)
+                                  : "/src/images/defaultProfiles.png"
+                              }
+                              alt={`${recipe.user?.name || 'User'}'s profile`}
+                              className="profile-pic"
+                              onError={(e) => {
+                                  console.log('Profile image failed to load:', recipe.user?.imageURL);
+                                  setImageError(true);
+                                  e.target.src = "/src/images/defaultProfiles.png";
+                              }}
+                          />
+                          <span className="username">
+                              {recipe.user?.username || recipe.user?.name || 'Unknown User'}
+                          </span>
+                      </div>
 
-                {/* Recipe Description */}
-                <p className="description">{recipe.description}</p>
+                      <textarea
+                          className="edit-description"
+                          value={editedRecipe.description}
+                          onChange={(e) => setEditedRecipe({
+                              ...editedRecipe,
+                              description: e.target.value
+                          })}
+                      />
 
-                {/* Recipe Details */}
-                {recipe.ingredients && (
-                    <div className="recipe-details">
-                        <div className="ingredients-section">
-                            <h4>Ingredients</h4>
-                            <p>{recipe.ingredients}</p>
-                        </div>
-                        {recipe.instructions && (
-                            <div className="instructions-section">
-                                <h4>Instructions</h4>
-                                <p>{recipe.instructions}</p>
-                            </div>
-                        )}
-                    </div>
-                )}
+                      <div className="recipe-details">
+                          <div className="ingredients-section">
+                              <h4>Ingredients</h4>
+                              <textarea
+                                  className="edit-ingredients"
+                                  value={editedRecipe.ingredients}
+                                  onChange={(e) => setEditedRecipe({
+                                      ...editedRecipe,
+                                      ingredients: e.target.value
+                                  })}
+                              />
+                          </div>
+                          <div className="instructions-section">
+                              <h4>Instructions</h4>
+                              <textarea
+                                  className="edit-instructions"
+                                  value={editedRecipe.instructions}
+                                  onChange={(e) => setEditedRecipe({
+                                      ...editedRecipe,
+                                      instructions: e.target.value
+                                  })}
+                              />
+                          </div>
+                      </div>
+                  </>
+              ) : (
+                  // View Mode
+                  <>
+                      <h3 className="recipe-title">{recipe.title}</h3>
+                      <div className="user-info">
+                          <img
+                              src={recipe.user?.imageURL
+                                  ? getImageURL(recipe.user?.imageURL)
+                                  : "/src/images/defaultProfiles.png"
+                              }
+                              alt={`${recipe.user?.name || 'User'}'s profile`}
+                              className="profile-pic"
+                              onError={(e) => {
+                                  console.log('Profile image failed to load:', recipe.user?.imageURL);
+                                  setImageError(true);
+                                  e.target.src = "/src/images/defaultProfiles.png";
+                              }}
+                          />
+                          <span className="username">
+                              {recipe.user?.username || recipe.user?.name || 'Unknown User'}
+                          </span>
+                      </div>
 
-                <div className="recipe-engagement">
-                    <StarRating 
-                        rating={rating}
-                        onRatingChange={handleRatingChange}
-                        totalRatings={totalRatings}
-                    />
-                    
-                    <RecipeComments 
-                        recipeId={recipe.recipeID || recipe.id}
-                    />
-                </div>
+                      <p className="description">{recipe.description}</p>
 
-                {/* Recipe Footer */}
-                <div className="recipe-footer">
-                    <span className="date">Posted on {formDate(recipe.createdAt)}</span>
-                </div>
-            </div>
-        </div>
-    );
+                      {recipe.ingredients && (
+                          <div className="recipe-details">
+                              <div className="ingredients-section">
+                                  <h4>Ingredients</h4>
+                                  <p>{recipe.ingredients}</p>
+                              </div>
+                              {recipe.instructions && (
+                                  <div className="instructions-section">
+                                      <h4>Instructions</h4>
+                                      <p>{recipe.instructions}</p>
+                                  </div>
+                              )}
+                          </div>
+                      )}
+                  </>
+              )}
+
+              <div className="recipe-engagement">
+                  <StarRating 
+                      rating={rating}
+                      onRatingChange={handleRatingChange}
+                      totalRatings={totalRatings}
+                  />
+                  
+                  <RecipeComments 
+                      recipeId={recipe.recipeID || recipe.id}
+                  />
+              </div>
+
+              <div className="recipe-footer">
+                  <span className="date">Posted on {formDate(recipe.createdAt)}</span>
+
+                  {currentUser && currentUser.id === recipe.user?.id && (
+                      <div className="recipe-actions">
+                          {isEditing ? (
+                              <>
+                                  <button className="save-btn" onClick={handleSave}>
+                                      Save
+                                  </button>
+                                  <button className="cancel-btn" onClick={handleCancel}>
+                                      Cancel
+                                  </button>
+                              </>
+                          ) : (
+                              <>
+                                  <button className="edit-btn" onClick={handleEdit}>
+                                      Edit
+                                  </button>
+                                  <button className="delete-btn" onClick={handleDelete}>
+                                      Delete
+                                  </button>
+                              </>
+                          )}
+                      </div>
+                  )}
+              </div>
+          </div>
+      </div>
+  );
 };
 
 StarRating.propTypes = {
