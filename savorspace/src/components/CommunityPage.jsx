@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback} from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import '../styles/PostingPage.css';
+import { User, Mail, Star, Users } from 'lucide-react'
 
 
 const BACKEND_URL = 'http://localhost:8080';
@@ -982,17 +983,62 @@ StarRating.propTypes = {
 
   return (
     <div className="posting-page">
-      <aside className="sidebar">
-        <h2 className="sidebar-title">Recipe Hub</h2>
-        <nav className="sidebar-nav">
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#my-recipes">My Recipes</a></li>
-            <li><a href="#favorites">Favorites</a></li>
-            <li><a href="#explore">Explore</a></li>
-          </ul>
-        </nav>
-      </aside>
+      <aside className="profile-sidebar">
+      <div className="profile-card">
+        <div className="profile-header">
+          <div className="profile-image-wrapper">
+            <img 
+              src="/placeholder.svg?height=96&width=96"
+              alt="Profile" 
+              className="profile-image"
+            />
+            <span className="status-indicator"></span>
+          </div>
+          
+          <h2 className="profile-name">Jane Doe</h2>
+          
+          <p className="profile-title">UI/UX Designer</p>
+          
+          <button className="follow-button">
+            Follow
+          </button>
+        </div>
+      </div>  
+      
+      <div className="profile-stats">
+        <div>
+          <p className="stat-value">254</p>
+          <p className="stat-label">Posts</p>
+        </div>
+        <div>
+          <p className="stat-value">10</p>
+          <p className="stat-label">Ratings</p>
+        </div>
+        <div>
+          <p className="stat-value">254</p>
+          <p className="stat-label">Comments</p>
+        </div>
+      </div>
+      
+      <nav className="profile-nav">
+        <a href="#" className="nav-item">
+          <User className="nav-icon" />
+          <span>View Profile</span>
+        </a>
+        <a href="#" className="nav-item">
+          <Mail className="nav-icon" />
+          <span>Messages</span>
+        </a>
+        <a href="#" className="nav-item">
+          <Star className="nav-icon" />
+          <span>Saved Posts</span>
+        </a>
+        <a href="#" className="nav-item">
+          <Users className="nav-icon" />
+          <span>Friend List</span>
+        </a>
+      </nav>
+    </aside>
       <main className="main-content">
         <header className="main-header">
           <h1>Share Your Recipe</h1>
@@ -1008,9 +1054,6 @@ StarRating.propTypes = {
             />
           ))}
         </div>
-
-    
-
         {isModalOpen && (
           <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>

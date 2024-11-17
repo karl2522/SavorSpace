@@ -19,6 +19,9 @@ const login = async (loginData) => {
 };
 
 const Login = ({ onLogin }) => {
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const query = useQuery();
   const [errors, setErrors] = useState({});
@@ -92,23 +95,53 @@ const Login = ({ onLogin }) => {
       setErrors(validationErrors);
       return;
     }
+
+    setIsLoading(true);
     try {
       const response = await login(loginData);
       onLogin(); 
-      navigate('/homepage');
+
+      await new Promise(resolve => setTimeout(resolve, 1500));
       if(response.token) {
         localStorage.setItem('authToken', response.token);
         localStorage.setItem('refreshToken', response.refreshToken);
       }
       navigate('/homepage');
-      alert('Login successful!');
     } catch (error) {
-      alert(`Login failed: ${error.response?.data?.message || error.message}`);
+      const errorMsg = error.response?.status === 401
+        ? "Invalid email or password. Please try again"
+        : "Something went wrong. Please try again later.";
+      setErrorMessage(errorMsg);
+      setShowErrorToast(true);
+      setTimeout(() => setShowErrorToast(false), 5000);
+    }finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="login-container">
+      {showErrorToast && (
+    <div className="error-toast">
+      <div className="error-toast-content">
+        <div className="error-icon">❌</div>
+        <p>{errorMessage}</p>
+      </div>
+    </div>
+    )}
+
+      {isLoading && (
+      <div className="loading-overlay">
+        <div className="loader-container">
+          <div className="loader-ring"></div>
+          <div className="loader-ring-2"></div>
+          <div className="loader-icon">👨‍🍳</div>
+        </div>
+        <div className="loading-text">
+          Preparing your kitchen<span className="loading-dots"></span>
+        </div>
+      </div>
+    )}
       <div className="login-hero">
         <img src="src/images/login-hero.png" alt="Welcome back to SavorSpace" />
         <h3>Welcome back, Chef!</h3>
