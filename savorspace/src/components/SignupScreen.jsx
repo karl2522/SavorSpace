@@ -21,6 +21,7 @@ const register = async (formData) => {
 };
 
 const Register = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const query = useQuery();
   const [formData, setFormData] = useState({
@@ -63,7 +64,7 @@ const Register = () => {
     if (token && refreshToken) {
       localStorage.setItem('authToken', token);
       localStorage.setItem('refreshToken', refreshToken);
-      navigate('/homepage'); // Redirect to dashboard or another page after storing tokens
+      navigate('/homepage');  
     }
   }, [query, navigate]);
 
@@ -132,6 +133,8 @@ const Register = () => {
       setErrorMessage(validationErrors);
       return;
     }
+
+    setIsLoading(true);
     try {
       const data = new FormData();
       data.append('fullName', formData.fullName); 
@@ -141,13 +144,13 @@ const Register = () => {
         data.append('profilePic', formData.profilePic);
       }
       const response = await register(data);
+      await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Registration successful!');
       if(response.token) {
         localStorage.setItem('authToken', response.token);
         localStorage.setItem('refreshToken', response.refreshToken);
       }
-      navigate('/homepage');
-      alert('Registration successful!');
+      navigate('/login');
     } catch (error) {
       console.error('Registration failed:', error);
 
@@ -157,11 +160,25 @@ const Register = () => {
       } else {
         alert('Registration failed: ' + error.message);
       }
+    }finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="register-container">
+      {isLoading && (
+      <div className="loading-overlay">
+        <div className="loader-container">
+          <div className="loader-ring"></div>
+          <div className="loader-ring-2"></div>
+          <div className="loader-icon">👨‍🍳</div>
+        </div>
+        <div className="loading-text">
+          Preparing your kitchen<span className="loading-dots"></span>
+        </div>
+      </div>
+    )}
       <IoIosArrowBack size={30} color="#000" cursor="pointer" onClick={() => navigate('/')} />
       <div className="form-section">
         <h2>Create an Account</h2>

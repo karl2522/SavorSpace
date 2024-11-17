@@ -4,28 +4,45 @@ import { Link, Route, BrowserRouter as Router, Routes, useLocation, useNavigate 
 import AboutUs from './components/AboutUs';
 import AdminDashboard from './components/AdminDashboard';
 import AdminLogin from './components/AdminLogin';
+import AdminManageAccounts from './components/AdminManageAccounts';
 import AdminSignup from './components/AdminSignup';
+import AccountDeactivation from './components/DeactivationAccount';
+import EditProfileSettings from './components/EditProfileSettings';
 import HomePage from './components/Homepage';
 import LandingPage from './components/LandingPage';
 import Login from './components/LoginScreen';
 import NotFound from './components/NotFound';
 import PrivateRoute from './components/PrivateRoute';
 import ProfilePage from './components/ProfilePage';
+import ReactivateAccount from './components/ReactivateAccount';
 import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
+import PostingPage from './components/CommunityPage';
+import ForgotPasswordForm from './components/ForgotPassword';
 import './styles/MainStyles.css';
 
 // Navbar Component
-const Navbar = ({ profilePic, handleLogout, isAuthenticated, username }) => {
+const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/profile/settings'].includes(location.pathname);
-  const isMainPage = ['/homepage', '/recipes', '/community', '/about-us'].includes(location.pathname);
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
+  const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname);
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
   const [showDropdown, setShowDropdown] = useState(false);
 
+  const defaultProfilePic = "/src/images/defaultProfiles.png";
+  const [imgSrc, setImgSrc] = useState(profilePic || defaultProfilePic);
+
+  useEffect(() => {
+    setImgSrc(profilePic || defaultProfilePic);
+  }, [profilePic]);
+
+  const handleImageError = () => {
+    console.log("Image failed to load, using default");
+    setImgSrc(defaultProfilePic);
+  }
   const toggleDropdown = useCallback((e) => {
     e.stopPropagation();
     setShowDropdown(prevState => !prevState);
@@ -85,10 +102,11 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated, username }) => {
             <div className="mainpage-buttons">
               <div className="profile-pic-container">
                 <img 
-                  src={profilePic || "/src/images/defaultProfile.png"} 
+                  src={imgSrc} 
                   alt="Profile" 
                   className="navbar-profile-pic" 
                   onClick={toggleDropdown}
+                  onError={handleImageError}
                 />
                 {showDropdown && (
                   <div className="dropdown-profile">
@@ -135,17 +153,20 @@ const App = () => {
       });
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
-      
-      // Check if the URL is absolute (starts with http) or relative, and format it accordingly
-      const profilePicUrl = data.imageURL.startsWith('http') 
-        ? data.imageURL 
-        : `http://localhost:8080${data.imageURL}`;
-      
-      setProfilePic(profilePicUrl);
+
       setUsername(data.fullName);
       setRole(data.role);
       setIsAuthenticated(true);
-
+      
+      // Check if the URL is absolute (starts with http) or relative, and format it accordingly
+      if(data.imageURL) {
+        const profilePicURL = data.imageURL.startsWith('http')
+          ? data.imageURL
+          : `http://localhost:8080${data.imageURL}`;
+        setProfilePic(profilePicURL);
+      }else {
+        setProfilePic(null);
+      }
 
       if(data.role) {
         console.log('User role:', data.role);
@@ -194,8 +215,17 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/recipes" element={<RecipePage />} />
+          <Route path="/community" element={<PostingPage isAuthenticated={isAuthenticated} />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile/settings" element={<SettingsPage />} />
+            <Route path="/profile/settings" element={<SettingsPage />}>
+              {/* Routes for Settings Sections */}
+              <Route path="general" element={<div>General Settings</div>} />
+              <Route path="edit-profile" element={<EditProfileSettings />} />
+              <Route path="account" element={<div>Account</div>} />
+              <Route path="privacy" element={<div>Privacy</div>} />
+              <Route path="notifications" element={<div>Notifications</div>} />
+            </Route>
+          <Route path="edit-profile" element={<EditProfileSettings />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
           <Route
@@ -207,8 +237,14 @@ const App = () => {
           <Route 
           path="/admin/dashboard" 
           element={<AdminDashboard />} />
+          <Route 
+          path="/admin/ManageUser" 
+          element={<AdminManageAccounts />} />
           <Route path="/about-us" element={<AboutUs />} /> {}
           <Route path='/404' element={<NotFound />} />
+          <Route path='/reactivate-account' element={<ReactivateAccount />} />
+          <Route path='/deactivate-account' element={<AccountDeactivation />} />
+          <Route path='/forgot-password' element= {<ForgotPasswordForm />} />
         </Routes>
       </div>
     </Router>
