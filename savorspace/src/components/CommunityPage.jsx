@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback} from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Mail, Star, User, Users } from 'lucide-react';
 import PropTypes from 'prop-types';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/PostingPage.css';
-import { User, Mail, Star, Users } from 'lucide-react'
 
 
 const BACKEND_URL = 'http://localhost:8080';

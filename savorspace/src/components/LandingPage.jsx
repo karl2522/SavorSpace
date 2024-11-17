@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { FaRegShareFromSquare } from "react-icons/fa6";
 import { HiArrowSmRight } from "react-icons/hi";
-import '../styles/LandingPageStyles.css';
 import { Link } from 'react-router-dom';
+import '../styles/LandingPageStyles.css';
 
 const RecipeCard = ({ image, title, description, onClick }) => {
   return (
-    <div className="recipe-card" onClick={onClick}>
+    <div className="recipe-cards" onClick={onClick}>
       <div className="recipe-image-container">
         <img src={image} alt={title} className="recipe-image" />
       </div>

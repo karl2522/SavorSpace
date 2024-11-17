@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { FaEnvelope, FaLock } from 'react-icons/fa';
-import '../styles/ForgotPasswordForm.css';
 import axios from 'axios'; // Make sure axios is installed
+import React, { useState } from 'react';
+import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
+import '../styles/ForgotPasswordForm.css';
+
 
 const ForgotPasswordForm = () => {
   const [email, setEmail] = useState('');
@@ -67,70 +68,67 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <div className="forgot-password-container">
-      <h2 className="form-title">Reset Password</h2>
-      <form className="forgot-password-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email address</label>
-          <div className="input-group">
-            <FaEnvelope className="input-icon" />
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className={error ? 'error' : ''}
-            />
+    <div className="main-container">
+      <IoIosArrowBack className="forgot-arrow" size={30} color="#000" cursor="pointer" onClick={() => navigate('/login')} />
+      <div className="forgot-password-container">
+        <h2 className="form-title">Reset Password</h2>
+        <form className="forgot-password-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email address</label>
+            <div className="input-group">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={error ? 'error' : ''}
+              />
+            </div>
           </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="new-password">New Password</label>
-          <div className="input-group">
-            <FaLock className="input-icon" />
-            <input
-              id="new-password"
-              name="new-password"
-              type="password"
-              autoComplete="new-password"
-              required
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="Enter new password"
-              className={error ? 'error' : ''}
-            />
+          <div className="form-group">
+            <label htmlFor="new-password">New Password</label>
+            <div className="input-group">
+              <input
+                id="new-password"
+                name="new-password"
+                type="password"
+                autoComplete="new-password"
+                required
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className={error ? 'error' : ''}
+              />
+            </div>
           </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="retype-password">Confirm Password</label>
-          <div className="input-group">
-            <FaLock className="input-icon" />
-            <input
-              id="retype-password"
-              name="retype-password"
-              type="password"
-              autoComplete="new-password"
-              required
-              value={retypePassword}
-              onChange={(e) => setRetypePassword(e.target.value)}
-              placeholder="Confirm new password"
-              className={error ? 'error' : ''}
-            />
+          <div className="form-group">
+            <label htmlFor="retype-password">Confirm Password</label>
+            <div className="input-group">
+              <input
+                id="retype-password"
+                name="retype-password"
+                type="password"
+                autoComplete="new-password"
+                required
+                value={retypePassword}
+                onChange={(e) => setRetypePassword(e.target.value)}
+                className={error ? 'error' : ''}
+              />
+            </div>
           </div>
-        </div>
-        <button 
-          type="submit" 
-          className={`submit-button ${isLoading ? 'loading' : ''}`}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Resetting...' : 'Reset Password'}
-        </button>
-      </form>
-      {error && <p className="error-message">{error}</p>}
-      {message && <p className="success-message">{message}</p>}
+          <button 
+            type="submit" 
+            className={`submit-button ${isLoading ? 'loading' : ''}`}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Resetting...' : 'Reset Password'}
+          </button>
+        </form>
+        {error && <p className="error-message">{error}</p>}
+        {message && <p className="success-message">{message}</p>}
+      </div>
     </div>
   );
 };
