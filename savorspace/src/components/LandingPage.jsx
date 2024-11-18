@@ -7,9 +7,13 @@ import { HiArrowSmRight } from "react-icons/hi";
 import { Link } from 'react-router-dom';
 import '../styles/LandingPageStyles.css';
 
+import { useScrollAnimation } from './useScrollAnimation';
+
 const RecipeCard = ({ image, title, description, onClick }) => {
+  const cardRef = useScrollAnimation();
+
   return (
-    <div className="recipe-cards" onClick={onClick}>
+    <div className="recipe-cards hidden" ref={cardRef} onClick={onClick}>
       <div className="recipe-image-container">
         <img src={image} alt={title} className="recipe-image" />
       </div>
@@ -261,6 +265,14 @@ const LandingPage = () => {
 
   const [currentRecipeIndex, setCurrentRecipeIndex] = useState(0);
 
+  const heroRef = useScrollAnimation();
+  const recipesRef = useScrollAnimation();
+  const chefsRef = useScrollAnimation();
+  const teamRef = useScrollAnimation();
+  const questionsRef = useScrollAnimation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showToast, setShowToast] = useState({ show: false, message: "", type: "" });
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentRecipeIndex((prevIndex) => (prevIndex + 1) % recipeCards.length);
@@ -280,23 +292,63 @@ const LandingPage = () => {
     concern: "",
   });
   
-  const handleSubmit =  async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('http://localhost:8080/auth/email', formData);
-      console.log('Email sent successfully');
-      alert('Email sent successfully');
-      setFormData({ firstName: "", lastName: "", email: "", concern: "" });
-    }catch (error) {
-      console.error('Email failed to send:', error);
-      alert('Email failed to send');
-    }
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  try {
+    await axios.post('http://localhost:8080/auth/email', formData);
+    setShowToast({
+      show: true,
+      type: "success",
+      message: "Email sent successfully! Our chef is cooking up a response!"
+    });
+    setFormData({ firstName: "", lastName: "", email: "", concern: "" });
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setShowToast({ show: false, message: "", type: "" });
+    }, 3000);
+  } catch (error) {
+    setShowToast({
+      show: true,
+      type: "error",
+      message: "Oops! Something went wrong sending your email."
+    });
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setShowToast({ show: false, message: "", type: "" });
+    }, 3000);
+  }
+};
   
 
 return (
     <div className="LandingPage">
-      <section className="hero">
+      
+  {isSubmitting && (
+    <div className="email-loading-overlay">
+      <div className="email-loading-container">
+        <div className="chef-loader">
+          <div className="chef-hat"></div>
+          <div className="envelope">
+            <div className="envelope-flap"></div>
+          </div>
+        </div>
+        <p>Chef is preparing your message...</p>
+      </div>
+    </div>
+  )}
+
+{showToast.show && (
+    <div className={`toast-notification ${showToast.type}`}>
+      <div className="toast-content">
+        <span className="toast-icon">
+          {showToast.type === 'success' ? '👨‍🍳' : '😕'}
+        </span>
+        <p>{showToast.message}</p>
+      </div>
+    </div>
+  )}
+      <section className="hero hidden" ref={heroRef}>
         <div className="hero-text">
           <h2><span>Savor</span> the flavors, <br /> Share the <span>love</span></h2>
           <p>Join our vibrant community of food lovers where you can share recipes, savor delicious flavors, and celebrate the joy of cooking together. Let&apos;s create tasty memories!</p>
@@ -318,7 +370,7 @@ return (
         </div>
       </section>
 
-      <section className="more-recipes">
+      <section className="more-recipes hidden" ref={recipesRef}>
         <h2><span>Community </span>Favorites</h2>
         <div className="community-cards-container">
           {communityCards.map((card, index) => (
@@ -335,7 +387,7 @@ return (
         </div>
       </section>
           
-      <section className="chef-container">
+      <section className="chef-container hidden" ref={chefsRef}>
         <h2>SavorSpace <span>All-Chefs</span></h2>
         <div className="chef-cards-container">
           {chefCard.map((card, index) => (
@@ -350,7 +402,7 @@ return (
         </div>
       </section>
 
-      <section className="team-container">
+      <section className="team-container hidden" ref={teamRef}>
         <h2>Our <span>Team</span></h2>
         <div className="team-cards-container">
           {teamCard.map((card, index) => (
@@ -364,7 +416,7 @@ return (
         </div>
       </section>
 
-      <section className="questions-section">
+      <section className="questions-section hidden" ref={questionsRef}>
         <div className="questions-container">
           <h2 className="questions-title">
             <span>Got </span>questions?<br />
