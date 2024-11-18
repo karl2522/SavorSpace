@@ -3,9 +3,9 @@ import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoCloudUploadOutline, IoLogoGithub } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
+import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import '../styles/SignupStyles.css';
-import { useNavigate, useLocation } from 'react-router-dom';
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);

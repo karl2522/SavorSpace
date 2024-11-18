@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 20px 0   20px;
+  padding: 20px 20px 0 20px;
   overflow-x: hidden;
   min-height: 100vh;
 }
@@ -16,11 +16,11 @@
   justify-content: space-between;
   width: 100%;
   padding: 1rem;
-  max-width: 1870px;
+  max-width: 2000px;
   background-color: #fff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  height: 80px;
-  justify-self: center;
+  height: 110px;
+  box-sizing: border-box;
 }
 
 .navbar .logo {
