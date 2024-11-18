@@ -1,4 +1,3 @@
-import { Mail, Star, User, Users } from 'lucide-react';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -983,62 +982,6 @@ StarRating.propTypes = {
 
   return (
     <div className="posting-page">
-      <aside className="profile-sidebar">
-      <div className="profile-card">
-        <div className="profile-header">
-          <div className="profile-image-wrapper">
-            <img 
-              src="/placeholder.svg?height=96&width=96"
-              alt="Profile" 
-              className="profile-image"
-            />
-            <span className="status-indicator"></span>
-          </div>
-          
-          <h2 className="profile-name">Jane Doe</h2>
-          
-          <p className="profile-title">UI/UX Designer</p>
-          
-          <button className="follow-button">
-            Follow
-          </button>
-        </div>
-      </div>  
-      
-      <div className="profile-stats">
-        <div>
-          <p className="stat-value">254</p>
-          <p className="stat-label">Posts</p>
-        </div>
-        <div>
-          <p className="stat-value">10</p>
-          <p className="stat-label">Ratings</p>
-        </div>
-        <div>
-          <p className="stat-value">254</p>
-          <p className="stat-label">Comments</p>
-        </div>
-      </div>
-      
-      <nav className="profile-nav">
-        <a href="#" className="nav-item">
-          <User className="nav-icon" />
-          <span>View Profile</span>
-        </a>
-        <a href="#" className="nav-item">
-          <Mail className="nav-icon" />
-          <span>Messages</span>
-        </a>
-        <a href="#" className="nav-item">
-          <Star className="nav-icon" />
-          <span>Saved Posts</span>
-        </a>
-        <a href="#" className="nav-item">
-          <Users className="nav-icon" />
-          <span>Friend List</span>
-        </a>
-      </nav>
-    </aside>
       <main className="main-content">
         <header className="main-header">
           <h1>Share Your Recipe</h1>

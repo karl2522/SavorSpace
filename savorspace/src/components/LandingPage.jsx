@@ -489,7 +489,7 @@ return (
             <div className="footer-section">
               <h3>Features</h3>
               <ul>
-                <li><a>Analytics</a></li>
+                <li><a href="/admin/signup">Admin</a></li>
                 <li><a>Engagement Tools</a></li>
                 <li><a>Community Building</a></li>
               </ul>
