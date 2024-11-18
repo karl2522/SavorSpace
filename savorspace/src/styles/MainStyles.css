@@ -23,13 +23,14 @@ body {
 .profile-pic-container {
   position: relative;
   cursor: pointer;
-  max-width: 95px;
-  max-height: 95px;
+  max-width: 90px;
+  max-height: 90px;
   border-radius: 50%; 
   border: 2px solid #d6589F;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 30px;
 }
 
 .navbar-profile-pic {
