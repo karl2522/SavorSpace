@@ -3,12 +3,15 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/AdminDashboard.css';
 
+import defaultProfile from '../images/defaultProfiles.png';
+
 const AdminDashboard = () => {
   const [admin, setAdmin] = useState(null);
   const [users, setUsers] = useState([]);
   const [editUser, setEditUser] = useState(null);
   const navigate = useNavigate();
   const [role, setRole] = useState('');
+  const [profilePic, setProfilePic] = useState('');
 
   useEffect(() => {
     fetchAdmin();
@@ -24,16 +27,32 @@ const AdminDashboard = () => {
       }
       console.log('Admin token:', token);
   
-      const response = await axios.get('http://localhost:8080/admin/me', {
+      const response = await axios.get('http://localhost:8080/admin/ad', {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       });
-  
+
+      console.log('Admin response:', response.data);
+
+      if(response.data.imageURL) {
+        const profilePicURL = response.data.imageURL.startsWith('http')
+            ? response.data.imageURL 
+            : `http://localhost:8080${response.data.imageURL}`;
+        setProfilePic(profilePicURL);
+      }else {
+        setProfilePic(defaultProfile);
+      }
       setAdmin(response.data);
       setRole(response.data.role);
     } catch (error) {
       console.error('Error fetching admin:', error);
+
+      if(error.response) {
+        console.error('Error response:', error.response.data);
+        console.error('Error status:', error.response.status);
+      }
     }
   };
 
@@ -60,46 +79,6 @@ const AdminDashboard = () => {
       console.error('Error fetching users:', error);
     }
   };
-
-  const handleDelete = async (userId) => {
-    try {
-      const token = sessionStorage.getItem('adminToken');
-      await axios.delete(`http://localhost:8080/admin/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setUsers(users.filter(user => user.id !== userId));
-    } catch (error) {
-      console.error('Error deleting user:', error);
-    }
-  };
-
-  const handleEdit = (user) => {
-    setEditUser(user);
-  };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      const token = sessionStorage.getItem('adminToken');
-      await axios.put(`http://localhost:8080/admin/users/${editUser.id}`, editUser, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setUsers(users.map(user => (user.id === editUser.id ? editUser : user)));
-      setEditUser(null);
-    } catch (error) {
-      console.error('Error updating user:', error);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditUser((prev) => ({ ...prev, [name]: value }));
-  };
-
   const handleLogout = () => {
     sessionStorage.removeItem('adminToken');
     sessionStorage.removeItem('adminRefreshToken');
@@ -128,7 +107,7 @@ const AdminDashboard = () => {
         </nav>
         {admin && (
           <div className="admin-profile">
-            <img src="/placeholder.svg?height=80&width=80" alt="Admin Avatar" className="admin-avatar" />
+            <img src={profilePic || defaultProfile} alt="Admin Avatar" className="admin-avatar" />
             <h3>{admin.fullName}</h3>
             <p>{admin.email}</p>
           </div>
