@@ -55,6 +55,27 @@
   transform: translateY(-2px);
 }
 
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animation for overlay */
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -66,24 +87,66 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  animation: overlayFadeIn 0.3s ease;
 }
 
 .modal {
-  background-color: white;
-  padding: 2rem;
+  background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+  padding: 4rem;
   border-radius: 10px;
   width: 90%;
   max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
   position: relative;
+  animation: modalFadeIn 0.4s ease-out;
+  border: 1px solid rgba(214, 88, 159, 0.1);
+}
+
+
+.modal::before {
+  content: '✨';
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  font-size: 1.5rem;
+  color: #D6589F;
+  opacity: 0.7;
 }
 
 .modal-title {
   font-size: 1.5rem;
   color: #111;
   margin-bottom: 1.5rem;
+  padding-left: 2.5rem;
+  border-bottom: 2px solid rgba(214, 88, 159, 0.2);
+  padding-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.modal-title:hover {
+  transform: translateX(5px);
+  color: #D6589F;
+}
+
+/* Improved scrollbar styling */
+.modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #D6589F;
+  border-radius: 4px;
+}
+
+.modal::-webkit-scrollbar-thumb:hover {
+  background: #ce2786;
 }
 
 
@@ -294,9 +357,11 @@
   padding: 0px;
   gap: 10px;
   align-items: flex-start;
+  margin-right: 100px;
 }
 
 .community-user-content h3 {
+  margin-right: 10px;
   font-size: 22px;
   font-weight: 550;
   margin: 0;

@@ -123,20 +123,6 @@ const AdminManageAccounts = () => {
     setEditUser(user);
   };
 
-  /* const handleDelete = async (userId) => {
-    try {
-      const token = sessionStorage.getItem('adminToken');
-      await axios.delete(`http://localhost:8080/admin/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setUsers(users.filter(user => user.id !== userId));
-    } catch (error) {
-      console.error('Error deleting user:', error);
-    }
-  }; */
-
   const handleDeleteClick = (user) => {
     setUserTODelete(user);
     setShowDeleteModal(true);

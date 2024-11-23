@@ -2,8 +2,37 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/AdminDashboard.css';
-
 import defaultProfile from '../images/defaultProfiles.png';
+import { Line, Bar, Radar} from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  RadialLinearScale,
+  ArcElement,
+  plugins
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  RadialLinearScale,
+  ArcElement,
+  Legend
+);
+
+
 
 const AdminDashboard = () => {
   const [admin, setAdmin] = useState(null);
@@ -12,11 +41,290 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState('');
   const [profilePic, setProfilePic] = useState('');
+  const [userActivityData, setUserActivityData] = useState({
+    labels: [],
+    datasets: []
+  });
+
+  const [chartData, setChartData] = useState({
+    labels: [],
+    datasets: []
+  });
+
+  const [dailyActivityData, setDailyActivityData] = useState({
+    labels: [],
+    datasets: []
+  });
+
+  const [metricsData, setMetricsData] = useState({
+    labels: [],
+    datasets: []
+  });
+
+
+
 
   useEffect(() => {
     fetchAdmin();
     fetchUsers();
+    fetchChartData();
+    fetchDailyActivity();
+    fetchMetricsData();
   }, []);
+
+
+   const fetchMetricsData = async () => {
+    try {
+      const token = sessionStorage.getItem('adminToken');
+      const response = await axios.get('http://localhost:8080/admin/user-metrics', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Option 1: Radar Chart Data
+      const radarData = {
+        labels: response.data.labels,
+        datasets: [{
+          label: 'Platform Usage',
+          data: response.data.metrics,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgb(75, 192, 192)',
+          borderWidth: 2,
+          pointBackgroundColor: 'rgb(75, 192, 192)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgb(75, 192, 192)'
+        }]
+      };
+
+      // Option 2: Polar Area Chart Data
+      const polarData = {
+        labels: response.data.labels,
+        datasets: [{
+          data: response.data.metrics,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.5)',
+            'rgba(75, 192, 192, 0.5)',
+            'rgba(255, 205, 86, 0.5)',
+            'rgba(54, 162, 235, 0.5)',
+            'rgba(153, 102, 255, 0.5)',
+            'rgba(255, 159, 64, 0.5)'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(75, 192, 192)',
+            'rgb(255, 205, 86)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(255, 159, 64)'
+          ],
+          borderWidth: 1
+        }]
+      };
+
+      // Option 3: Doughnut Chart Data
+      const doughnutData = {
+        labels: response.data.labels,
+        datasets: [{
+          data: response.data.metrics,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(255, 205, 86, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)'
+          ],
+          borderColor: 'white',
+          borderWidth: 2
+        }]
+      };
+
+      setMetricsData(radarData); // or radarData or polarData
+    } catch (error) {
+      console.error('Error fetching metrics data:', error);
+    }
+  };
+
+  const metricsOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Platform Overview'
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return `${context.label}: ${context.raw}`;
+          }
+        }
+      }
+    },
+    scales: {
+      r: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1
+        }
+      }
+    }
+  };
+
+  const fetchDailyActivity = async () => {
+    try {
+      const token = sessionStorage.getItem('adminToken');
+      const response = await axios.get('http://localhost:8080/admin/daily-activity', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setDailyActivityData({
+        labels: response.data.timeLabels,
+        datasets: [
+          {
+            label: 'New Recipes',
+            data: response.data.recipeCreations,
+            backgroundColor: 'rgba(255, 99, 132, 0.8)',
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 1,
+            borderRadius: 5,
+            categoryPercentage: 0.8,
+            barPercentage: 0.9
+          },
+          {
+            label: 'Comments',
+            data: response.data.commentActivity,
+            backgroundColor: 'rgba(75, 192, 192, 0.8)',
+            borderColor: 'rgb(75, 192, 192)',
+            borderWidth: 1,
+            borderRadius: 5,
+            categoryPercentage: 0.8,
+            barPercentage: 0.9
+          },
+          {
+            label: 'Ratings',
+            data: response.data.ratingActivity,
+            backgroundColor: 'rgba(53, 162, 235, 0.8)',
+            borderColor: 'rgb(53, 162, 235)',
+            borderWidth: 1,
+            borderRadius: 5,
+            categoryPercentage: 0.8,
+            barPercentage: 0.9
+          }
+        ]
+      });
+    } catch (error) {
+      console.error('Error fetching daily activity:', error);
+    }
+  };
+
+  const dailyActivityOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: '24-Hour Activity Timeline'
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+      }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Time (24h)'
+        },
+        grid: {
+          display: false
+        }
+      },
+      y: {
+        stacked: false, // Changed to false for grouped bars
+        title: {
+          display: true,
+          text: 'Number of Activities'
+        },
+        min: 0,
+        grid: {
+          color: 'rgba(0, 0, 0, 0.1)'
+        }
+      }
+    },
+    interaction: {
+      mode: 'index',
+      intersect: false
+    }
+  };
+
+  const fetchChartData = async () => {
+     try {
+       const token = sessionStorage.getItem('adminToken');
+       const response = await axios.get('http://localhost:8080/admin/dashboard-stats', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+       });
+
+       setChartData({
+         labels: response.data.dates,
+         datasets: [
+           {
+              label: 'New Users',
+              data: response.data.userCounts,
+              borderColor: 'rgb(75, 192, 192)',
+              tension: 0.1
+           },
+           {
+              label: 'New Recipes',
+              data: response.data.recipeCounts,
+              borderColor: 'rgb(255, 99, 132)',
+              tension: 0.1
+           },
+           {
+              label: 'New Comments',
+              data: response.data.commentCounts,
+              borderColor: 'rgb(53, 162, 235)',
+              tension: 0.1
+           }
+         ]
+       });
+     }catch (error) {
+       console.error('Error fetching chart data:', error);
+     }
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display : true,
+        text: 'Platform Activity',
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1
+        }
+      }
+    }
+  };
+
 
   const fetchAdmin = async () => {
     try {
@@ -120,26 +428,42 @@ const AdminDashboard = () => {
         </header>
         <section className="stats-container">
           <div className="stat-card">
-            <h2>23</h2>
+            <h2>{users.length}</h2>
             <p>Active <span>Users</span></p>
           </div>
           <div className="stat-card">
-            <h2>53</h2>
+            <h2>{chartData.datasets?.[1]?.data?.reduce((a, b) => a + b , 0) || 0}</h2>
             <p>Recipes <span>Posted</span></p>
           </div>
           <div className="stat-card">
-            <h2>34</h2>
+            <h2>{chartData.datasets?.[2]?.data?.reduce((a, b) => a + b, 0) || 0}</h2>
             <p>User <span>Comments</span></p>
           </div>
         </section>
         <section className="charts-container">
           <div className="chart">
-            <h3>New User Activity</h3>
-            <img src="/src/images/multi-series-line-chart.png" alt="New User Activity Chart" />
+            <h3>Platform Activity</h3>
+            {chartData.labels.length > 0 ? (
+              <Line data={chartData} options={chartOptions} />
+            ) : (
+              <p>Loading chart data...</p>
+            )}
           </div>
           <div className="chart">
-            <h3>Recipe Posting Trends</h3>
-            <img src="/src/images/multi-series-line-chart.png" alt="Recipe Posting Trends Chart" />
+            <h3>24-Hour Activity Timeline</h3>
+            {dailyActivityData.labels.length > 0 ? (
+              <Bar data={dailyActivityData} options={dailyActivityOptions} />
+            ) : (
+              <p>Loading daily activity data...</p>
+            )}
+          </div>
+          <div className="chart">
+            <h3>Platform Metrics</h3>
+            {metricsData.labels.length > 0 ? (
+              <Radar data={metricsData} options={metricsOptions} />
+            ) : (
+              <p>Loading daily activity data...</p>
+            )}
           </div>
         </section>
       </main> 
