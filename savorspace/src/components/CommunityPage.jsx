@@ -145,8 +145,6 @@ const PostingPage = () => {
     return (
       <div>
         <h1>Recipe Details</h1>
-  
-      
         {isCommentVisible && <RecipeComments />}
       </div>
     );
@@ -463,7 +461,7 @@ RecipeComments.propTypes = {
 };
 
 
-const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
+const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments}) => {
   const [hover, setHover] = useState(0);
   const stars = [1, 2, 3, 4, 5];
   const [isHovered, setIsHovered] = useState(false);
@@ -494,7 +492,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
           <div 
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            onClick={toggleComments}
+            onClick={onToggleComments}
             className="comment-icon"
           >
             {isHovered ? (
@@ -508,6 +506,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
 };
 
   const RecipeCard = ({ recipe }) => {
+    const [isCommentsVisible, setIsCommentsVisible] = useState(false);
     const [imageError, setImageError] = useState(false);
     const [totalRatings, setTotalRatings] = useState(0);
     const [rating, setRating] = useState(recipe.averageRating || 0);
@@ -527,7 +526,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
     const token = localStorage.getItem('authToken');
 
     const fetchCurrentUser = useCallback(async () => {
-      if (!token || isLoading === false) return; // Prevent multiple fetches
+      if (!token || isLoading === false) return;
 
       try {
           const response = await fetch('http://localhost:8080/users/me', {
@@ -547,9 +546,9 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
       } finally {
           setIsLoading(false);
       }
-  }, [token]); // Only depend on token
+  }, [token]); 
 
-  // Fetch current user when component mounts
+  
   useEffect(() => {
       let mounted = true;
 
@@ -734,11 +733,11 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
               setIsEditing(false);
               alert('Recipe updated successfully');
           } else {
-              throw new Error('Failed to update recipe');
+              throw new Error('You cannot update this recipe');
           }
       } catch (error) {
           console.error('Error updating recipe:', error);
-          alert('Failed to update recipe. Please try again.');
+          alert('You cannot update this recipe its not yours');
       }
   };
 
@@ -782,6 +781,10 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
       setIsDropdownOpen(!isDropdownOpen);
     };
 
+    const handleToggleComments = () => {
+      setIsCommentsVisible(!isCommentsVisible);
+  };
+
     return (
       <div className="community-post">
         <div className="post-card">
@@ -800,7 +803,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
               }}
           />
              <div className="community-user-content"> 
-                <h3>{recipe.user?.username || recipe.user?.name || 'Unknown User'}</h3>
+                <h3>{recipe.user?.fullName || recipe.user?.username || 'Unknown User'}</h3>
                 <span className="date">{formDate(recipe.createdAt)}</span>
              </div>
         </div>
@@ -866,7 +869,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
                       style={{ animation: isContentVisible ? "fadeIn 0.5s ease-in-out" : "" }}
                     >
                       <div className="post-card-recipes-details">
-                        {/* Editable Title */}
+                        {}
                         {isEditing ? (
                           <input
                             type="text"
@@ -937,10 +940,6 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
                   </div>
               </div>
             )}
-
-
-          
-
               <div className="recipe-engagement">
                   <StarRating 
                       rating={rating}
@@ -1086,7 +1085,7 @@ StarRating.propTypes = {
           ))}
         </div>
         {isModalOpen && (
-          <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+          <div className="modal-overlay" onClick={(e) => e.stopPropagation()}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
               <button className="close-button" onClick={() => setIsModalOpen(false)} aria-label="Close modal">
                 &times;
