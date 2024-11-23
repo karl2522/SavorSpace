@@ -1,10 +1,10 @@
+import { Link } from 'react-router-dom';
 import capurasImage from '../images/capuras.png';
 import chavezImage from '../images/chavez.png';
 import gadianeImage from '../images/gadiane.png';
 import omenImage from '../images/omen.png';
 import pejanaImage from '../images/pejana.png';
 import '../styles/AboutUs.css';
-import { Link } from 'react-router-dom';
 
 export default function AboutUs() {
   const teamMembers = [
