@@ -1,5 +1,14 @@
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
+import { AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import { FaComment, FaRegComment, FaRegStar, FaStar } from 'react-icons/fa';
+import { FiDelete, FiEdit } from 'react-icons/fi';
+import { IoIosSearch } from 'react-icons/io';
+import { IoCloudUploadOutline, IoFlagOutline } from 'react-icons/io5';
+import { MdClose } from 'react-icons/md';
+import { VscSend } from 'react-icons/vsc';
+
 import { useNavigate } from 'react-router-dom';
 import '../styles/PostingPage.css';
 
@@ -19,7 +28,12 @@ const PostingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [error, setError] = useState(null);
+  const [isCommentVisible, setIsCommentVisible] = useState(false);
 
+  const toggleComments = () => {
+    setIsCommentVisible(!isCommentVisible);
+  };
+  
   const fetchRecipes = async () => {
     try {
       const token = localStorage.getItem('authToken');
@@ -127,7 +141,20 @@ const PostingPage = () => {
       setError(error.message);
       console.error('Failed to post recipe:', error);
     }
-  };
+
+    return (
+      <div>
+        <h1>Recipe Details</h1>
+  
+      
+        {isCommentVisible && <RecipeComments />}
+      </div>
+    );
+
+  };  
+
+
+  
 
 const RecipeComments = ({ recipeId }) => {
     const [comments, setComments] = useState([]);
@@ -345,70 +372,89 @@ const RecipeComments = ({ recipeId }) => {
       }
   };
 
+
   return (
-    <div className="recipe-comments">
-        <h4>Comments</h4>
+    <div className="comment-container">
+        <div className={`recipe-comments ${isCommentVisible ? 'block' : 'hidden'}`}>
+          <h4>Comments</h4>
 
-        {/* Add Comment Form - Only show if user is logged in */}
-        {token ? (
+          {token ? (
             <form onSubmit={handleSubmit} className="comment-form">
-                <textarea
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Add a comment..."
-                    className="comment-input"
-                    disabled={isLoading}
-                />
-                <button 
-                    type="submit" 
-                    className="comment-submit"
-                    disabled={isLoading || !newComment.trim()}
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Add a comment..."
+                className="comment-input"
+                disabled={isLoading}
+              />
+              <button
+                  type="submit"
+                  className="comment-submit"
+                  disabled={isLoading || !newComment.trim()}
                 >
-                    {isLoading ? 'Posting...' : 'Post Comment'}
-                </button>
+                  {isLoading ? (
+                    <span>Posting...</span>
+                  ) : (
+                    <VscSend style={{ fontSize: '24px', color: '#D6589F' }} />
+                  )}
+              </button>
             </form>
-        ) : (
+          ) : (
             <p>Please login to comment</p>
-        )}
+          )}
 
-        {/* Comments List */}
-        <div className="comments-list">
+          {/* Comments List */}
+          <div className="comments-list">
             {comments.length === 0 ? (
-                <p>No comments yet. Be the first to comment!</p>
+              <p>No comments yet. Be the first to comment!</p>
             ) : (
-                comments.map((comment) => (
-                    <div key={comment.commentID} className="comment">
-                        <div className="comment-header">
-                            <img
-                                src={comment.userImageURL ? `${BACKEND_URL}${comment.userImageURL}` : '/src/images/defaultProfiles.png'}
-                                alt={comment.username || 'User'}
-                                className="comment-user-pic"
-                                onError={(e) => {
-                                    console.error('Failed to load image:', comment.userImageURL);
-                                    e.target.src = "/src/images/defaultProfiles.png";
-                                }}
-                            />
-                            <span className="comment-username">
-                                {comment.username || comment.userEmail || 'Anonymous'}
-                            </span>
-                            <span className="comment-date">
-                                {formatDate(comment.createdAt)}
-                            </span>
-                            {currentUser && currentUser.id === comment.userID && (
-                                <button 
-                                    className="delete-comment"
-                                    onClick={() => handleDeleteComment(comment.commentID)}
-                                >
-                                    Delete
-                                </button>
-                            )}
-                        </div>
-                        <p className="comment-text">{comment.content}</p>
+              comments.map((comment) => (
+                <div key={comment.commentID} className="comment">
+                  <div className="comment-header">
+                    <img
+                      src={comment.userImageURL ? `${BACKEND_URL}${comment.userImageURL}` : '/src/images/defaultProfiles.png'}
+                      alt={comment.username || 'User'}
+                      className="comment-user-pic"
+                      onError={(e) => {
+                        console.error('Failed to load image:', comment.userImageURL);
+                        e.target.src = "/src/images/defaultProfiles.png";
+                      }}
+                    />
+                    <div className="comment-user-details">
+                      <span className="comment-username">
+                        {comment.username || comment.userEmail || 'Anonymous'}
+                      </span>
+                      <span className="comment-date">
+                        {formatDate(comment.createdAt)}
+                      </span>
+                      <span className="comment-text">{comment.content}</span>
                     </div>
-                ))
+                    {currentUser && currentUser.id === comment.userID && (
+                      <div className="comment-actions">
+                        <button 
+                          className="delete-comment"
+                          onClick={() => handleDeleteComment(comment.commentID)}
+                          aria-label="Delete Comment"
+                        >
+                          <MdClose size={24} />
+                        </button>
+
+                        <button 
+                          className="flag-comment"
+                          aria-label="Flag Comment"
+                        >
+                          <IoFlagOutline size={24} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))
             )}
         </div>
+      </div>
     </div>
+    
   );
 };
 
@@ -420,27 +466,42 @@ RecipeComments.propTypes = {
 const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
   const [hover, setHover] = useState(0);
   const stars = [1, 2, 3, 4, 5];
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
       <div className="rating-container">
-          <div className="star-rating">
+        <div className="rating-stats">
+              <span className="rating-value">Rating: {rating || 0}</span>
+              <span className="total-ratings"></span>
+          </div>
+          <div className="star-ratings">
               {stars.map(star => (
                   <span
                       key={star}
-                      className={`star ${star <= (hover || rating) ? 'filled' : ''}`}
                       onClick={() => onRatingChange(star)}
                       onMouseEnter={() => setHover(star)}
                       onMouseLeave={() => setHover(0)}
                       style={{ cursor: 'pointer' }}
                   >
-                      ★
+                {star <= (hover || rating) ? (
+                    <FaStar size={20} color="#D6589F" />
+                  ) : (
+                    <FaRegStar size={20} color="#D6589F" />
+                  )}
                   </span>
               ))}
           </div>
-          <div className="rating-stats">
-              <span className="rating-value">Rating: {rating || 0}</span>
-              <span className="total-ratings">
-              </span>
+          <div 
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onClick={toggleComments}
+            className="comment-icon"
+          >
+            {isHovered ? (
+              <FaComment size={20} cursor={'pointer'} color="#D6589F"/>
+            ) : (
+              <FaRegComment size={20} cursor={'pointer'} color="#D6589F"/>
+            )}
           </div>
       </div>
   );
@@ -453,6 +514,8 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isContentVisible, setIsContentVisible] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [editedRecipe, setEditedRecipe] = useState({
       title: recipe.title,
       description: recipe.description,
@@ -630,10 +693,12 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
 
     const handleEdit = () => {
       setIsEditing(true);
+      setIsContentVisible(!isContentVisible);
     }
 
     const handleCancel = () => {
       setIsEditing(false);
+      setIsContentVisible(!isContentVisible);
       setEditedRecipe({
         title: recipe.title,
         description: recipe.description,
@@ -707,172 +772,190 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0 }) => {
         alert('Failed to delete recipe. Please try again.');
       }
     };
+
+
+    const toggleContentVisibility = () => {
+      setIsContentVisible(!isContentVisible);
+    }; 
+
+    const toggleDropdown = () => {
+      setIsDropdownOpen(!isDropdownOpen);
+    };
+
     return (
-      <div className="recipe-card">
-          {recipe.imageURL && (
-              <div className="recipe-image-container">
-                  <img
-                      src={imageURL}
-                      alt={recipe.title}
-                      className="recipe-image"
-                      onError={(e) => {
-                          console.error('Failed to load image:', imageURL);
-                          e.target.style.display = 'none';
-                      }}
-                  />
+      <div className="community-post">
+        <div className="post-card">
+        <div className="community-user">
+          <img
+              src={recipe.user?.imageURL
+                  ? getImageURL(recipe.user?.imageURL)
+                  : "/src/images/defaultProfiles.png"
+              }
+              alt={`${recipe.user?.name || 'User'}'s profile`}
+              className="profile-pic"
+              onError={(e) => {
+                  console.log('Profile image failed to load:', recipe.user?.imageURL);
+                  setImageError(true);
+                  e.target.src = "/src/images/defaultProfiles.png";
+              }}
+          />
+             <div className="community-user-content"> 
+                <h3>{recipe.user?.username || recipe.user?.name || 'Unknown User'}</h3>
+                <span className="date">{formDate(recipe.createdAt)}</span>
+             </div>
+        </div>
+
+          <div className="action-dots-container" onClick={toggleDropdown}>
+              <BsThreeDotsVertical className="action-dots" size={20} cursor="pointer" />
+            </div>
+            {isDropdownOpen && (
+              <div className="dropdown-menu">
+                {isEditing ? (
+                  <ul>
+                    <li>
+                      <div className="save-container">
+                      <AiOutlineSave size={23} color={'#fff'}/>
+                        <button className="save-btn" onClick={handleSave}>
+                          Save
+                        </button>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="cancel-container">
+                      <FiDelete size={23} color={'#fff'}/>
+                        <button className="cancel-btn" onClick={handleCancel}>
+                          Cancel
+                        </button>
+                      </div>
+                    </li>
+                  </ul>
+                ) : (
+                  <ul>
+                    <li>
+                      <div className="edit-container">
+                      <FiEdit size={23} color={'#fff'}/>
+                        <button className="edit-btn" onClick={handleEdit}>
+                          Edit
+                        </button> 
+                      </div>
+                    </li>
+                    <li>
+                      <div className="delete-container">
+                      <AiOutlineDelete size={23} color={'#fff'}/>
+                      <button className="delete-btn" onClick={handleDelete}>
+                          Delete
+                        </button>
+                      </div>
+                    </li>
+                  </ul>
+                )}
               </div>
-          )}
+            )}
 
-          <div className="recipe-content">
-              {isEditing ? (
-                  // Edit Mode
-                  <>
-                      <input
-                          type="text"
-                          className="edit-title"
-                          value={editedRecipe.title}
-                          onChange={(e) => setEditedRecipe({
-                              ...editedRecipe,
-                              title: e.target.value
-                          })}
-                      />
 
-                      <div className="user-info">
-                          <img
-                              src={recipe.user?.imageURL
-                                  ? getImageURL(recipe.user?.imageURL)
-                                  : "/src/images/defaultProfiles.png"
-                              }
-                              alt={`${recipe.user?.name || 'User'}'s profile`}
-                              className="profile-pic"
-                              onError={(e) => {
-                                  console.log('Profile image failed to load:', recipe.user?.imageURL);
-                                  setImageError(true);
-                                  e.target.src = "/src/images/defaultProfiles.png";
-                              }}
+            {recipe.imageURL && (
+              <div className="post-card-content">
+                  <div className="post-card-header" onClick={toggleContentVisibility}>
+                    <h4>{recipe.title}</h4>
+                    <p>Click to {isContentVisible ? "hide" : "show"} details</p>
+                  </div>
+                  
+                  {isContentVisible && (
+                    <div
+                      className="post-card-recipes-container content-visible-animation"
+                      style={{ animation: isContentVisible ? "fadeIn 0.5s ease-in-out" : "" }}
+                    >
+                      <div className="post-card-recipes-details">
+                        {/* Editable Title */}
+                        {isEditing ? (
+                          <input
+                            type="text"
+                            className="edit-title"
+                            value={editedRecipe.title}
+                            onChange={(e) => setEditedRecipe({ ...editedRecipe, title: e.target.value })}
                           />
-                          <span className="username">
-                              {recipe.user?.username || recipe.user?.name || 'Unknown User'}
-                          </span>
-                      </div>
+                        ) : (
+                          <h4 className="description">{recipe.title}</h4>
+                        )}
 
-                      <textarea
-                          className="edit-description"
-                          value={editedRecipe.description}
-                          onChange={(e) => setEditedRecipe({
-                              ...editedRecipe,
-                              description: e.target.value
-                          })}
-                      />
+                        {/* Editable Description */}
+                        {isEditing ? (
+                          <textarea
+                            className="edit-description"
+                            value={editedRecipe.description}
+                            onChange={(e) => setEditedRecipe({ ...editedRecipe, description: e.target.value })}
+                          />
+                        ) : (
+                          <h4 className="description">{recipe.description}</h4>
+                        )}
 
-                      <div className="recipe-details">
+                        {/* Ingredients Section */}
+                        {recipe.ingredients && (
                           <div className="ingredients-section">
-                              <h4>Ingredients</h4>
+                            <h4>Ingredients:</h4>
+                            {isEditing ? (
                               <textarea
-                                  className="edit-ingredients"
-                                  value={editedRecipe.ingredients}
-                                  onChange={(e) => setEditedRecipe({
-                                      ...editedRecipe,
-                                      ingredients: e.target.value
-                                  })}
+                                className="edit-ingredients"
+                                value={editedRecipe.ingredients}
+                                onChange={(e) => setEditedRecipe({ ...editedRecipe, ingredients: e.target.value })}
                               />
+                            ) : (
+                              <p>{recipe.ingredients}</p>
+                            )}
                           </div>
+                        )}
+
+                        {/* Instructions Section */}
+                        {recipe.instructions && (
                           <div className="instructions-section">
-                              <h4>Instructions</h4>
+                            <h4>Instructions</h4>
+                            {isEditing ? (
                               <textarea
-                                  className="edit-instructions"
-                                  value={editedRecipe.instructions}
-                                  onChange={(e) => setEditedRecipe({
-                                      ...editedRecipe,
-                                      instructions: e.target.value
-                                  })}
+                                className="edit-instructions"
+                                value={editedRecipe.instructions}
+                                onChange={(e) => setEditedRecipe({ ...editedRecipe, instructions: e.target.value })}
                               />
+                            ) : (
+                              <p>{recipe.instructions}</p>
+                            )}
                           </div>
+                        )}
                       </div>
-                  </>
-              ) : (
-                  // View Mode
-                  <>
-                      <h3 className="recipe-title">{recipe.title}</h3>
-                      <div className="user-info">
-                          <img
-                              src={recipe.user?.imageURL
-                                  ? getImageURL(recipe.user?.imageURL)
-                                  : "/src/images/defaultProfiles.png"
-                              }
-                              alt={`${recipe.user?.name || 'User'}'s profile`}
-                              className="profile-pic"
-                              onError={(e) => {
-                                  console.log('Profile image failed to load:', recipe.user?.imageURL);
-                                  setImageError(true);
-                                  e.target.src = "/src/images/defaultProfiles.png";
-                              }}
-                          />
-                          <span className="username">
-                              {recipe.user?.username || recipe.user?.name || 'Unknown User'}
-                          </span>
-                      </div>
+                    </div>
+                  )}
 
-                      <p className="description">{recipe.description}</p>
+                  {/* Recipe Image */}
+                  <div className="post-card-image">
+                  <img
+                    src={imageURL}
+                    alt={recipe.title}
+                    onError={(e) => {
+                      console.error('Failed to load image:', imageURL);
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                  </div>
+              </div>
+            )}
 
-                      {recipe.ingredients && (
-                          <div className="recipe-details">
-                              <div className="ingredients-section">
-                                  <h4>Ingredients</h4>
-                                  <p>{recipe.ingredients}</p>
-                              </div>
-                              {recipe.instructions && (
-                                  <div className="instructions-section">
-                                      <h4>Instructions</h4>
-                                      <p>{recipe.instructions}</p>
-                                  </div>
-                              )}
-                          </div>
-                      )}
-                  </>
-              )}
+
+          
 
               <div className="recipe-engagement">
                   <StarRating 
                       rating={rating}
                       onRatingChange={handleRatingChange}
                       totalRatings={totalRatings}
+                      onToggleComments={toggleComments}
+                      recipeId={recipe.recipeID}
                   />
                   
                   <RecipeComments 
                       recipeId={recipe.recipeID || recipe.id}
                   />
               </div>
-
-              <div className="recipe-footer">
-                  <span className="date">Posted on {formDate(recipe.createdAt)}</span>
-
-                  {currentUser && currentUser.id === recipe.user?.id && (
-                      <div className="recipe-actions">
-                          {isEditing ? (
-                              <>
-                                  <button className="save-btn" onClick={handleSave}>
-                                      Save
-                                  </button>
-                                  <button className="cancel-btn" onClick={handleCancel}>
-                                      Cancel
-                                  </button>
-                              </>
-                          ) : (
-                              <>
-                                  <button className="edit-btn" onClick={handleEdit}>
-                                      Edit
-                                  </button>
-                                  <button className="delete-btn" onClick={handleDelete}>
-                                      Delete
-                                  </button>
-                              </>
-                          )}
-                      </div>
-                  )}
-              </div>
           </div>
-      </div>
+        </div>
   );
 };
 
@@ -880,7 +963,7 @@ StarRating.propTypes = {
   rating: PropTypes.number,
   userRating: PropTypes.number,
   onRatingChange: PropTypes.func.isRequired,
-  readOnly: PropTypes.bool
+  readOnly: PropTypes.bool,
 };
 
 
@@ -888,6 +971,7 @@ StarRating.propTypes = {
   RecipeCard.propTypes = {
     recipe: PropTypes.shape({
       recipeID: PropTypes.number,
+      id: PropTypes.number,
       title: PropTypes.string.isRequired,
       description: PropTypes.string,
       ingredients: PropTypes.string,
@@ -958,22 +1042,26 @@ StarRating.propTypes = {
         );
       case 3:
         return (
-          <div className="form-group">
-            <label htmlFor="image">Image</label>
-            <input
-              type="file"
-              id="image"
-              onChange={handleImageChange}
-              accept="image/*"
+          <div className="recipe-upload-container">
+          <label htmlFor="image" className="recipe-file-upload">
+            <IoCloudUploadOutline color="#D6587F" size={20} /> Upload Image
+          </label>
+          <input
+            type="file"
+            id="image"
+            onChange={handleImageChange}
+            accept="image/*"
+            className="file-input"
+          />
+          {previewImage && (
+            <img
+              src={previewImage}
+              alt="Recipe preview"
+              className="image-preview"
             />
-            {previewImage && (
-              <img
-                src={previewImage}
-                alt="Recipe preview"
-                className="image-preview"
-              />
-            )}
-          </div>
+          )}
+        </div>
+
         );
       default:
         return null;
@@ -981,15 +1069,15 @@ StarRating.propTypes = {
   };
 
   return (
-    <div className="posting-page">
-      <main className="main-content">
-        <header className="main-header">
-          <h1>Share Your Recipe</h1>
-          <button onClick={() => setIsModalOpen(true)} className="post-button">
-            Post Recipe
-          </button>
-        </header>
-        <div className="recipe-grid">
+    <div className="community-container">
+        <div className="community-header">
+          <h1>Community Recipes</h1>
+          <div className="header-buttons">
+            <IoIosSearch size={40} color="#D6598f" cursor="pointer" className="search-btn"/>
+            <button onClick={() => setIsModalOpen(true)} className="post-btn">Post Recipe</button>
+          </div>
+        </div>
+        <div className="community-posts">
           {recipes.map(recipe => (
             <RecipeCard
                 key={recipe.recipeID}
@@ -1019,23 +1107,22 @@ StarRating.propTypes = {
                 {renderStepContent(activeStep)}
                 <div className="form-actions">
                   {activeStep > 0 && (
-                    <button type="button" onClick={() => setActiveStep(activeStep - 1)} className="nav-button">
+                    <button type="button" onClick={() => setActiveStep(activeStep - 1)} className="nav-button-prev">
                       Previous
                     </button>
                   )}
                   {activeStep < steps.length - 1 ? (
-                    <button type="button" onClick={() => setActiveStep(activeStep + 1)} className="nav-button">
+                    <button type="button" onClick={() => setActiveStep(activeStep + 1)} className="nav-button-next">
                       Next
                     </button>
                   ) : (
-                    <button type="submit" className="submit-button">Submit Recipe</button>
+                    <button type="submit" className="create-button">Submit Recipe</button>
                   )}
                 </div>
               </form>
             </div>
           </div>
         )}
-      </main>
     </div>
   );
 };

@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { HiArrowSmRight } from "react-icons/hi";
-import '../styles/MainStyles.css';
 import { Link } from 'react-router-dom';
+import '../styles/MainStyles.css';
 
 // RecipeCard component
 const RecipeCard = ({ image, title, description, onClick }) => {
   return (
-    <div className="recipe-card" onClick={onClick}>
+    <div className="recipe-cards" onClick={onClick}>
       <div className="recipe-image-container">
         <img src={image} alt={title} className="recipe-image" />
       </div>

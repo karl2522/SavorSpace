@@ -121,11 +121,9 @@
     background-color: #D6589F;
 }
 
-.stats-container {
+.stats-container-profile {
     display: flex;
     gap: 5rem;
-    margin-left: auto;
-    align-self: flex-start;
     margin-left: 120px  ;
 }
 
@@ -138,20 +136,20 @@
     border-radius: 15px; 
     padding: 20px; 
     width: 150px;
-    height: 100px;
+    height: 110px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
-
 }
 
 .stat-number {
     font-size: 50px;
     font-weight: bold;
     margin-bottom: 4px;
+    margin-top: 30px;
     line-height: 0;
-    color: #f9f9f9;
+    color: #fff;
     text-align: center;
 }
 

@@ -114,7 +114,7 @@ export default function ProfilePage() {
             <p className="join-date">{joinDate}</p>
             <p className="profession">{role || 'Chef'}</p>
           </div>
-          <div className="stats-container">
+          <div className="stats-container-profile">
             <div className="stat-item">
               <p className="stat-number">50</p>
               <p className="stat-labels">Recipes</p>
