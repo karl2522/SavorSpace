@@ -1,9 +1,9 @@
-import { act, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IoIosSearch } from 'react-icons/io';
-import { IoClose } from 'react-icons/io5';
-import { MdAccessTime, MdOutlineSignalCellularAlt } from "react-icons/md";
-import '../styles/RecipePageStyles.css';
+import { MdAccessTime, MdClose } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
+import '../styles/RecipePageStyles.css';
+
 
 export default function RecipePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -144,11 +144,14 @@ export default function RecipePage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen);
-    if(isSearchOpen) {
-      setSearchQuery('');
-    } 
+    setIsSearchOpen((prev) => {
+      if (prev) {
+        setSearchQuery('');
+      }
+      return !prev; 
+    });
   };
+  
   
 
   if(loading) {
@@ -217,24 +220,38 @@ export default function RecipePage() {
       {/* More Recipes Section */}
       <div className="user-recipe-container">
         <div className="user-recipe-header">
-         <div className="header-left">
           <h2>More Recipes</h2>
-          {activeSearch && (
-            <button 
-              className="back-to-all"
-              onClick={resetSearch}
-            >
-              Back to All Recipes
-            </button>
-          )}
-         </div>
-          <IoIosSearch
-            size={40}
-            color={'#D6589F'}
-            cursor={'pointer'}
-            className="search-button"
-            onClick={toggleSearch}
-          />
+          {activeSearch ? (
+              <MdClose 
+                size={40}
+                color="#D6589F"
+                cursor="pointer"
+                className="search-button"
+                onClick={resetSearch}
+              />
+            ) : (
+              <IoIosSearch
+                size={40}
+                color="#D6589F"
+                cursor="pointer"
+                className="search-button"
+                onClick={toggleSearch}
+              />
+            )}
+          {/* Search Overlay */}
+          <div className={`search-overlay ${isSearchOpen ? 'active' : ''}`}>
+            <div className="search-container">
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search recipes here..."
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                onKeyPress={handleSearch}
+                autoFocus
+              />
+            </div>
+          </div>
         </div>
         <div className="user-recipe">
           {(activeSearch ? filteredRecipes : recipes).map((recipe) => (
@@ -259,30 +276,9 @@ export default function RecipePage() {
           ))}
           {activeSearch && filteredRecipes.length === 0 && (
             <div className="no-results">
-              No recipes found matching "{activeSearch}"
+              No recipes found matching &quot;{activeSearch}&quot;
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Search Overlay */}
-      <div className={`search-overlay ${isSearchOpen ? 'active' : ''}`}>
-        <div className="search-container">
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Search recipes here..."
-            value={searchQuery}
-            onChange={handleSearchInputChange}
-            onKeyPress={handleSearch}
-            autoFocus
-          />
-          <IoClose
-            size={30}
-            color={'#D6589F'}
-            className="close-search"
-            onClick={toggleSearch}
-          />
         </div>
       </div>
     </div>
