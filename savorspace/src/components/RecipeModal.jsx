@@ -1,6 +1,6 @@
-import React, { memo, forwardRef, useState, useEffect} from 'react';
-import { IoCloudUploadOutline, IoClose, IoChevronBack, IoChevronForward, IoCheckmark } from 'react-icons/io5';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import React, { forwardRef, memo, useEffect, useState } from 'react';
+import { IoCheckmark, IoChevronBack, IoChevronForward, IoClose, IoCloudUploadOutline } from 'react-icons/io5';
 import '../styles/CreateRecipeModal.css';
 
 const CreateRecipeModal = memo(forwardRef(({ 
@@ -76,6 +76,21 @@ const CreateRecipeModal = memo(forwardRef(({
         onClose();
     };
 
+    const validateStep = () => {
+        switch (step) {
+            case 0:
+                return formData.title.trim() !== '' && formData.description.trim() !== '';
+            case 1:
+                return formData.ingredients.trim() !== '';
+            case 2:
+                return formData.instructions.trim() !== '';
+            case 3:
+                return preview !== null; // Ensure an image is uploaded
+            default:
+                return false;
+        }
+    };
+
     const renderStepContent = () => {
         switch (step) {
             case 0:
@@ -92,12 +107,14 @@ const CreateRecipeModal = memo(forwardRef(({
                             value={formData.title}
                             onChange={handleChange('title')}
                             className="modal-input"
+                            required
                         />
                         <textarea
                             placeholder="Recipe Description"
                             value={formData.description}
                             onChange={handleChange('description')}
                             className="modal-textarea"
+                            required
                         />
                     </motion.div>
                 );
@@ -108,12 +125,14 @@ const CreateRecipeModal = memo(forwardRef(({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -50 }}
                         className="modal-step"
+                        required
                     >
                         <textarea
                             placeholder="Enter ingredients (one per line)"
                             value={formData.ingredients}
                             onChange={handleChange('ingredients')}
                             className="modal-textarea"
+                            required
                         />
                     </motion.div>
                 );
@@ -124,12 +143,14 @@ const CreateRecipeModal = memo(forwardRef(({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -50 }}
                         className="modal-step"
+                        required
                     >
                         <textarea
                             placeholder="Enter cooking instructions"
                             value={formData.instructions}
                             onChange={handleChange('instructions')}
                             className="modal-textarea"
+                            required
                         />
                     </motion.div>
                 );
@@ -148,6 +169,7 @@ const CreateRecipeModal = memo(forwardRef(({
                                         src={preview}
                                         alt="Preview"
                                         className="image-preview"
+                                        required
                                     />
                                 ) : (
                                     <>
@@ -160,6 +182,7 @@ const CreateRecipeModal = memo(forwardRef(({
                                     onChange={handleImageChange}
                                     accept="image/*"
                                     className="hidden-input"
+                                    required
                                 />
                             </label>
                         </div>
@@ -190,14 +213,14 @@ const CreateRecipeModal = memo(forwardRef(({
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.8, opacity: 0 }}
-                        className="modal-content"
+                        className="modal-recipe-content"
                         onClick={(e) => e.stopPropagation()}
                         ref={ref}
                     >
                         <button className="modal-close" onClick={onClose}>
                             <IoClose />
                         </button>
-                        <div className="modal-header">
+                        <div className="modal-recipe-header">
                             <h2>Create New Recipe</h2>
                             <div className="step-indicators">
                                 {steps.map((stepName, index) => (
@@ -228,14 +251,30 @@ const CreateRecipeModal = memo(forwardRef(({
                                 {step < steps.length - 1 ? (
                                     <button
                                         type="button"
-                                        onClick={() => setStep(prev => prev + 1)}
+                                        onClick={() => {
+                                            if (validateStep()) {
+                                                setStep(prev => prev + 1);
+                                            } else {
+                                                alert('Please fill in all fields');
+                                            }
+                                        }}  
                                         className="btn-primary"
                                     >
                                         Next <IoChevronForward />
                                     </button>
                                 ) : (
-                                    <button type="submit" className="btn-submit">
-                                        Create Recipe <IoCheckmark />
+                                    <button
+                                        type="submit" 
+                                        className="btn-submit"
+                                        onClick = {(e)  => {
+                                            if (validateStep()) {
+                                                setStep(prev => prev + 1);
+                                            } else {
+                                                alert('Please upload an image.');
+                                            }
+                                        }}
+                                        >
+                                            Create Recipe <IoCheckmark />
                                     </button>
                                 )}
                             </div>
