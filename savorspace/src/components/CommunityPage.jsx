@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef} from 'react';
 import { AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaComment, FaRegComment, FaRegStar, FaStar } from 'react-icons/fa';
@@ -8,6 +8,7 @@ import { IoIosSearch } from 'react-icons/io';
 import { IoCloudUploadOutline, IoFlagOutline } from 'react-icons/io5';
 import { MdClose } from 'react-icons/md';
 import { VscSend } from 'react-icons/vsc';
+import CreateRecipeModal from './RecipeModal';
 
 import { useNavigate } from 'react-router-dom';
 import '../styles/PostingPage.css';
@@ -28,133 +29,121 @@ const PostingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [error, setError] = useState(null);
-  const [isCommentVisible, setIsCommentVisible] = useState(false);
+  const steps = ['Basic Info', 'Ingredients', 'Instructions', 'Image'];
+  const [showModal, setShowModal] = useState(false);
+  const modalRef = useRef(null);
 
-  const toggleComments = () => {
-    setIsCommentVisible(!isCommentVisible);
-  };
-  
-  const fetchRecipes = async () => {
-    try {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        throw new Error('No authentication token found');
+  const fetchRecipes = useCallback(async () => {
+      try {
+          const token = localStorage.getItem('authToken');
+          if (!token) {
+              throw new Error('No authentication token found');
+          }
+
+          const response = await fetch('http://localhost:8080/recipes', {
+              headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Accept': 'application/json'
+              }
+          });
+
+          if (!response.ok) {
+              const errorData = await response.text();
+              console.error('Failed to fetch recipes:', errorData);
+              throw new Error(`Failed to fetch recipes: ${response.status}`);
+          }
+
+          const data = await response.json();
+          setRecipes(data);
+      } catch (error) {
+          console.error('Failed to fetch recipes:', error);
+          setError(error.message);
+      } finally {
+          setLoading(false);
       }
-
-      const response = await fetch('http://localhost:8080/recipes', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        }
-      });
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error('Failed to fetch recipes:', errorData);
-        throw new Error(`Failed to fetch recipes: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log('Fetched recipes:', data);
-      setRecipes(data);
-    } catch (error) {
-      console.error('Failed to fetch recipes:', error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchRecipes();
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      navigate('/login');
-    }
+      fetchRecipes();
+  }, [fetchRecipes]);
 
-    if (isModalOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-  }, [isModalOpen, navigate]);
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (previewImage) {
-        URL.revokeObjectURL(previewImage);
-      }
-      setImageFile(file);
-      setPreviewImage(URL.createObjectURL(file));
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-
-    try {
+  useEffect(() => {
       const token = localStorage.getItem('authToken');
       if (!token) {
-        throw new Error('You are not authorized to perform this action');
+          navigate('/login');
       }
 
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('description', description);
-      formData.append('ingredients', ingredients);
-      formData.append('instructions', instructions);
-      if (imageFile) {
-        formData.append('image', imageFile);
+      if (isModalOpen) {
+          document.body.style.overflow = 'hidden';
+      } else {
+          document.body.style.overflow = 'unset';
       }
 
-      const response = await fetch('http://localhost:8080/recipes', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      });
+      return () => {
+          document.body.style.overflow = 'unset';
+      };
+  }, [isModalOpen, navigate]);
 
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error('Failed to post recipe:', errorData);
-        throw new Error(`Failed to post recipe: ${response.status}`);
+  const handleImageChange = useCallback((e) => {
+      if (e.target.files && e.target.files[0]) {
+          const file = e.target.files[0];
+          setImageFile(file);
+          setPreviewImage(URL.createObjectURL(file));
       }
+  }, []);
 
-      const newRecipe = await response.json();
-      setRecipes((prevRecipes) => [newRecipe, ...prevRecipes]);
-
+  const closeModal = useCallback(() => {
+      setIsModalOpen(false);
+      setActiveStep(0);
       setTitle('');
       setDescription('');
       setIngredients('');
       setInstructions('');
       setImageFile(null);
       setPreviewImage(null);
-      setIsModalOpen(false);
+  }, []);
 
+  const handleSubmit = async (formData) => {
+    try {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            throw new Error('You are not authorized to perform this action');
+        }
+
+        const submitData = new FormData();
+        Object.keys(formData).forEach(key => {
+            if (formData[key]) {
+                submitData.append(key, formData[key]);
+            }
+        });
+
+        const response = await fetch('http://localhost:8080/recipes', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: submitData
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to create recipe');
+        }
+
+        const newRecipe = await response.json();
+        setRecipes(prev => [newRecipe, ...prev]);
     } catch (error) {
-      setError(error.message);
-      console.error('Failed to post recipe:', error);
+        console.error('Error creating recipe:', error);
     }
+  };
 
-    return (
-      <div>
-        <h1>Recipe Details</h1>
-        {isCommentVisible && <RecipeComments />}
-      </div>
-    );
-
-  };  
+  if (loading) {
+      return <div>Loading...</div>;
+  }  
 
 
   
 
-const RecipeComments = ({ recipeId }) => {
+const RecipeComments = ({ recipeId, isVisible}) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -373,7 +362,7 @@ const RecipeComments = ({ recipeId }) => {
 
   return (
     <div className="comment-container">
-        <div className={`recipe-comments ${isCommentVisible ? 'block' : 'hidden'}`}>
+        <div className={`recipe-comments ${isVisible ? 'block' : 'hidden'}`}>
           <h4>Comments</h4>
 
           {token ? (
@@ -457,7 +446,8 @@ const RecipeComments = ({ recipeId }) => {
 };
 
 RecipeComments.propTypes = {
-    recipeId: PropTypes.number.isRequired
+    recipeId: PropTypes.number.isRequired,
+    isVisible: PropTypes.bool.isRequired
 };
 
 
@@ -945,13 +935,14 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
                       rating={rating}
                       onRatingChange={handleRatingChange}
                       totalRatings={totalRatings}
-                      onToggleComments={toggleComments}
+                      onToggleComments={handleToggleComments}
                       recipeId={recipe.recipeID}
                   />
-                  
-                  <RecipeComments 
-                      recipeId={recipe.recipeID || recipe.id}
-                  />
+
+                  <RecipeComments
+                      recipeId = {recipe.recipeID || recipe.id}
+                      isVisible={isCommentsVisible}
+                  /> 
               </div>
           </div>
         </div>
@@ -987,142 +978,31 @@ StarRating.propTypes = {
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">Error: {error}</div>;
 
-  const steps = ['Basic Info', 'Ingredients', 'Instructions', 'Image'];
-
-  const renderStepContent = (step) => {
-    switch (step) {
-      case 0:
-        return (
-          <>
-            <div className="form-group">
-              <label htmlFor="title">Title</label>
-              <input
-                type="text"
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="description">Description</label>
-              <textarea
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
-            </div>
-          </>
-        );
-      case 1:
-        return (
-          <div className="form-group">
-            <label htmlFor="ingredients">Ingredients</label>
-            <textarea
-              id="ingredients"
-              value={ingredients}
-              onChange={(e) => setIngredients(e.target.value)}
-              required
-            />
-          </div>
-        );
-      case 2:
-        return (
-          <div className="form-group">
-            <label htmlFor="instructions">Instructions</label>
-            <textarea
-              id="instructions"
-              value={instructions}
-              onChange={(e) => setInstructions(e.target.value)}
-              required
-            />
-          </div>
-        );
-      case 3:
-        return (
-          <div className="recipe-upload-container">
-          <label htmlFor="image" className="recipe-file-upload">
-            <IoCloudUploadOutline color="#D6587F" size={20} /> Upload Image
-          </label>
-          <input
-            type="file"
-            id="image"
-            onChange={handleImageChange}
-            accept="image/*"
-            className="file-input"
-          />
-          {previewImage && (
-            <img
-              src={previewImage}
-              alt="Recipe preview"
-              className="image-preview"
-            />
-          )}
-        </div>
-
-        );
-      default:
-        return null;
-    }
-  };
 
   return (
     <div className="community-container">
-        <div className="community-header">
-          <h1>Community Recipes</h1>
-          <div className="header-buttons">
-            <IoIosSearch size={40} color="#D6598f" cursor="pointer" className="search-btn"/>
-            <button onClick={() => setIsModalOpen(true)} className="post-btn">Post Recipe</button>
-          </div>
-        </div>
-        <div className="community-posts">
-          {recipes.map(recipe => (
-            <RecipeCard
-                key={recipe.recipeID}
-                recipe={recipe}
-            />
-          ))}
-        </div>
-        {isModalOpen && (
-          <div className="modal-overlay" onClick={(e) => e.stopPropagation()}>
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
-              <button className="close-button" onClick={() => setIsModalOpen(false)} aria-label="Close modal">
-                &times;
-              </button>
-              <h2 className="modal-title">Create New Recipe</h2>
-              <div className="progress-bar">
-                {steps.map((step, index) => (
-                  <div
-                    key={step}
-                    className={`progress-step ${index <= activeStep ? 'active' : ''}`}
-                    onClick={() => setActiveStep(index)}
-                  >
-                    {step}
-                  </div>
-                ))}
-              </div>
-              <form onSubmit={handleSubmit} className="recipe-form">
-                {renderStepContent(activeStep)}
-                <div className="form-actions">
-                  {activeStep > 0 && (
-                    <button type="button" onClick={() => setActiveStep(activeStep - 1)} className="nav-button-prev">
-                      Previous
-                    </button>
-                  )}
-                  {activeStep < steps.length - 1 ? (
-                    <button type="button" onClick={() => setActiveStep(activeStep + 1)} className="nav-button-next">
-                      Next
-                    </button>
-                  ) : (
-                    <button type="submit" className="create-button">Submit Recipe</button>
-                  )}
-                </div>
-              </form>
+            <div className="community-header">
+                <h1>Community Recipes</h1>
+                <button onClick={() => setShowModal(true)} className="post-btn">
+                    Post Recipe
+                </button>
             </div>
-          </div>
-        )}
-    </div>
+
+        <div className="community-posts">
+            {recipes.map(recipe => (
+                <RecipeCard
+                    key={recipe.recipeID}
+                    recipe={recipe}
+                />
+            ))}
+        </div>
+        <CreateRecipeModal
+                ref={modalRef}
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                onSubmit={handleSubmit}
+            />
+        </div>
   );
 };
 
