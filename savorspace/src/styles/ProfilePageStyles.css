@@ -131,12 +131,11 @@
     display: flex;
     flex-direction: column;
     text-align: left;
-    margin-top: 0;
     background-color: #D6589F; 
     border-radius: 15px; 
     padding: 20px; 
     width: 150px;
-    height: 110px;
+    height: 130px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -147,14 +146,12 @@
     font-size: 50px;
     font-weight: bold;
     margin-bottom: 4px;
-    margin-top: 30px;
     line-height: 0;
     color: #fff;
     text-align: center;
 }
 
 .stat-labels {
-    margin-top: 30px;
     color: #fff;
     font-size: 18px;
     font-weight: 500;

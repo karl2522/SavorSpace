@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useState, useRef} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaComment, FaRegComment, FaRegStar, FaStar } from 'react-icons/fa';
 import { FiDelete, FiEdit } from 'react-icons/fi';
-import { IoIosSearch } from 'react-icons/io';
-import { IoCloudUploadOutline, IoFlagOutline } from 'react-icons/io5';
+import { IoFlagOutline } from 'react-icons/io5';
 import { MdClose } from 'react-icons/md';
 import { VscSend } from 'react-icons/vsc';
 import CreateRecipeModal from './RecipeModal';
@@ -18,18 +17,10 @@ const BACKEND_URL = 'http://localhost:8080';
 
 const PostingPage = () => {
   const navigate = useNavigate();
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [ingredients, setIngredients] = useState('');
-  const [instructions, setInstructions] = useState('');
   const [recipes, setRecipes] = useState([]);
-  const [imageFile, setImageFile] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeStep, setActiveStep] = useState(0);
   const [error, setError] = useState(null);
-  const steps = ['Basic Info', 'Ingredients', 'Instructions', 'Image'];
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
 
@@ -84,24 +75,6 @@ const PostingPage = () => {
       };
   }, [isModalOpen, navigate]);
 
-  const handleImageChange = useCallback((e) => {
-      if (e.target.files && e.target.files[0]) {
-          const file = e.target.files[0];
-          setImageFile(file);
-          setPreviewImage(URL.createObjectURL(file));
-      }
-  }, []);
-
-  const closeModal = useCallback(() => {
-      setIsModalOpen(false);
-      setActiveStep(0);
-      setTitle('');
-      setDescription('');
-      setIngredients('');
-      setInstructions('');
-      setImageFile(null);
-      setPreviewImage(null);
-  }, []);
 
   const handleSubmit = async (formData) => {
     try {
@@ -795,55 +768,58 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
              <div className="community-user-content"> 
                 <h3>{recipe.user?.fullName || recipe.user?.username || 'Unknown User'}</h3>
                 <span className="date">{formDate(recipe.createdAt)}</span>
+                {currentUser && currentUser.id === recipe.user?.id && (
+                <div className="action-dots-container" onClick={toggleDropdown}>
+                  <BsThreeDotsVertical className="action-dots" size={20} cursor="pointer" />
+                </div>
+              )}
              </div>
         </div>
 
-          <div className="action-dots-container" onClick={toggleDropdown}>
-              <BsThreeDotsVertical className="action-dots" size={20} cursor="pointer" />
-            </div>
-            {isDropdownOpen && (
-              <div className="dropdown-menu">
-                {isEditing ? (
-                  <ul>
-                    <li>
-                      <div className="save-container">
-                      <AiOutlineSave size={23} color={'#fff'}/>
-                        <button className="save-btn" onClick={handleSave}>
-                          Save
-                        </button>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="cancel-container">
-                      <FiDelete size={23} color={'#fff'}/>
-                        <button className="cancel-btn" onClick={handleCancel}>
-                          Cancel
-                        </button>
-                      </div>
-                    </li>
-                  </ul>
-                ) : (
-                  <ul>
-                    <li>
-                      <div className="edit-container">
-                      <FiEdit size={23} color={'#fff'}/>
-                        <button className="edit-btn" onClick={handleEdit}>
-                          Edit
-                        </button> 
-                      </div>
-                    </li>
-                    <li>
-                      <div className="delete-container">
-                      <AiOutlineDelete size={23} color={'#fff'}/>
-                      <button className="delete-btn" onClick={handleDelete}>
-                          Delete
-                        </button>
-                      </div>
-                    </li>
-                  </ul>
+                {isDropdownOpen && (
+                  <div className="dropdown-menu">
+                    {isEditing ? (
+                      <ul>
+                        <li>
+                          <div className="save-container">
+                            <AiOutlineSave size={23} color="#fff" />
+                            <button className="save-btn" onClick={handleSave}>
+                              Save
+                            </button>
+                          </div>
+                        </li>
+                        <li>
+                          <div className="cancel-container">
+                            <FiDelete size={23} color="#fff" />
+                            <button className="cancel-btn" onClick={handleCancel}>
+                              Cancel
+                            </button>
+                          </div>
+                        </li>
+                      </ul>
+                    ) : (
+                      <ul>
+                        <li>
+                          <div className="edit-container">
+                            <FiEdit size={23} color="#fff" />
+                            <button className="edit-btn" onClick={handleEdit}>
+                              Edit
+                            </button>
+                          </div>
+                        </li>
+                        <li>
+                          <div className="delete-container">
+                            <AiOutlineDelete size={23} color="#fff" />
+                            <button className="delete-btn" onClick={handleDelete}>
+                              Delete
+                            </button>
+                          </div>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
                 )}
-              </div>
-            )}
+
 
 
             {recipe.imageURL && (
@@ -954,6 +930,7 @@ StarRating.propTypes = {
   userRating: PropTypes.number,
   onRatingChange: PropTypes.func.isRequired,
   readOnly: PropTypes.bool,
+  onToggleComments: PropTypes.func,
 };
 
 
@@ -969,8 +946,11 @@ StarRating.propTypes = {
       imageURL: PropTypes.string,
       createdAt: PropTypes.string,
       user: PropTypes.shape({
+        id: PropTypes.number,
         username: PropTypes.string,
-        imageURL: PropTypes.string
+        fullName: PropTypes.string,
+        imageURL: PropTypes.string,
+        name: PropTypes.string
       })
     }).isRequired
   };

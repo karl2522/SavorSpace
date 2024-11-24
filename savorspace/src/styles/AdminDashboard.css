@@ -4,7 +4,7 @@
   --primary-color: #d6589f;
   --secondary-color: #4CAF50;
   --background-color: #f5f5f5;
-  --text-color: #333;
+  --text-color: #111;
   --text-light: #666;
   --white: #ffffff;
   --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -23,7 +23,6 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
   background-color: var(--background-color);
@@ -337,7 +336,3 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Add a subtle transition to all elements for smoother overall feel */
-* {
-  transition: all 0.3s ease;
-}

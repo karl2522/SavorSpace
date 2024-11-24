@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { IoIosSearch } from 'react-icons/io';
+import { IoClose } from 'react-icons/io5';
 import { MdAccessTime, MdOutlineSignalCellularAlt } from "react-icons/md";
 import '../styles/RecipePageStyles.css';
 
@@ -50,6 +52,7 @@ const trendingItems = [
 export default function RecipePage() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % trendingItems.length);
@@ -59,6 +62,33 @@ export default function RecipePage() {
   }, []);
 
   const currentItem = trendingItems[currentIndex];
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen);
+    setSearchQuery(''); // Clear search input when closing
+  };
+  
+
+  {/* search functions NOT FINAL. ikaw lang tiwas ani pre, mao nani logic*/}
+  const handleSearch = (e) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      // You can replace this with your search logic
+      window.location.href = `/search?q=${encodeURIComponent(searchQuery.trim())}`;
+      // Or use React Router if you have it set up:
+      // navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      toggleSearch(); // Close the search overlay
+    }
+  };
+
+  const handleSearchSubmit = () => {
+    if (searchQuery.trim()) {
+      window.location.href = `/search?q=${encodeURIComponent(searchQuery.trim())}`;
+      toggleSearch();
+    }
+  };
+
 
   return (
     <div className="trending-container">
@@ -96,6 +126,77 @@ export default function RecipePage() {
           ></span>
         ))}
       </div>
+
+      {/* user recipes here... */}
+      <div className="user-recipe-container">
+        <div className="user-recipe-header">
+          <h2>More Recipes</h2>
+          {/* search icon */}
+          <IoIosSearch
+            size={40} 
+            color={'#D6589F'} 
+            cursor={'pointer'}
+            className="search-button" 
+            onClick={toggleSearch}
+          />
+        </div>  
+          <div className="user-recipe">
+            {/* user recipe card */}
+            <div className="user-recipe-card">
+
+              <div className="user-recipe-image">
+                <img src="src/images/pancit-trend.jpg" alt="Pancit Bam-i" />
+              </div>
+              <div className="user-recipe-details">
+                <h3>Pancit Bam-i</h3>
+                <span>By: Jared Karl Gwapo</span>
+              </div>
+            </div>
+            {/* user recipe card */}
+
+            {/* user recipe card */}
+            <div className="user-recipe-card">
+
+              <div className="user-recipe-image">
+                <img src="src/images/pancit-trend.jpg" alt="Pancit Bam-i" />
+              </div>
+              <div className="user-recipe-details">
+                <h3>Pancit Bam-i</h3>
+                <span>By: Jared Karl Gwapo</span>
+              </div>
+            </div>
+            {/* user recipe card */}
+
+            {/* user recipe card */}
+            <div className="user-recipe-card">
+
+              <div className="user-recipe-image">
+                <img src="src/images/pancit-trend.jpg" alt="Pancit Bam-i" />
+              </div>
+              <div className="user-recipe-details">
+                <h3>Pancit Bam-i</h3>
+                <span>By: Jared Karl Gwapo</span>
+              </div>
+            </div>
+            {/* user recipe card */}
+          </div>
+      </div>
+        <div className={`search-overlay ${isSearchOpen ? 'active' : ''}`}>
+          <div className="search-container">
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search recipes here..."
+              autoFocus
+            />
+            <IoClose
+              size={30}
+              color={'#D6589F'}
+              className="close-search"
+              onClick={toggleSearch}
+            />
+          </div>
+        </div>
     </div>
   );
 }
