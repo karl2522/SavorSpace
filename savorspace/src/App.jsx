@@ -21,6 +21,7 @@ import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
+import RecipeDetail from './components/RecipeDetail';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
@@ -245,6 +246,7 @@ const App = () => {
           <Route path='/reactivate-account' element={<ReactivateAccount />} />
           <Route path='/deactivate-account' element={<AccountDeactivation />} />
           <Route path='/forgot-password' element= {<ForgotPasswordForm />} />
+          <Route path="/community/recipe/:recipeId" element={<RecipeDetail />} />
         </Routes>
       </div>
     </Router>

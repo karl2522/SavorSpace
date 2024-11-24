@@ -27,29 +27,6 @@ const Login = ({ onLogin }) => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const authtoken = localStorage.getItem('authToken');
-      const refreshToken = localStorage.getItem('refreshToken');
-
-      if(authtoken && refreshToken) {
-        try {
-          const response = await api.post('/verify-token');
-          if(response.data.valid) {
-            navigate('/homepage');
-          }else {
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('refreshToken');
-          }
-        }catch(error) {
-          localStorage.removeItem('authToken');
-          localStorage.removeItem('refreshToken');
-      }
-    }
-  }
-  checkAuth();
-}, [navigate]);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));

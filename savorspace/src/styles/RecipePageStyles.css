@@ -224,3 +224,42 @@
     height: 100%;
     border-radius: 10px;
   }
+
+  .no-results {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    width: 100%;
+  }
+  
+  .highlighting {
+    background-color: #ffeb3b;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .back-to-all {
+    background-color: #D6589F;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .back-to-all:hover {
+    background-color: #bf4c8c;
+  }
+
+  .user-recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
