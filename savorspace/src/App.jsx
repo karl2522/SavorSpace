@@ -28,7 +28,7 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard', '/forgot-password'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
-  const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname);
+  const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname) || location.pathname.startsWith('/community/recipe/');
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
   const [showDropdown, setShowDropdown] = useState(false);
@@ -144,7 +144,10 @@ const App = () => {
 
   const fetchProfilePic = async () => {
     const token = localStorage.getItem('authToken');
-    if (!token) return;
+    if (!token) {
+      setIsAuthenticated(false);
+      return;
+    }
     try {
       const response = await fetch('http://localhost:8080/users/me', {
         headers: {
@@ -152,14 +155,15 @@ const App = () => {
           'Content-Type': 'application/json'
         }
       });
-      if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       const data = await response.json();
-
+  
       setUsername(data.fullName);
       setRole(data.role);
       setIsAuthenticated(true);
       
-      // Check if the URL is absolute (starts with http) or relative, and format it accordingly
       if(data.imageURL) {
         const profilePicURL = data.imageURL.startsWith('http')
           ? data.imageURL
@@ -168,15 +172,12 @@ const App = () => {
       }else {
         setProfilePic(null);
       }
-
-      if(data.role) {
-        console.log('User role:', data.role);
-      }else {
-        console.log('User role not found');
-      }
+  
       console.log('User data: ', data);
     } catch (error) {
       console.error('Error fetching profile picture:', error);
+      setIsAuthenticated(false);
+      // Don't remove token or redirect here
     }
   };
 
