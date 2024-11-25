@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/AdminDashboard.css';
-import defaultProfile from '../images/defaultProfiles.png';
-import { Line, Bar, Radar} from 'react-chartjs-2';
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  LineElement,
-  RadialLinearScale,
   ArcElement,
-  plugins
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  RadialLinearScale,
+  Title,
+  Tooltip
 } from 'chart.js';
+import React, { useEffect, useState } from 'react';
+import { Bar, Line, Radar } from 'react-chartjs-2';
+import { Link, useNavigate } from 'react-router-dom';
+import defaultProfile from '../images/defaultProfiles.png';
+import '../styles/AdminDashboard.css';
 
 ChartJS.register(
   CategoryScale,
