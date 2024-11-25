@@ -177,13 +177,18 @@
   
 }
 
-.post-card-content p{
+.post-card-content p {
   font-size: 16px;
   margin: 0;
+  padding: 20px 10px 20px 0;
 }
 
-.post-card-content h4, p {
-  padding: 10px;
+.post-card-content h4 {
+  padding-top: 10px;
+}
+
+.post-card-ps {
+  padding-top: 10px;
 }
 
 .post-card-image {

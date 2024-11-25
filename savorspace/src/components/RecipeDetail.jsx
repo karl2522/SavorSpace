@@ -1,12 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { MdAccessTime, MdFavorite, MdFavoriteBorder, MdShare } from "react-icons/md";
+import { useEffect, useState } from 'react';
 import { IoArrowBack } from "react-icons/io5";
-import { LoadingSpinner } from './LoadingSpinner';
+import { MdAccessTime, MdFavorite, MdFavoriteBorder, MdShare } from "react-icons/md";
+import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/RecipeDetail.css';
-import { VscSend } from "react-icons/vsc";
-import { MdClose } from "react-icons/md";
-import { IoFlagOutline } from "react-icons/io5";
 
 export default function RecipeDetail() {
   const { recipeId } = useParams();
@@ -394,39 +390,41 @@ const handleDeleteComment = async (commentId) => {
 
   return (
     <div className="recipe-detail-container">
-      <button 
-        className="back-button"
-        onClick={() => navigate(-1)}
-      >
-        <IoArrowBack /> Back
-      </button>
-
-      <div className="recipe-actions">
-        <button 
-          className={`like-button ${isLiked ? 'liked' : ''}`}
-          onClick={handleLike}
-        >
-          {isLiked ? <MdFavorite /> : <MdFavoriteBorder />}
-          <span>{likeCount}</span>
-        </button>
-        <button className="share-button" onClick={handleShare}>
-          <MdShare />
-          Share
-        </button>
-      </div>
-
       <div className="recipe-detail-header">
-        <img 
-          src={formatImageURL(recipe.imageURL)}
-          alt={recipe.title}
-          className="recipe-detail-image"
-          onError={(e) => {
-            e.target.src = '/src/images/defaultProfiles.png';
-          }}
-        />
-        
+        <button 
+          className="back-button"
+          onClick={() => navigate(-1)}
+        >
+          <IoArrowBack /> Back
+        </button>
+          <div className="recipe-actions">
+            <button 
+            className={`like-button ${isLiked ? 'liked' : ''}`}
+            onClick={handleLike}
+            >
+              {isLiked ? <MdFavorite /> : <MdFavoriteBorder />}
+              <span>{likeCount}</span>
+            </button>
+            <button className="share-button" onClick={handleShare}>
+              <MdShare />
+              Share
+            </button>
+          </div>
+      </div>
+      <div className="recipe-detail-card">
+        <div className="recipe-detail-image">
+          <img 
+            src={formatImageURL(recipe.imageURL)}
+            alt={recipe.title}
+            onError={(e) => {
+              e.target.src = '/src/images/defaultProfiles.png';
+            }}
+          />
+        </div>
+      
         <div className="recipe-detail-info">
           <h1>{recipe.title}</h1>
+          <p className="recipe-detail-description">{recipe.description}</p>
           <div className="recipe-author">
             {recipe.user && (
               <>
@@ -441,20 +439,15 @@ const handleDeleteComment = async (commentId) => {
                 <span>By: {recipe.user.fullName || 'Anonymous'}</span>
               </>
             )}
-          </div>
-          <div className="recipe-timestamp">
-            <MdAccessTime />
-            <span>{recipe.createdAt}</span>
+            <div className="recipe-timestamp">
+              <MdAccessTime />
+              <span>{recipe.createdAt}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="recipe-content">
-        <div className="recipe-description">
-          <h2>Description</h2>
-          <p>{recipe.description}</p>
-        </div>
-
+      <div className="recipe-detail-content">
         {ingredientsList.length > 0 && (
           <div className="recipe-ingredients">
             <h2>Ingredients</h2>
@@ -478,84 +471,6 @@ const handleDeleteComment = async (commentId) => {
         )}
       </div>
 
-      <div className="comments-section">
-    <h2>Comments</h2>
-
-    {localStorage.getItem('authToken') ? (
-        <form onSubmit={handleComment} className="comment-form">
-            <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add a comment..."
-                className="comment-input"
-                disabled={isLoading}
-            />
-            <button
-                type="submit"
-                className="comment-submit"
-                disabled={isLoading || !newComment.trim()}
-            >
-                {isLoading ? (
-                    <span>Posting...</span>
-                ) : (
-                    <VscSend style={{ fontSize: '24px', color: '#D6589F' }} />
-                )}
-            </button>
-        </form>
-    ) : (
-        <p>Please login to comment</p>
-    )}
-
-    <div className="comments-list">
-        {comments.length === 0 ? (
-            <p>No comments yet. Be the first to comment!</p>
-        ) : (
-            comments.map((comment) => (
-                <div key={comment.commentID} className="comment">
-                    <div className="comment-header">
-                        <img
-                            src={comment.userImageURL ? `${BACKEND_URL}${comment.userImageURL}` : '/src/images/defaultProfiles.png'}
-                            alt={comment.username || 'User'}
-                            className="comment-user-pic"
-                            onError={(e) => {
-                                console.error('Failed to load image:', comment.userImageURL);
-                                e.target.src = "/src/images/defaultProfiles.png";
-                            }}
-                        />
-                        <div className="comment-user-details">
-                            <span className="comment-username">
-                                {comment.username || comment.userEmail || 'Anonymous'}
-                            </span>
-                            <span className="comment-date">
-                                {formatDate(comment.createdAt)}
-                            </span>
-                            <span className="comment-text">{comment.content}</span>
-                        </div>
-                        {currentUser && currentUser.id === comment.userID && (
-                            <div className="comment-actions">
-                                <button 
-                                    className="delete-comment"
-                                    onClick={() => handleDeleteComment(comment.commentID)}
-                                    aria-label="Delete Comment"
-                                >
-                                    <MdClose size={24} />
-                                </button>
-
-                                <button 
-                                    className="flag-comment"
-                                    aria-label="Flag Comment"
-                                >
-                                    <IoFlagOutline size={24} />
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            ))
-        )}
-    </div>
-</div>
-
       {relatedRecipes.length > 0 && (
         <div className="related-recipes">
           <h2>You might also like</h2>
@@ -566,10 +481,12 @@ const handleDeleteComment = async (commentId) => {
                 className="related-recipe-card"
                 onClick={() => navigate(`/community/recipe/${related.recipeId}`)}
               >
-                <img 
-                  src={formatImageURL(related.imageURL)}
-                  alt={related.title}
-                />
+                <div className="related-recipe-image">
+                  <img 
+                    src={formatImageURL(related.imageURL)}
+                    alt={related.title}
+                  />
+                </div>
                 <h3>{related.title}</h3>
                 <p>{related.description}</p>
               </div>
