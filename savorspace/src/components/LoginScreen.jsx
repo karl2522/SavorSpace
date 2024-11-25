@@ -19,33 +19,13 @@ const login = async (loginData) => {
 };
 
 const Login = ({ onLogin }) => {
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const query = useQuery();
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const authtoken = localStorage.getItem('authToken');
-      const refreshToken = localStorage.getItem('refreshToken');
-
-      if(authtoken && refreshToken) {
-        try {
-          const response = await api.post('/verify-token');
-          if(response.data.valid) {
-            navigate('/homepage');
-          }else {
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('refreshToken');
-          }
-        }catch(error) {
-          localStorage.removeItem('authToken');
-          localStorage.removeItem('refreshToken');
-      }
-    }
-  }
-  checkAuth();
-}, [navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -92,23 +72,53 @@ const Login = ({ onLogin }) => {
       setErrors(validationErrors);
       return;
     }
+
+    setIsLoading(true);
     try {
       const response = await login(loginData);
       onLogin(); 
-      navigate('/homepage');
+
+      await new Promise(resolve => setTimeout(resolve, 1500));
       if(response.token) {
         localStorage.setItem('authToken', response.token);
         localStorage.setItem('refreshToken', response.refreshToken);
       }
       navigate('/homepage');
-      alert('Login successful!');
     } catch (error) {
-      alert(`Login failed: ${error.response?.data?.message || error.message}`);
+      const errorMsg = error.response?.status === 401
+        ? "Invalid email or password. Please try again"
+        : "Something went wrong. Please try again later.";
+      setErrorMessage(errorMsg);
+      setShowErrorToast(true);
+      setTimeout(() => setShowErrorToast(false), 5000);
+    }finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="login-container">
+      {showErrorToast && (
+    <div className="error-toast">
+      <div className="error-toast-content">
+        <div className="error-icon">❌</div>
+        <p>{errorMessage}</p>
+      </div>
+    </div>
+    )}
+
+      {isLoading && (
+      <div className="loading-overlay">
+        <div className="loader-container">
+          <div className="loader-ring"></div>
+          <div className="loader-ring-2"></div>
+          <div className="loader-icon">👨‍🍳</div>
+        </div>
+        <div className="loading-text">
+          Preparing your kitchen<span className="loading-dots"></span>
+        </div>
+      </div>
+    )}
       <div className="login-hero">
         <img src="src/images/login-hero.png" alt="Welcome back to SavorSpace" />
         <h3>Welcome back, Chef!</h3>
@@ -140,6 +150,9 @@ const Login = ({ onLogin }) => {
 
           <button type="submit" className="login-btn">Log In</button>
         </form>
+          <div className="forgot-password">
+            <a href="/forgot-password" className="forgot-password-link">Forgot Password?</a>
+          </div>
         <div className="login-options">
           <span>Don&apos;t have an account? <a href="/register" className="register">Register</a></span>
           <p>Or login with</p>
@@ -153,9 +166,12 @@ const Login = ({ onLogin }) => {
               <span>Github</span> 
             </button>
           </div>
+          <div className="login-options">
+            <span>Deactivated Account? Activate it here!</span>
+          </div>
           <button onClick={handleReactivate} className='reactivate-btn'>
               <span>Reactivate Account</span>
-            </button>
+          </button>
         </div>
       </div>
     </div>

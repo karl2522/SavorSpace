@@ -33,11 +33,15 @@ const AccountReactivation = () => {
                 })
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to reactivate account');
-            }
-
             const data = await response.json();
+            if (!response.ok) {
+                if(data.error === "Account is already active") {
+                    alert('Account is already active. Please login to continue.');
+                    navigate('/login');
+                    return;
+                }
+                throw new Error(data.error || 'Failed to reactivate account');
+            }
 
             // Store tokens
             localStorage.setItem('token', data.token);

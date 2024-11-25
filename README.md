@@ -18,3 +18,17 @@ A web-based platform where users can share, explore, and discover a variety of r
 
 ## Project Diagrams
 [Click here to view the project diagrams](https://cebuinstituteoftechnology-my.sharepoint.com/:b:/g/personal/jaredkarl_omen_cit_edu/EW4NR6RHSitOm5iFY4AfwO8B9u5TvFCBnFdUmPBTrMS6Xw?e=Luh1Yg)
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.

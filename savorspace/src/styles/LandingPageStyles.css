@@ -5,8 +5,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 20px 20px 0   20px;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
 .navbar {
@@ -14,12 +15,13 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 1800px;
   padding: 1rem;
+  max-width: 2000px;
   background-color: #fff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  height: 80px;
+  height: 110px;
   justify-self: center;
+  box-sizing: border-box;
 }
 
 .navbar .logo {
@@ -28,6 +30,7 @@
   padding-top: 10px;
   max-width: 100px; 
   margin-top: 10px; 
+  margin-left: 20px;
 }
 
 .navbar .highlight {
@@ -74,6 +77,7 @@
   gap: 10px;
   max-width: 200px;
   width: 100%;
+  margin-right: 30px;
 } 
 
 .signup-btn, .signin-btn {
@@ -189,6 +193,7 @@
 .get-started-btn:hover {
   background-color: #ce2786;
   color: #fff;
+  background-color: #fff;
   transform: translateY(-2px);
 }
 
@@ -215,7 +220,7 @@
   padding: 20px;
 }
 
-.recipe-card {
+.recipe-cards {
   margin-top: 70px;
   margin-right: 200px;
   max-width: 420px;
@@ -228,7 +233,7 @@
   font-family: Arial, sans-serif;
 }
 
-.recipe-card::before {
+.recipe-cards::before {
   content: "";
   position: absolute;
   top: 10px;
@@ -592,8 +597,7 @@
 }
 
 .team-card {
-  width: 300px;
-  background-color: #F3F4F6;
+  width: 320px;
   border-radius: 24px;
   padding: 0.5rem;
   background-color: #D6589F;
@@ -1240,7 +1244,7 @@
     font-size: 14px;
   }
 
-  .recipe-card {
+  .recipe-cards {
     margin-top: 70px;
     margin-right: 100px;
     max-width: 400px;
@@ -1404,7 +1408,225 @@
     align-items: center;
     gap: 3rem;
   }
-
-  
 }
 
+
+.animate-in {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Section-specific animations */
+.hero.animate-in {
+  animation-delay: 0.4s;
+}
+
+.more-recipes.animate-in {
+  animation-delay: 0.4s;
+}
+
+.chef-container.animate-in {
+  animation-delay: 0.4s;
+}
+
+.team-container.animate-in {
+  animation-delay: 0.4s;
+}
+
+.questions-section.animate-in {
+  animation-delay: 0.4s;
+}
+
+/* Card animations */
+.recipe-cards.animate-in,
+.community-card.animate-in,
+.chef-card.animate-in,
+.team-card.animate-in {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+
+/* Email Loading Overlay */
+.email-loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.email-loading-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Chef Loader Animation */
+.chef-loader {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.5rem;
+}
+
+.chef-hat {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 40px;
+  background: #ffffff;
+  border: 3px solid #333;
+  border-radius: 30px 30px 0 0;
+  animation: hatBob 1.2s ease-in-out infinite;
+}
+
+.chef-hat:before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 20px;
+  background: #ffffff;
+  border: 3px solid #333;
+  border-radius: 20px 20px 0 0;
+}
+
+.envelope {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 50px;
+  background: #f8f8f8;
+  border: 3px solid #333;
+  border-radius: 5px;
+  animation: envelopeShake 0.8s ease-in-out infinite;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: -20px;
+  left: -3px;
+  width: 80px;
+  height: 40px;
+  background: #f0f0f0;
+  border: 3px solid #333;
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  transform-origin: bottom;
+  animation: flapWave 2s ease-in-out infinite;
+}
+
+@keyframes hatBob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-8px); }
+}
+
+@keyframes envelopeShake {
+  0%, 100% { transform: translateX(-50%) rotate(0); }
+  25% { transform: translateX(-50%) rotate(-3deg); }
+  75% { transform: translateX(-50%) rotate(3deg); }
+}
+
+@keyframes flapWave {
+  0%, 100% { transform: rotateX(0); }
+  50% { transform: rotateX(-45deg); }
+}
+
+.email-loading-container p {
+  color: #333;
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+  font-weight: 500;
+}
+
+/* Toast Notification */
+.toast-notification {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1001;
+  min-width: 300px;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transform: translateX(120%);
+  animation: slideIn 0.5s forwards, fadeOut 0.5s 2.5s forwards;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.toast-notification.success {
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  border-left: 4px solid #2e7d32;
+}
+
+.toast-notification.error {
+  background: linear-gradient(135deg, #f44336, #e53935);
+  border-left: 4px solid #c62828;
+}
+
+.toast-icon {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.toast-content p {
+  color: white;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(120%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .toast-notification {
+    min-width: auto;
+    width: calc(100% - 3rem);
+    max-width: 400px;
+  }
+}

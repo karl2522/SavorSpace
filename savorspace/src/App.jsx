@@ -5,9 +5,12 @@ import AboutUs from './components/AboutUs';
 import AdminDashboard from './components/AdminDashboard';
 import AdminLogin from './components/AdminLogin';
 import AdminManageAccounts from './components/AdminManageAccounts';
+import AdminManagePosts from './components/AdminManagePosts';
 import AdminSignup from './components/AdminSignup';
+import PostingPage from './components/CommunityPage';
 import AccountDeactivation from './components/DeactivationAccount';
 import EditProfileSettings from './components/EditProfileSettings';
+import ForgotPasswordForm from './components/ForgotPassword';
 import HomePage from './components/Homepage';
 import LandingPage from './components/LandingPage';
 import Login from './components/LoginScreen';
@@ -19,13 +22,14 @@ import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
+import RecipeDetail from './components/RecipeDetail';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
-  const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname);
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard', '/forgot-password','/admin/ManagePosts'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
+  const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname) || location.pathname.startsWith('/community/recipe/');
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
   const [showDropdown, setShowDropdown] = useState(false);
@@ -141,7 +145,10 @@ const App = () => {
 
   const fetchProfilePic = async () => {
     const token = localStorage.getItem('authToken');
-    if (!token) return;
+    if (!token) {
+      setIsAuthenticated(false);
+      return;
+    }
     try {
       const response = await fetch('http://localhost:8080/users/me', {
         headers: {
@@ -149,14 +156,15 @@ const App = () => {
           'Content-Type': 'application/json'
         }
       });
-      if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       const data = await response.json();
-
+  
       setUsername(data.fullName);
       setRole(data.role);
       setIsAuthenticated(true);
       
-      // Check if the URL is absolute (starts with http) or relative, and format it accordingly
       if(data.imageURL) {
         const profilePicURL = data.imageURL.startsWith('http')
           ? data.imageURL
@@ -165,15 +173,12 @@ const App = () => {
       }else {
         setProfilePic(null);
       }
-
-      if(data.role) {
-        console.log('User role:', data.role);
-      }else {
-        console.log('User role not found');
-      }
+  
       console.log('User data: ', data);
     } catch (error) {
       console.error('Error fetching profile picture:', error);
+      setIsAuthenticated(false);
+      // Don't remove token or redirect here
     }
   };
 
@@ -213,6 +218,7 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/recipes" element={<RecipePage />} />
+          <Route path="/community" element={<PostingPage isAuthenticated={isAuthenticated} />} />
           <Route path="/profile" element={<ProfilePage />} />
             <Route path="/profile/settings" element={<SettingsPage />}>
               {/* Routes for Settings Sections */}
@@ -237,10 +243,15 @@ const App = () => {
           <Route 
           path="/admin/ManageUser" 
           element={<AdminManageAccounts />} />
+          <Route 
+          path="/admin/ManagePosts" 
+          element={<AdminManagePosts />} />
           <Route path="/about-us" element={<AboutUs />} /> {}
           <Route path='/404' element={<NotFound />} />
           <Route path='/reactivate-account' element={<ReactivateAccount />} />
           <Route path='/deactivate-account' element={<AccountDeactivation />} />
+          <Route path='/forgot-password' element= {<ForgotPasswordForm />} />
+          <Route path="/community/recipe/:recipeId" element={<RecipeDetail />} />
         </Routes>
       </div>
     </Router>
