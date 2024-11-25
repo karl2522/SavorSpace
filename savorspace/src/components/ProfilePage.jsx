@@ -90,7 +90,7 @@ export default function ProfilePage() {
   return (
     <div className="profile-container">
       <div className="profile-top">
-        <button className="back-button" onClick={handleHome}>
+        <button className="back-button-profile" onClick={handleHome}>
           <IoIosArrowBack size={30} />
         </button>
         <h1>My <span className="highlight">Profile</span></h1>

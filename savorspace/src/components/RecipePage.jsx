@@ -164,6 +164,30 @@ export default function RecipePage() {
 
   const currentItem = trendingItems[currentIndex];
 
+  const formDate = (dateString) => {
+      try {
+          if (!dateString) return 'Date not available';
+
+          const date = new Date(dateString);
+          if (isNaN(date.getTime())) {
+              console.error('Invalid date:', dateString);
+              return 'Date not available';
+          }
+
+          return date.toLocaleString('en-US', {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true
+          });
+      } catch (error) {
+          console.error('Failed to format date:', dateString, error);
+          return 'Date not available';
+      }
+  };
+
   return (
     <div className="trending-container">
       {}
@@ -201,7 +225,7 @@ export default function RecipePage() {
                   )}
                 <div className="trending-info">
                   <MdAccessTime size={20}/>
-                  <span>{currentItem.createdAt}</span>
+                  <span>{formDate(currentItem.createdAt)}</span>
                 </div>
               </div>
             </div>
@@ -270,7 +294,7 @@ export default function RecipePage() {
               <div className="user-recipe-details">
                 <h3>{highlightText(recipe.title, activeSearch)}</h3>
                 <p>{highlightText(recipe.description, activeSearch)}</p>
-                <span>By: {recipe.user ? recipe.user.fullName: 'Anonymous'}</span>
+                <span className="user-recipe-info">By: {recipe.user ? recipe.user.fullName: 'Anonymous'}</span>
               </div>
             </div>
           ))}
