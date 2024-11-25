@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/AdminManageAccounts.css';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import defaultProfile from '../images/defaultProfiles.png';
+import '../styles/AdminManageAccounts.css';
 
 const AdminManageAccounts = () => {
   const [admin, setAdmin] = useState(null);
@@ -248,7 +248,7 @@ const AdminManageAccounts = () => {
           <div className="users-header">
             <h2>SavorSpace <span>Users</span></h2>
             <button 
-              className="recyle-bin-toggle"
+              className="recycle-bin-toggle"
               onClick={() => setShowRecycleBin(!showRecycleBin)}
             >
               {showRecycleBin ? 'View Active Users' : 'View Recycle Bin'}

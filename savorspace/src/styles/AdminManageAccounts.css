@@ -123,7 +123,7 @@
   }
   
   .header-title span {
-    color: #e91e63;
+    color: #d6589f;
   }
   
   .header-title p {
@@ -156,7 +156,7 @@
   }
   
   .users-header span {
-    color: #e91e63;
+    color: #d6589f  ;
   }
   
   .view-all {
@@ -309,7 +309,7 @@
 
 /* Recycle Bin Toggle Button */
 .recycle-bin-toggle {
-  background-color: #4a90e2;
+  background-color: #d6589f;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -322,7 +322,7 @@
 }
 
 .recycle-bin-toggle:hover {
-  background-color: #357abd;
+  background-color: #ce2786;
 }
 
 /* Modal Overlay */
