@@ -1,101 +1,223 @@
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { HiArrowSmRight } from "react-icons/hi";
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/MainStyles.css';
+import { FaUtensils, FaClock, FaHeart, FaShare, FaArrowRight} from 'react-icons/fa';
 
-// RecipeCard component
-const RecipeCard = ({ image, title, description, onClick }) => {
+const CategorySection = () => {
+  const categories = [
+    { name: 'Breakfast', icon: '🍳' },
+    { name: 'Lunch', icon: '🍜' },
+    { name: 'Dinner', icon: '🍽️' },
+    { name: 'Desserts', icon: '🍰' }
+  ];
+
   return (
-    <div className="recipe-cards" onClick={onClick}>
-      <div className="recipe-image-container">
-        <img src={image} alt={title} className="recipe-image" />
-      </div>
-      <div className="recipe-content">
-        <div className="recipe-meta">
-          <span className="recipe-cuisine">
-            <img src="/src/images/dish.png" alt="Cuisine Icon" />
-            Filipino Dish
-          </span>
-          <span className="recipe-course">
-            <img src="/src/images/course.png" alt="Course Icon" />
-            Main Course
-          </span>
-        </div>
-        <h3 className="recipe-title">{title}</h3>
-        <p className="recipe-description">{description}</p>
-        <button className="recipe-button" aria-label="View Recipe">
-          <HiArrowSmRight size={25} />
-        </button>
+    <div className="categories-section">
+      <h2>Browse by Category</h2>
+      <div className="categories-grid">
+        {categories.map((category, index) => (
+          <div key={index} className="category-card">
+            <span className="category-icon">{category.icon}</span>
+            <h3>{category.name}</h3>
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
-RecipeCard.propTypes = {
-  image: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+const RecipeCard = ({ image, title, description, cookTime, difficulty, onClick, likes, shares }) => {
+  return (
+    <div className="recipe-card" onClick={onClick}>
+      <div className="recipe-image-container">
+        <img src={image} alt={title} className="recipe-image" />
+        <div className="recipe-overlay">
+          <FaArrowRight className="recipe-arrow" />
+        </div>
+      </div>
+      <div className="recipe-content">
+        <h3 className="recipe-title">{title}</h3>
+        <p className="recipe-description">{description}</p>
+        <div className="recipe-meta">
+          <span><FaUtensils /> {difficulty}</span>
+          <span><FaClock /> {cookTime}</span>
+        </div>
+        <div className="recipe-engagement">
+        <span className="likes">
+          <FaHeart /> {likes}
+        </span>
+        <span className="shares">
+          <FaShare /> {shares}
+        </span>
+      </div>
+      </div>
+    </div>
+  );
 };
+
+const CommentSection = () => {
+  const [comment, setComment] = useState('');
+  const [comments, setComments] = useState([]);
+  const [showGifPicker, setShowGifPicker] = useState(false);
+  const [gifs, setGifs] = useState([]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (comment.trim()) {
+      setComments([...comments, { 
+        type: 'text', // Add type to distinguish between text and gif comments
+        content: comment, 
+        date: new Date() 
+      }]);
+      setComment(''); // Clear the comment input after submission
+    }
+  };
+
+  const searchGifs = async (query) => {
+    const GIPHY_API_KEY = 'your_giphy_api_key';
+    const response = await fetch(
+      `https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${query}&limit=10`
+    );
+    const data = await response.json();
+    setGifs(data.data);
+  };
+
+  const addGifToComment = (gifUrl) => {
+    setComments([...comments, { type: 'gif', content: gifUrl, date: new Date() }]);
+    setShowGifPicker(false);
+  };
+
+  return (
+    <div className="comment-section">
+      <form onSubmit={handleSubmit}>
+        <div className="comment-input-container">
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Share your thoughts..."
+          />
+          <button 
+            type="button" 
+            className="gif-button"
+            onClick={() => setShowGifPicker(!showGifPicker)}
+          >
+            GIF
+          </button>
+        </div>
+        <button type="submit">Post Comment</button>
+      </form>
+
+      {showGifPicker && (
+        <div className="gif-picker">
+          <input
+            type="text"
+            placeholder="Search GIFs..."
+            onChange={(e) => searchGifs(e.target.value)}
+          />
+          <div className="gif-grid">
+            {gifs.map((gif) => (
+              <img
+                key={gif.id}
+                src={gif.images.fixed_height_small.url}
+                onClick={() => addGifToComment(gif.images.fixed_height.url)}
+                alt="gif"
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="comments-list">
+        {comments.map((c, index) => (
+          <div key={index} className="comment">
+            {c.type === 'gif' ? (
+              <img src={c.content} alt="comment-gif" className="comment-gif" />
+            ) : (
+              <p>{c.content}</p>
+            )}
+            <small>{c.date.toLocaleString()}</small>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 
 const HomePage = () => {
   const recipes = [
     {
       image: "/src/images/adobo-hero.png",
       title: "Chicken Adobo",
-      description: "Adobo is a Filipino dish of marinated meat, usually chicken or pork, cooked in vinegar and soy sauce. It's known for its savory and tangy flavor and is often served with rice.",
+      description: "A savory Filipino dish with tender chicken in a tangy soy-vinegar sauce.",
+      cookTime: "45 mins",
+      difficulty: "Medium"
     },
     {
-      image: "src/images/sinigang-hero.png",
+      image: "/src/images/sinigang-hero.png",
       title: "Sinigang na Baboy",
-      description: "Sinigang is a traditional Filipino sour soup made from tamarind, tomatoes, and various vegetables such as eggplant, radish, and spinach. Typically made with pork, shrimp, or beef.",
+      description: "A sour tamarind-based soup with pork and vegetables, perfect for rainy days.",
+      cookTime: "1 hour",
+      difficulty: "Easy"
     },
     {
       image: "/src/images/pancit-hero.png",
       title: "Pancit Canton",
-      description: "Pancit is a beloved Filipino noodle dish that comes in many regional varieties, often made with rice noodles, vegetables, and a choice of proteins like chicken, pork, or shrimp.",
+      description: "Stir-fried noodles with vegetables and meat, a staple in Filipino celebrations.",
+      cookTime: "30 mins",
+      difficulty: "Easy"
     },
-    // Add more recipes as needed
   ];
 
   const [currentRecipeIndex, setCurrentRecipeIndex] = useState(0);
+  const [showComments, setShowComments] = useState(false);
 
-  // Automatically change the recipe every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentRecipeIndex((prevIndex) => (prevIndex + 1) % recipes.length);
-    }, 3000);
+    }, 5000);
 
-    return () => clearInterval(interval); // Clear the interval on component unmount
-  }, []);
+    return () => clearInterval(interval);
+  }, [recipes.length]);
 
   const handleCardClick = () => {
-    setCurrentRecipeIndex((prevIndex) => (prevIndex + 1) % recipes.length);
+    setShowComments(!showComments);
   };
 
   return (
     <div className="homepage">
       <section className="hero">
-        <div className="hero-text">
-          <h2><span>Savor</span> the flavors, <br /> Share the <span>love</span></h2>
-          <p>Join our vibrant community of food lovers where you can share recipes, savor delicious flavors, and celebrate the joy of cooking together. Let&apos;s create tasty memories!</p>
-          <Link to="/recipes">
-          <button className="explore-recipes-btn" aria-label="Explore Recipes">Explore Recipes</button>
+        <div className="hero-content">
+          <h1 className="hero-title">
+            <span className="highlight">Savor</span> the flavors,<br />
+            Share the <span className="highlight">love</span>
+          </h1>
+          <p className="hero-description">
+            Join our vibrant community of food lovers. Share recipes, savor delicious flavors, and celebrate the joy of cooking together.
+          </p>
+          <Link to="/recipes" className="cta-button">
+            Explore Recipes
           </Link>
         </div>
-          
-        <div className="recipe-card-container">
+        
+        <div className="featured-recipe">
           <RecipeCard
-            image={recipes[currentRecipeIndex].image}
-            title={recipes[currentRecipeIndex].title}
-            description={recipes[currentRecipeIndex].description}
+            {...recipes[currentRecipeIndex]}
             onClick={handleCardClick}
           />
         </div>
       </section>
+
+      <CategorySection />
+
+      {showComments && (
+        <section className="comments-section">
+          <CommentSection />
+        </section>
+      )}
     </div>
   );
 };
 
 export default HomePage;
+
