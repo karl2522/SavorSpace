@@ -403,7 +403,7 @@ const RecipeComments = ({ recipeId, isVisible}) => {
                           className="flag-comment"
                           aria-label="Flag Comment"
                         >
-                          <IoFlagOutline size={24 } />
+                          <IoFlagOutline size={24} />
                         </button>
                       </div>
                     )}
@@ -869,7 +869,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
                                 onChange={(e) => setEditedRecipe({ ...editedRecipe, ingredients: e.target.value })}
                               />
                             ) : (
-                              <p className="post-card-ps">{recipe.ingredients}</p>
+                              <p>{recipe.ingredients}</p>
                             )}
                           </div>
                         )}
@@ -885,7 +885,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
                                 onChange={(e) => setEditedRecipe({ ...editedRecipe, instructions: e.target.value })}
                               />
                             ) : (
-                              <p className="post-card-ps">{recipe.instructions}</p>
+                              <p>{recipe.instructions}</p>
                             )}
                           </div>
                         )}
