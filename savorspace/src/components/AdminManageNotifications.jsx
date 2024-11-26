@@ -4,7 +4,7 @@ import axios from 'axios';
 import defaultProfile from '../images/defaultProfiles.png';
 import '../styles/AdminManageComments.css';
 
-const AdminManageComments = () => {
+const AdminManageNotifications = () => {
   const [admin, setAdmin] = useState(null);
   const [comments, setComments] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -12,24 +12,24 @@ const AdminManageComments = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [profilePic, setProfilePic] = useState('');
+  const [flaggedComments, setFlaggedComments] = useState([]);
 
   useEffect(() => {
     fetchAdmin();
-    fetchComments();
+    fetchFlaggedComments();
   }, []);
 
   const fetchAdmin = async () => {
     try {
       const token = sessionStorage.getItem('adminToken');
       if (!token) {
-        console.error('No admin token found in sessionStorage');
+        navigate('/admin/login');
         return;
       }
 
       const response = await axios.get('http://localhost:8080/admin/ad', {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
         },
       });
 
@@ -71,40 +71,27 @@ const AdminManageComments = () => {
     }
   };
 
-  const fetchComments = async () => {
+  const fetchFlaggedComments = async () => {
     try {
       const token = sessionStorage.getItem('adminToken');
       if (!token) {
-        console.error('No admin token found in sessionStorage');
+        navigate('/admin/login');
         return;
       }
 
-      // Get all recipes first
-      const recipesResponse = await axios.get('http://localhost:8080/recipes', {
+      const response = await axios.get('http://localhost:8080/admin/flagged-comments', {
         headers: {
           Authorization: `Bearer ${token}`,
         }
       });
 
-      // Fetch comments for each recipe
-      const allComments = [];
-      for (const recipe of recipesResponse.data) {
-        const commentsResponse = await axios.get(`http://localhost:8080/api/comments/recipe/${recipe.recipeID}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        });
-        allComments.push(...commentsResponse.data);
-      }
-
-      setComments(allComments.map(comment => ({
+      setFlaggedComments(response.data.map(comment => ({
         ...comment,
         userImageUrl: comment.userImageURL ? `http://localhost:8080${comment.userImageURL}` : defaultProfile,
-        username: comment.user?.username || comment.username || 'Unknown User' // Use username from User entity
+        username: comment.username || 'Unknown User'
       })));
-
     } catch (error) {
-      console.error('Error fetching comments:', error);
+      console.error('Error fetching flagged comments:', error);
     } finally {
       setLoading(false);
     }
@@ -143,22 +130,12 @@ const AdminManageComments = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h2>Confirm Delete</h2>
-            <p>Are you sure you want to delete this comment?</p>
-            <p>This action cannot be undone.</p>
+            <p>Are you sure you want to delete this flagged comment?</p>
             <div className="modal-actions">
-              <button 
-                className="cancel-button"
-                onClick={() => {
-                  setShowDeleteModal(false);
-                  setCommentToDelete(null);
-                }}
-              >
+              <button className="cancel-button" onClick={() => setShowDeleteModal(false)}>
                 Cancel
               </button>
-              <button 
-                className="delete-button"
-                onClick={handleDeleteConfirm}
-              >
+              <button className="delete-button" onClick={handleDeleteConfirm}>
                 Delete
               </button>
             </div>
@@ -179,8 +156,8 @@ const AdminManageComments = () => {
             <li><Link to="/admin/dashboard">Dashboard</Link></li>
             <li><Link to="/admin/ManageUser">User Account</Link></li>
             <li><Link to="/admin/ManagePosts">User Posts</Link></li>
-            <li><Link to="/admin/ManageComments" className="active">User Comments</Link></li>
-            <li><Link to="/admin/ManageNotifications">Notifications</Link></li>
+            <li><Link to="/admin/ManageComments">User Comments</Link></li>
+            <li><Link to="/admin/ManageNotifications" className="active">Notifications</Link></li>
             <li><button onClick={handleLogout}>Logout</button></li>
           </ul>
         </nav>
@@ -196,62 +173,68 @@ const AdminManageComments = () => {
       <main className="main-content">
         <header className="content-header">
           <div className="header-title">
-            <h1>User <span>Comments</span></h1>
+            <h1>Flagged <span>Comments</span></h1>
             <p>Hello Admin, {admin?.fullName}!</p>
           </div>
         </header>
 
         <section className="comments-section">
           <div className="comments-header">
-            <h2>User <span>Comments</span></h2>
+            <h2>Flagged <span>Comments</span></h2>
           </div>
 
-          <div className="comments-table">
-            <table>
-              <thead>
-                <tr>
-                  <th>User Profile</th>
-                  <th>Account Name</th>
-                  <th>Comment</th>
-                  <th>Commented At</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {comments.map((comment) => (
-                  <tr key={comment.commentID}>
-                    <td>
-                      <div className="user-image">
-                        <img 
-                          src={comment.userImageUrl} 
-                          alt={comment.username}
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = defaultProfile;
-                          }}
-                        />
-                      </div>
-                    </td>
-                    <td>{comment.username}</td>
-                    <td className="comment-content">{comment.content}</td>
-                    <td>{formatDate(comment.createdAt)}</td>
-                    <td>
-                      <button 
-                        className="action-button delete"
-                        onClick={() => handleDeleteClick(comment)}
-                      >
-                        Delete
-                      </button>
-                    </td>
+          {loading ? (
+            <div className="loading">Loading flagged comments...</div>
+          ) : flaggedComments.length === 0 ? (
+            <div className="no-comments">No flagged comments found.</div>
+          ) : (
+            <div className="comments-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>User Profile</th>
+                    <th>Account Name</th>
+                    <th>Comment</th>
+                    <th>Flagged At</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {flaggedComments.map((comment) => (
+                    <tr key={comment.commentID}>
+                      <td>
+                        <div className="user-image">
+                          <img 
+                            src={comment.userImageUrl} 
+                            alt={comment.username}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = defaultProfile;
+                            }}
+                          />
+                        </div>
+                      </td>
+                      <td>{comment.username}</td>
+                      <td className="comment-content">{comment.content}</td>
+                      <td>{formatDate(comment.createdAt)}</td>
+                      <td>
+                        <button 
+                          className="action-button delete"
+                          onClick={() => handleDeleteClick(comment)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
       </main>
     </div>
   );
 };
 
-export default AdminManageComments;
+export default AdminManageNotifications;

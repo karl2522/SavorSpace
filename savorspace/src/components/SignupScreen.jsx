@@ -36,6 +36,13 @@ const Register = () => {
   const [showFileSizeError, setShowFileSizeError] = useState(false);  
   const errorRef = useRef(null); // Ref for the error message
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState({
+    minLength: false,
+    hasNumber: false,
+    hasSpecial: false,
+    hasUpperCase: false
+  });
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -72,11 +79,23 @@ const Register = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if(name === 'password') {
+      validtePassword(value);
+    }
   };
 
   const handleGoogleLogin = () => {
     window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   };
+
+  const validtePassword = (password) => {
+    setPasswordValidation({
+      minLength: password.length >= 6,
+      hasNumber: /\d/.test(password),
+      hasSpecial: /[!@#$%^&*(),.?":{}|<>]/g.test(password),
+      hasUpperCase: /[A-Z]/.test(password)
+    });
+  }
 
   const handleGithubLogin = (e) => {
     e.preventDefault();
@@ -86,9 +105,8 @@ const Register = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const fileSizeInKB = (file.size / 1024).toFixed(2); // Convert bytes to KB and round to 2 decimal places
-      console.log(`Uploaded file size: ${fileSizeInKB} KB`); // Log the file size in KB
-      // Check file size (800KB = 800 * 1024 bytes)
+      const fileSizeInKB = (file.size / 1024).toFixed(2); 
+      console.log(`Uploaded file size: ${fileSizeInKB} KB`);
       if (file.size > 800 * 1024) {
         setShowFileSizeError(true);
         setFormData((prev) => ({ ...prev, profilePic: null }));
@@ -121,8 +139,17 @@ const Register = () => {
     if (!formData.fullName) errors.fullName = 'Full name is required';
     if (!formData.email) errors.email = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = 'Invalid email address';
-    if (!formData.password) errors.password = 'Password is required';
-    else if (formData.password.length < 6) errors.password = 'Password must be at least 6 characters';
+    
+    // Updated password validation
+    if (!formData.password) {
+      errors.password = 'Password is required';
+    } else {
+      const validations = Object.values(passwordValidation);
+      if (validations.includes(false)) {
+        errors.password = 'Password does not meet all requirements';
+      }
+    }
+    
     if (!isChecked) errors.checkbox = 'You must agree to the terms';
     return errors;
   };
@@ -202,34 +229,84 @@ const Register = () => {
             required
           />
 
-          <label>Password</label>
-          < div className="password-field" style={{ position: 'relative' }}>
-            <div style={{ position: 'relative' }}>
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{
-                  position: 'absolute',
-                  right: '10px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '0',
-                }}
-              >
-                {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
-              </button>
-            </div>
-          </div>
+<label>Password</label>
+<div className="password-field">
+  <div style={{ position: 'relative' }}>
+    <input
+      type={showPassword ? "text" : "password"}
+      name="password"
+      value={formData.password}
+      onChange={handleInputChange}
+      onFocus={() => setIsPasswordFocused(true)}
+      onBlur={() => {
+        if (!formData.password) {
+          setIsPasswordFocused(false);
+        }
+      }}
+      required
+    />
+    <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      style={{
+        position: 'absolute',
+        right: '10px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        padding: '0',
+      }}
+    >
+      {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+    </button>
+  </div>
+  
+  {/* Only show validation when password is focused or has content */}
+  {(isPasswordFocused || formData.password) && (
+    <div className="password-validation">
+      <div className={`validation-item ${passwordValidation.minLength ? 'valid' : 'invalid'}`}>
+        <span className="validation-icon">
+          {passwordValidation.minLength ? '✓' : '✕'}
+        </span>
+        <span>At least 6 characters</span>
+      </div>
+      <div className={`validation-item ${passwordValidation.hasNumber ? 'valid' : 'invalid'}`}>
+        <span className="validation-icon">
+          {passwordValidation.hasNumber ? '✓' : '✕'}
+        </span>
+        <span>Contains a number</span>
+      </div>
+      <div className={`validation-item ${passwordValidation.hasSpecial ? 'valid' : 'invalid'}`}>
+        <span className="validation-icon">
+          {passwordValidation.hasSpecial ? '✓' : '✕'}
+        </span>
+        <span>Contains a special character</span>
+      </div>
+      <div className={`validation-item ${passwordValidation.hasUpperCase ? 'valid' : 'invalid'}`}>
+        <span className="validation-icon">
+          {passwordValidation.hasUpperCase ? '✓' : '✕'}
+        </span>
+        <span>Contains an uppercase letter</span>
+      </div>
+      
+      <div className="password-strength-indicator">
+        <div className={`strength-meter ${
+          Object.values(passwordValidation).filter(Boolean).length === 0
+            ? ''
+            : Object.values(passwordValidation).filter(Boolean).length === 1
+            ? 'strength-weak'
+            : Object.values(passwordValidation).filter(Boolean).length === 2
+            ? 'strength-medium'
+            : Object.values(passwordValidation).filter(Boolean).length === 3
+            ? 'strength-strong'
+            : 'strength-very-strong'
+        }`}></div>
+      </div>
+    </div>
+  )}
+</div>
 
           <label>Profile Picture</label>
           <div className="profile-upload-container">

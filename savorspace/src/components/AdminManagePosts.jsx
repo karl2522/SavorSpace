@@ -92,7 +92,7 @@ const AdminManagePosts = () => {
   const handleDeleteConfirm = async () => {
     try {
       const token = sessionStorage.getItem('adminToken');
-      await axios.delete(`http://localhost:8080/recipes/${postToDelete.recipeID}`, {
+      await axios.delete(`http://localhost:8080/admin/recipes/${postToDelete.recipeID}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
