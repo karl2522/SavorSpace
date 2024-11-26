@@ -422,25 +422,29 @@ const RecipeComments = ({ recipeId, isVisible}) => {
                       </span>
                       <span className="comment-text">{comment.content}</span>
                     </div>
-                    {currentUser && currentUser.id === comment.userID && (
-                      <div className="comment-actions">
-                        <button 
-                          className="delete-comment"
-                          onClick={() => handleDeleteComment(comment.commentID)}
-                          aria-label="Delete Comment"
-                        >
-                          <MdClose size={24} />
-                        </button>
+                    <div className="comment-actions">
+        {/* Delete button - only shown for user's own comments */}
+        {currentUser && currentUser.id === comment.userID && (
+          <button 
+            className="delete-comment"
+            onClick={() => handleDeleteComment(comment.commentID)}
+            aria-label="Delete Comment"
+          >
+            <MdClose size={24} />
+          </button>
+        )}
 
-                        <button 
-                          className={`flag-comment ${comment.flagged ? 'flagged' : ''}`}
-                          onClick={() => handleFlagComment(comment.commentID)}
-                          aria-label="Flag Comment"
-                        >
-                          <IoFlagOutline size={24} />
-                        </button>
-                      </div>
-                    )}
+        {/* Flag button - only shown for other users' comments */}
+        {currentUser && currentUser.id !== comment.userID && (
+          <button 
+            className={`flag-comment ${comment.flagged ? 'flagged' : ''}`}
+            onClick={() => handleFlagComment(comment.commentID)}
+            aria-label="Flag Comment"
+          >
+            <IoFlagOutline size={24} color={comment.flagged ? '#ff0000' : undefined} />
+          </button>
+        )}
+      </div>
                   </div>
                 </div>
               ))
