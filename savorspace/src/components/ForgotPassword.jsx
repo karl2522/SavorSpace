@@ -76,7 +76,7 @@ const ForgotPasswordForm = () => {
       <div className="forgot-password-container">
         <h2 className="form-title">Reset Password</h2>
         <form className="forgot-password-form" onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="form-group-forgot">
             <label htmlFor="email">Email address</label>
             <div className="input-group">
               <input
@@ -91,7 +91,7 @@ const ForgotPasswordForm = () => {
               />
             </div>
           </div>
-          <div className="form-group">
+          <div className="form-group-forgot">
             <label htmlFor="new-password">New Password</label>
             <div className="input-group password-field">
               <input
@@ -113,7 +113,7 @@ const ForgotPasswordForm = () => {
               </button>
             </div>
           </div>
-          <div className="form-group">
+          <div className="form-group-forgot">
             <label htmlFor="retype-password">Confirm Password</label>
             <div className="input-group password-field">
               <input

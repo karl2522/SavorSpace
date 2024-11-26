@@ -202,34 +202,34 @@ const Register = () => {
             required
           />
 
-<div className="password-field" style={{ position: 'relative' }}>
-  <label>Password</label>
-  <div style={{ position: 'relative' }}>
-    <input
-      type={showPassword ? "text" : "password"}
-      name="password"
-      value={formData.password}
-      onChange={handleInputChange}
-      required
-    />
-    <button
-      type="button"
-      onClick={() => setShowPassword(!showPassword)}
-      style={{
-        position: 'absolute',
-        right: '10px',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        background: 'none',
-        border: 'none',
-        cursor: 'pointer',
-        padding: '0',
-      }}
-    >
-      {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
-    </button>
-  </div>
-</div>
+          <label>Password</label>
+          < div className="password-field" style={{ position: 'relative' }}>
+            <div style={{ position: 'relative' }}>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '10px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '0',
+                }}
+              >
+                {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+              </button>
+            </div>
+          </div>
 
           <label>Profile Picture</label>
           <div className="profile-upload-container">
@@ -255,6 +255,8 @@ const Register = () => {
 
           <button type="submit" className="register-btn">Create account</button>
         </form>
+
+
         <div className="login-options">
           <span>Already have an account? <a href="/login" className="login">Log in</a></span>
           <p>Or register with</p>

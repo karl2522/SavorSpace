@@ -141,13 +141,18 @@ const Login = ({ onLogin }) => {
           
           <div className="login-form" style={{ position: 'relative' }}>
               <label>Password</label>
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
             <input
               type={showPassword ? "text" : "password"}
               name="password"
               value={loginData.password}
               onChange={handleInputChange}
               required
+              style={{
+                width: '100%',
+                paddingRight: '2.5rem',
+                alignItems: 'center', 
+              }}
             />
             <button
               type="button"
@@ -166,7 +171,7 @@ const Login = ({ onLogin }) => {
               {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
             </button>
           </div>
-          {errors.password && <span className="error">{errors.password}</span>}
+            {errors.password && <span className="error">{errors.password}</span>}
         </div>
 
           <button type="submit" className="login-btn">Log In</button>

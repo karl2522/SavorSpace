@@ -501,6 +501,7 @@
   padding-right: 40px; /* Make space for the eye icon */
 }
 
+
 .password-field button {
   opacity: 0.7;
   transition: opacity 0.2s;
