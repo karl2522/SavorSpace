@@ -360,3 +360,26 @@
     opacity: 0;
   }
 }
+
+.password-field {
+  width: 100%;
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 40px; /* Make space for the eye icon */
+}
+
+.password-field button {
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.password-field button:hover {
+  opacity: 1;
+}
+
+.password-field button:focus {
+  outline: none;
+}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
-import { IoCloudUploadOutline, IoLogoGithub } from "react-icons/io5";
+import { IoCloudUploadOutline, IoLogoGithub , IoEyeOffOutline, IoEyeOutline} from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
 import api from '../api/axiosConfig';
 import '../styles/SignupStyles.css';
@@ -35,6 +35,7 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showFileSizeError, setShowFileSizeError] = useState(false);  
   const errorRef = useRef(null); // Ref for the error message
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -201,14 +202,34 @@ const Register = () => {
             required
           />
 
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            required
-          />
+<div className="password-field" style={{ position: 'relative' }}>
+  <label>Password</label>
+  <div style={{ position: 'relative' }}>
+    <input
+      type={showPassword ? "text" : "password"}
+      name="password"
+      value={formData.password}
+      onChange={handleInputChange}
+      required
+    />
+    <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      style={{
+        position: 'absolute',
+        right: '10px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        padding: '0',
+      }}
+    >
+      {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+    </button>
+  </div>
+</div>
 
           <label>Profile Picture</label>
           <div className="profile-upload-container">

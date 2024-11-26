@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowForward } from "react-icons/io";
-import { IoLogoGithub } from "react-icons/io5";
+import { IoLogoGithub, IoEyeOffOutline, IoEyeOutline} from "react-icons/io5";
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import '../styles/LoginStyles.css';
@@ -26,6 +26,7 @@ const Login = ({ onLogin }) => {
   const query = useQuery();
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -138,15 +139,35 @@ const Login = ({ onLogin }) => {
           />
           {errors.email && <span className="error">{errors.email}</span>}
           
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={loginData.password}
-            onChange={handleInputChange}
-            required
-          />
+          <div className="login-form" style={{ position: 'relative' }}>
+              <label>Password</label>
+          <div style={{ position: 'relative' }}>
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={loginData.password}
+              onChange={handleInputChange}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0',
+              }}
+            >
+              {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+            </button>
+          </div>
           {errors.password && <span className="error">{errors.password}</span>}
+        </div>
 
           <button type="submit" className="login-btn">Log In</button>
         </form>
