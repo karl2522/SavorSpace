@@ -332,6 +332,39 @@ const RecipeComments = ({ recipeId, isVisible}) => {
       }
   };
 
+  const handleFlagComment = async (commentId) => {
+    if(!token) {
+      alert('Please log in to flag comments');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/comments/${commentId}/flag`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if(!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to flag the comment');
+      }
+
+      setComments(prevComments =>
+        prevComments.map(comment => 
+          comment.commentID === commentId
+            ? { ...comment, flagged: !comment.flagged }
+            : comment
+        )
+      );
+    }catch (error) {
+      console.log('Error flagging comment: ', error);
+      alert('Failed to flag comment. Please try again.');
+    }
+  }
+
 
   return (
     <div className="comment-container">
@@ -369,7 +402,7 @@ const RecipeComments = ({ recipeId, isVisible}) => {
               <p>No comments yet. Be the first to comment!</p>
             ) : (
               comments.map((comment) => (
-                <div key={comment.commentID} className="comment">
+                <div key={comment.commentID} className={`comment ${comment.flagged ? 'flagged' : ''}`}>
                   <div className="comment-header">
                     <img
                       src={comment.userImageURL ? `${BACKEND_URL}${comment.userImageURL}` : '/src/images/defaultProfiles.png'}
@@ -400,7 +433,8 @@ const RecipeComments = ({ recipeId, isVisible}) => {
                         </button>
 
                         <button 
-                          className="flag-comment"
+                          className={`flag-comment ${comment.flagged ? 'flagged' : ''}`}
+                          onClick={() => handleFlagComment(comment.commentID)}
                           aria-label="Flag Comment"
                         >
                           <IoFlagOutline size={24} />

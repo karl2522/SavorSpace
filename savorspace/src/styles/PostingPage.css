@@ -592,3 +592,17 @@
   cursor: pointer;
   border-radius: 8px;
 } 
+
+.comment.flagged {
+  background-color: rgba(255, 0, 0, 0.05);
+  border-left: 3px solid #ff0000;
+}
+
+.flag-comment.flagged {
+  color: #ff0000;
+}
+
+.flag-comment:hover {
+  color: #ff0000;
+  opacity: 0.8;
+}
