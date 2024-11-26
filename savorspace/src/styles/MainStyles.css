@@ -79,7 +79,7 @@ body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
   background-color: #f8f9fa;
-  color: #333;
+  color: #111;
 }
 
 .homepage {
@@ -324,11 +324,11 @@ body {
 }
 
 
-.profile-pic-container {
+.profile-pic {
   position: relative;
   cursor: pointer;
-  max-width: 90px;
-  max-height: 90px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%; 
   border: 2px solid #d6589F;
   display: flex;
@@ -337,9 +337,9 @@ body {
   margin-right: 30px;
 }
 
-.navbar-profile-pic {
+.profile-pic img {
   width: 100%;
-  height: auto;
+  height: 100%;
   border-radius: 50%; 
   object-fit: cover; 
 }

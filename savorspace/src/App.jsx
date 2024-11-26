@@ -18,11 +18,11 @@ import NotFound from './components/NotFound';
 import PrivateRoute from './components/PrivateRoute';
 import ProfilePage from './components/ProfilePage';
 import ReactivateAccount from './components/ReactivateAccount';
+import RecipeDetail from './components/RecipeDetail';
 import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
-import RecipeDetail from './components/RecipeDetail';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
@@ -102,11 +102,10 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
           </ul>
           {isAuthenticated && isMainPage ? (
             <div className="mainpage-buttons">
-              <div className="profile-pic-container">
+              <div className="profile-pic">
                 <img 
                   src={imgSrc} 
                   alt="Profile" 
-                  className="navbar-profile-pic" 
                   onClick={toggleDropdown}
                   onError={handleImageError}
                 />

@@ -19,9 +19,9 @@
 
 .edit-profile-avatar img {
     width: 100%;
-    width: 200px;
-    height: 200px;
+    height: 100%;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .edit-profile-form {

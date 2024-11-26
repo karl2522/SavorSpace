@@ -395,7 +395,7 @@ const AdminDashboard = () => {
   return (
     <div className="admin-dashboard">
       <aside className="sidebar">
-        <div className="logo">
+        <div className="logo-admin">
           <img src="/src/images/savorspaceLogo.png" alt="SavorSpace Logo" className="logo-image" />
           <div className="logo-text">
             <h2>SavorSpace</h2>
@@ -414,7 +414,9 @@ const AdminDashboard = () => {
         </nav>
         {admin && (
           <div className="admin-profile">
-            <img src={profilePic || defaultProfile} alt="Admin Avatar" className="admin-avatar" />
+            <div className="admin-avatar">
+              <img src={profilePic || defaultProfile} alt="Admin Avatar" />
+            </div>
             <h3>{admin.fullName}</h3>
             <p>{admin.email}</p>
           </div>

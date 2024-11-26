@@ -5,6 +5,7 @@
 }
 
 .profile-top {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,6 +13,7 @@
     max-height: 80px;
     margin-bottom: 40px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    
 }
 
 .profile-top h1 {
@@ -68,9 +70,9 @@
 
 .profile-avatar img {
     width: 100%;
-    width: 200px;
-    height: 200px;
+    height: 100%;
     border-radius: 50%; 
+    object-fit: cover;
 }
 
 .user-info {
@@ -152,6 +154,7 @@
 }
 
 .stat-labels {
+    margin-top: 30px;
     color: #fff;
     font-size: 18px;
     font-weight: 500;
