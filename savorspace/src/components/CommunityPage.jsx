@@ -906,7 +906,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
                   </div>
               </div>
             )}
-              <div className="recipe-engagement">
+              <div className="recipe-engagement-community">
                   <StarRating 
                       rating={rating}
                       onRatingChange={handleRatingChange}
