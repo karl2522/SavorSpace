@@ -7,6 +7,7 @@ import AdminLogin from './components/AdminLogin';
 import AdminManageAccounts from './components/AdminManageAccounts';
 import AdminManagePosts from './components/AdminManagePosts';
 import AdminSignup from './components/AdminSignup';
+import AdminManageComments from './components/AdminManageComments';
 import PostingPage from './components/CommunityPage';
 import AccountDeactivation from './components/DeactivationAccount';
 import EditProfileSettings from './components/EditProfileSettings';
@@ -28,7 +29,7 @@ import RecipeDetail from './components/RecipeDetail';
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard', '/forgot-password','/admin/ManagePosts'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard', '/forgot-password','/admin/ManagePosts','/admin/ManageComments'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname) || location.pathname.startsWith('/community/recipe/');
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
@@ -246,6 +247,9 @@ const App = () => {
           <Route 
           path="/admin/ManagePosts" 
           element={<AdminManagePosts />} />
+          <Route 
+          path="/admin/ManageComments" 
+          element={<AdminManageComments />} />
           <Route path="/about-us" element={<AboutUs />} /> {}
           <Route path='/404' element={<NotFound />} />
           <Route path='/reactivate-account' element={<ReactivateAccount />} />
