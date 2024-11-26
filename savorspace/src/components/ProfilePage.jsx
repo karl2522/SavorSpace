@@ -17,6 +17,8 @@ export default function ProfilePage() {
     commentCount: 0
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [latestRecipes, setLatestRecipes] = useState([]);
+  const [popularRecipes, setPopularRecipes] = useState([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -52,6 +54,36 @@ export default function ProfilePage() {
         if (!statsResponse.ok) throw new Error('Failed to fetch stats');
         const statsData = await statsResponse.json();
         setUserStats(statsData);
+
+        const latestRecipesResponse = await fetch(
+          `http://localhost:8080/recipes/user/${profileData.id}/latest?limit=2`, 
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+
+        const popularRecipesResponse = await fetch(
+          `http://localhost:8080/recipes/user/${profileData.id}/popular?limit=2`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+
+        if (latestRecipesResponse.ok) {
+          const latestData = await latestRecipesResponse.json();
+          setLatestRecipes(latestData);
+        }
+
+        if (popularRecipesResponse.ok) {
+          const popularData = await popularRecipesResponse.json();
+          setPopularRecipes(popularData);
+        }
 
         // Handle profile picture
         if(profileData.imageURL) {
@@ -97,6 +129,13 @@ export default function ProfilePage() {
 
   const handleEditProfile = () => {
     navigate('/profile/settings/edit-profile');
+  };
+
+  const formatImageURL = (imageURL) => {
+    if(!imageURL) return '';
+    return imageURL.startsWith('http')
+      ? imageURL
+      : `http://localhost:8080${imageURL}`;
   };
 
   
@@ -194,43 +233,47 @@ export default function ProfilePage() {
 
       <div className="user-recipes">
 
-        <div className="latest-recipes">
-          <div className="latest-recipes-header">
-            <h2>Lastest <span>Recipes</span></h2>
-            <button className="view-all">View all</button>
+      <div className="latest-recipes">
+      <div className="latest-recipes-header">
+        <h2>Latest <span>Recipes</span></h2>
+        <button className="view-all">View all</button>
+      </div>
+      <div className="latest-recipes-container">
+        {latestRecipes.map(recipe => (
+          <div key={recipe.recipeID} className="recipe-item">
+            <img 
+              src={formatImageURL(recipe.imageURL) || "/src/images/defaultProfiles.png"} 
+              alt={recipe.title} 
+              onError={(e) => {
+                e.target.src = "/src/images/defaultProfiles.png";
+              }}
+            />
+            <p className="profile-recipe-title">{recipe.title}</p>
           </div>
-            <div className="latest-recipes-container">
-              <div className="recipe-item">
-                <img src="/src/images/adobo-trend.webp" alt="Recipe 1" />
-                <p className="profile-recipe-title">Spaghetti Carbonara</p>
-              </div>
+        ))}
+      </div>
+    </div>
 
-              <div className="recipe-item">
-                <img src="/src/images/adobo-trend.webp" alt="Recipe 1" />
-                <p className="profile-recipe-title">Spaghetti Carbonara</p>
-              </div>
-            </div>
-
-            
-        </div>
-
-        <div className="popular-recipes">
-          <div className="popular-recipes-header">
-            <h2>Popular <span>Recipes</span></h2>
-            <button className="view-all">View all</button>
+    <div className="popular-recipes">
+      <div className="popular-recipes-header">
+        <h2>Popular <span>Recipes</span></h2>
+        <button className="view-all">View all</button>
+      </div>
+      <div className="latest-recipes-container">
+        {popularRecipes.map(recipe => (
+          <div key={recipe.recipeID} className="recipe-item">
+            <img 
+              src={formatImageURL(recipe.imageURL) || "/src/images/defaultProfiles.png"} 
+              alt={recipe.title} 
+              onError={(e) => {
+                e.target.src = "/src/images/defaultProfiles.png";
+              }}
+            />
+            <p className="profile-recipe-title">{recipe.title}</p>
           </div>
-            <div className="latest-recipes-container">
-              <div className="recipe-item">
-                <img src="/src/images/sinigang-trend.webp" alt="Recipe 2" />
-                <p className="profile-recipe-title">Chicken Alfredo</p>
-              </div>
-
-              <div className="recipe-item">
-                <img src="/src/images/sinigang-trend.webp" alt="Recipe 2" />
-                <p className="profile-recipe-title">Chicken Alfredo</p>
-              </div>
-            </div>
-        </div>
+        ))}
+      </div>
+    </div>
       </div>
     </div>
   );

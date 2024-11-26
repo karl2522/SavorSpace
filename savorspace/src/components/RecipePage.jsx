@@ -29,8 +29,6 @@ export default function RecipePage() {
     setSearchQuery('');
   };
 
-  
-
   const formatImageURL = (imageURL) => {
     if(!imageURL) return '';
     return imageURL.startsWith('http')
