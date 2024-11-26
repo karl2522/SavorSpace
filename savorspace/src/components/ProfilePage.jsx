@@ -11,6 +11,67 @@ export default function ProfilePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const [joinDate, setJoinDate] = useState('');
+  const [userStats, setUserStats] = useState({
+    recipeCount: 0,
+    rateCount: 0,
+    commentCount: 0
+  });
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+
+      try {
+        setIsLoading(true);
+        // Fetch user profile
+        const profileResponse = await fetch('http://localhost:8080/users/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (!profileResponse.ok) throw new Error('Failed to fetch profile');
+        const profileData = await profileResponse.json();
+
+        // Set profile data
+        setUsername(profileData.fullName);
+        setRole(profileData.role);
+        setIsAuthenticated(true);
+        
+        // Fetch user stats
+        const statsResponse = await fetch(`http://localhost:8080/users/${profileData.id}/stats`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!statsResponse.ok) throw new Error('Failed to fetch stats');
+        const statsData = await statsResponse.json();
+        setUserStats(statsData);
+
+        // Handle profile picture
+        if(profileData.imageURL) {
+          const profilePicUrl = profileData.imageURL.startsWith('http') 
+            ? profileData.imageURL 
+            : `http://localhost:8080${profileData.imageURL}`;
+          setProfilePic(profilePicUrl);
+        } else {
+          setProfilePic(null);
+        }
+
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const defaultProfilePic = "/src/images/defaultProfiles.png";
 
@@ -116,15 +177,15 @@ export default function ProfilePage() {
           </div>
           <div className="stats-container-profile">
             <div className="stat-item">
-              <p className="stat-number">50</p>
+              <p className="stat-number">{userStats.recipeCount}</p>
               <p className="stat-labels">Recipes</p>
             </div>
             <div className="stat-item">
-              <p className="stat-number">50</p>
+              <p className="stat-number">{userStats.rateCount}</p>
               <p className="stat-labels">Rates</p>
             </div>
             <div className="stat-item">
-              <p className="stat-number">50</p>
+              <p className="stat-number">{userStats.commentCount}</p>
               <p className="stat-labels">Comments</p>
             </div>
           </div>
