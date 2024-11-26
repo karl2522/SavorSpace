@@ -490,3 +490,119 @@
     transform: translateY(0);
   }
 }
+
+.password-field {
+  width: 100%;
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 40px; /* Make space for the eye icon */
+}
+
+
+.password-field button {
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.password-field button:hover {
+  opacity: 1;
+}
+
+.password-field button:focus {
+  outline: none;
+}
+
+
+.password-validation {
+  margin-top: 5px;
+  font-size: 12px;
+  animation: slideDown 0.3s ease-out;
+  overflow: hidden;
+}
+
+.validation-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #666;
+  margin: 2px 0;
+}
+
+.validation-item.valid {
+  color: #4CAF50;
+}
+
+.validation-item.invalid {
+  color: #f44336;
+}
+
+.validation-icon {
+  display: flex;
+  align-items: center;
+}
+
+.password-strength-indicator {
+  height: 4px;
+  background-color: #e0e0e0;
+  margin-top: 5px;
+  border-radius: 2px;
+}
+
+.strength-meter {
+  height: 100%;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.strength-weak {
+  width: 25%;
+  background-color: #f44336;
+}
+
+.strength-medium {
+  width: 50%;
+  background-color: #FFA726;
+}
+
+.strength-strong {
+  width: 75%;
+  background-color: #66BB6A;
+}
+
+.strength-very-strong {
+  width: 100%;
+  background-color: #43A047;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 200px;
+  }
+}
+
+.validation-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #666;
+  margin: 2px 0;
+  transition: all 0.2s ease;
+}
+
+.validation-item.valid {
+  color: #4CAF50;
+}
+
+.validation-item.invalid {
+  color: #f44336;
+}

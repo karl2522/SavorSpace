@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/EditProfileStyles.css';
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 const EditProfileSettings = () => {
     const [profilePic, setProfilePic] = useState(null);
@@ -8,6 +9,9 @@ const EditProfileSettings = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [userId, setUserId] = useState(null);
+    const [showOldPassword, setShowOldPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const [formData, setFormData] = useState({
         fullName: '',
@@ -285,40 +289,67 @@ const EditProfileSettings = () => {
                     
 
                         <div className="password-section">
-                            <h3>Change Password</h3>
-                            <div className="form-profile">
-                                <label>Current Password</label>
-                                <input
-                                    type="password"
-                                    name="oldPassword"
-                                    value={passwordData.oldPassword}
-                                    onChange={handlePasswordChange}
-                                    placeholder="Enter current password"
-                                />
-                            </div>
+    <h3>Change Password</h3>
+    <div className="form-profile">
+        <label>Current Password</label>
+        <div className="password-field">
+            <input
+                type={showOldPassword ? "text" : "password"}
+                name="oldPassword"
+                value={passwordData.oldPassword}
+                onChange={handlePasswordChange}
+                placeholder="Enter current password"
+            />
+            <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowOldPassword(!showOldPassword)}
+            >
+                {showOldPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+            </button>
+        </div>
+    </div>
 
-                            <div className="form-profile">
-                                <label>New Password</label>
-                                <input
-                                    type="password"
-                                    name="newPassword"
-                                    value={passwordData.newPassword}
-                                    onChange={handlePasswordChange}
-                                    placeholder="Enter new password"
-                                />
-                            </div>
+    <div className="form-profile">
+        <label>New Password</label>
+        <div className="password-field">
+            <input
+                type={showNewPassword ? "text" : "password"}
+                name="newPassword"
+                value={passwordData.newPassword}
+                onChange={handlePasswordChange}
+                placeholder="Enter new password"
+            />
+            <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+            >
+                {showNewPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+            </button>
+        </div>
+    </div>
 
-                            <div className="form-profile">
-                                <label>Confirm New Password</label>
-                                <input
-                                    type="password"
-                                    name="confirmPassword"
-                                    value={passwordData.confirmPassword}
-                                    onChange={handlePasswordChange}
-                                    placeholder="Confirm new password"
-                                />
-                            </div>
-                        </div>
+    <div className="form-profile">
+        <label>Confirm New Password</label>
+        <div className="password-field">
+            <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={passwordData.confirmPassword}
+                onChange={handlePasswordChange}
+                placeholder="Confirm new password"
+            />
+            <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+                {showConfirmPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+            </button>
+        </div>
+    </div>
+</div>
 
                         {passwordError && (
                         <div className="alert error-alert">{passwordError}</div>

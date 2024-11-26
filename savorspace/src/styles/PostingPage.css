@@ -255,7 +255,7 @@
   padding: 20px 10px 10px 0;
 }
 
-.recipe-engagement {
+.recipe-engagement-community {
   max-width: 400px;
   padding: 10px;
 }
@@ -592,3 +592,17 @@
   cursor: pointer;
   border-radius: 8px;
 } 
+
+.comment.flagged {
+  background-color: rgba(255, 0, 0, 0.05);
+  border-left: 3px solid #ff0000;
+}
+
+.flag-comment.flagged {
+  color: #ff0000;
+}
+
+.flag-comment:hover {
+  color: #ff0000;
+  opacity: 0.8;
+}

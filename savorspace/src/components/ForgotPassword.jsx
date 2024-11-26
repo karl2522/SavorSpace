@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import '../styles/ForgotPasswordForm.css';
+import { IoEyeOffOutline, IoEyeOutline} from "react-icons/io5";
 
 
 const ForgotPasswordForm = () => {
@@ -12,6 +13,8 @@ const ForgotPasswordForm = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showRetypePassword, setShowRetypePassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -73,7 +76,7 @@ const ForgotPasswordForm = () => {
       <div className="forgot-password-container">
         <h2 className="form-title">Reset Password</h2>
         <form className="forgot-password-form" onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="form-group-forgot">
             <label htmlFor="email">Email address</label>
             <div className="input-group">
               <input
@@ -88,34 +91,48 @@ const ForgotPasswordForm = () => {
               />
             </div>
           </div>
-          <div className="form-group">
+          <div className="form-group-forgot">
             <label htmlFor="new-password">New Password</label>
-            <div className="input-group">
+            <div className="input-group password-field">
               <input
                 id="new-password"
                 name="new-password"
-                type="password"
+                type={showNewPassword ? "text" : "password"}
                 autoComplete="new-password"
                 required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 className={error ? 'error' : ''}
               />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+              >
+                {showNewPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+              </button>
             </div>
           </div>
-          <div className="form-group">
+          <div className="form-group-forgot">
             <label htmlFor="retype-password">Confirm Password</label>
-            <div className="input-group">
+            <div className="input-group password-field">
               <input
                 id="retype-password"
                 name="retype-password"
-                type="password"
+                type={showRetypePassword ? "text" : "password"}
                 autoComplete="new-password"
                 required
                 value={retypePassword}
                 onChange={(e) => setRetypePassword(e.target.value)}
                 className={error ? 'error' : ''}
               />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowRetypePassword(!showRetypePassword)}
+              >
+                {showRetypePassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+              </button>
             </div>
           </div>
           <button 

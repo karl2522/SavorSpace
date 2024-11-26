@@ -332,6 +332,39 @@ const RecipeComments = ({ recipeId, isVisible}) => {
       }
   };
 
+  const handleFlagComment = async (commentId) => {
+    if(!token) {
+      alert('Please log in to flag comments');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/comments/${commentId}/flag`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if(!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to flag the comment');
+      }
+
+      setComments(prevComments =>
+        prevComments.map(comment => 
+          comment.commentID === commentId
+            ? { ...comment, flagged: !comment.flagged }
+            : comment
+        )
+      );
+    }catch (error) {
+      console.log('Error flagging comment: ', error);
+      alert('Failed to flag comment. Please try again.');
+    }
+  }
+
 
   return (
     <div className="comment-container">
@@ -369,7 +402,7 @@ const RecipeComments = ({ recipeId, isVisible}) => {
               <p>No comments yet. Be the first to comment!</p>
             ) : (
               comments.map((comment) => (
-                <div key={comment.commentID} className="comment">
+                <div key={comment.commentID} className={`comment ${comment.flagged ? 'flagged' : ''}`}>
                   <div className="comment-header">
                     <img
                       src={comment.userImageURL ? `${BACKEND_URL}${comment.userImageURL}` : '/src/images/defaultProfiles.png'}
@@ -389,24 +422,29 @@ const RecipeComments = ({ recipeId, isVisible}) => {
                       </span>
                       <span className="comment-text">{comment.content}</span>
                     </div>
-                    {currentUser && currentUser.id === comment.userID && (
-                      <div className="comment-actions">
-                        <button 
-                          className="delete-comment"
-                          onClick={() => handleDeleteComment(comment.commentID)}
-                          aria-label="Delete Comment"
-                        >
-                          <MdClose size={24} />
-                        </button>
+                    <div className="comment-actions">
+        {/* Delete button - only shown for user's own comments */}
+        {currentUser && currentUser.id === comment.userID && (
+          <button 
+            className="delete-comment"
+            onClick={() => handleDeleteComment(comment.commentID)}
+            aria-label="Delete Comment"
+          >
+            <MdClose size={24} />
+          </button>
+        )}
 
-                        <button 
-                          className="flag-comment"
-                          aria-label="Flag Comment"
-                        >
-                          <IoFlagOutline size={24} />
-                        </button>
-                      </div>
-                    )}
+        {/* Flag button - only shown for other users' comments */}
+        {currentUser && currentUser.id !== comment.userID && (
+          <button 
+            className={`flag-comment ${comment.flagged ? 'flagged' : ''}`}
+            onClick={() => handleFlagComment(comment.commentID)}
+            aria-label="Flag Comment"
+          >
+            <IoFlagOutline size={24} color={comment.flagged ? '#ff0000' : undefined} />
+          </button>
+        )}
+      </div>
                   </div>
                 </div>
               ))
@@ -906,7 +944,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
                   </div>
               </div>
             )}
-              <div className="recipe-engagement">
+              <div className="recipe-engagement-community">
                   <StarRating 
                       rating={rating}
                       onRatingChange={handleRatingChange}

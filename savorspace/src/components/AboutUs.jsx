@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import capurasImage from '../images/capuras.png';
 import chavezImage from '../images/chavez.png';
@@ -70,17 +71,38 @@ export default function AboutUs() {
     }
   ];
 
+  const observer = useRef(null);
+
+  useEffect(() => {
+    observer.current = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in-visible');
+        }
+      });
+    });
+
+    const elements = document.querySelectorAll('.fade-in');
+    elements.forEach(element => observer.current.observe(element));
+
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+    };
+  }, []);
+
   return (
     <div className="about-container">
-      <header className="hero-section">
+      <header className="hero-section fade-in">
         <h1>About Savor<span>Space</span></h1>
         <p>Bringing food lovers together, one recipe at a time</p>
         <Link to="/register">
-        <button className="join-button">join our community</button>
+          <button className="join-button">join our community</button>
         </Link>
       </header>
 
-      <section className="mission-section">
+      <section className="mission-section fade-in">
         <h2>Our Mission</h2>
         <div className="mission-cards">
           <div className="mission-card">
@@ -94,11 +116,11 @@ export default function AboutUs() {
         </div>
       </section>
 
-      <section className="team-section">
+      <section className="team-section fade-in">
         <h2>Meet Our Team</h2>
         <div className="team-grid">
           {teamMembers.map((member, index) => (
-            <div key={index} className="team-card">
+            <div key={index} className="team-card fade-in">
               <div className="team-card-image">
                 <img src={member.image} alt={`${member.name}`} />
                 <div className="team-card-content">
@@ -119,7 +141,7 @@ export default function AboutUs() {
         </div>
       </section>
 
-      <section className="join-section">
+      <section className="join-section fade-in">
         <h2>Join Our Culinary Community</h2>
         <p>Whether you&apos;re a seasoned chef or a curious beginner, there&apos;s a place for you at SavorSpace. Start your flavorful journey today!</p>
         <Link to="/register">
@@ -127,7 +149,7 @@ export default function AboutUs() {
         </Link>
       </section>
 
-      <footer className="contact-section">
+      <footer className="contact-section fade-in">
         <h2>Contact US</h2>
         <div className="social-links">
           <button className="social-button">f</button>

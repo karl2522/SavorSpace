@@ -5,7 +5,9 @@ import AboutUs from './components/AboutUs';
 import AdminDashboard from './components/AdminDashboard';
 import AdminLogin from './components/AdminLogin';
 import AdminManageAccounts from './components/AdminManageAccounts';
+import AdminManagePosts from './components/AdminManagePosts';
 import AdminSignup from './components/AdminSignup';
+import AdminManageComments from './components/AdminManageComments';
 import PostingPage from './components/CommunityPage';
 import AccountDeactivation from './components/DeactivationAccount';
 import EditProfileSettings from './components/EditProfileSettings';
@@ -22,12 +24,13 @@ import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
 import RecipeDetail from './components/RecipeDetail';
+import AdminManageNotifications from './components/AdminManageNotifications';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard', '/forgot-password'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard', '/forgot-password','/admin/ManagePosts','/admin/ManageComments', '/admin/ManageNotifications'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname) || location.pathname.startsWith('/community/recipe/');
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
@@ -242,6 +245,15 @@ const App = () => {
           <Route 
           path="/admin/ManageUser" 
           element={<AdminManageAccounts />} />
+          <Route 
+          path="/admin/ManagePosts" 
+          element={<AdminManagePosts />} />
+          <Route 
+          path="/admin/ManageComments" 
+          element={<AdminManageComments />} />
+          <Route 
+          path="/admin/ManageNotifications" 
+          element={<AdminManageNotifications/>} />
           <Route path="/about-us" element={<AboutUs />} /> {}
           <Route path='/404' element={<NotFound />} />
           <Route path='/reactivate-account' element={<ReactivateAccount />} />

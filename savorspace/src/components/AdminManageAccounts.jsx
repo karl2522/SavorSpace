@@ -221,11 +221,11 @@ const AdminManageAccounts = () => {
         </div>
         <nav className="sidebar-nav">
           <ul>
-            <li><Link to="/admin/dashboard">Dashboard</Link></li>
-            <li><Link to="/admin/user-accounts" className="active">User Account</Link></li>
-            <li><Link to="/admin/user-posts">User Posts</Link></li>
-            <li><Link to="/admin/user-comments">User Comments</Link></li>
-            <li><Link to="/admin/notifications">Notifications</Link></li>
+            <li><Link to="/admin/dashboard" >Dashboard</Link></li>
+            <li><Link to="/admin/ManageUser" className="active">User Account</Link></li>
+            <li><Link to="/admin/ManagePosts">User Posts</Link></li>
+            <li><Link to="/admin/ManageComments">User Comments</Link></li>
+            <li><Link to="/admin/ManageNotifications">Notifications</Link></li>
             <li><button onClick={handleLogout}>Logout</button></li>
           </ul>
         </nav>

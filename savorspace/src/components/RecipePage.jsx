@@ -29,8 +29,6 @@ export default function RecipePage() {
     setSearchQuery('');
   };
 
-  
-
   const formatImageURL = (imageURL) => {
     if(!imageURL) return '';
     return imageURL.startsWith('http')
@@ -97,7 +95,7 @@ export default function RecipePage() {
     try {
       const token = localStorage.getItem('authToken');
       if(!token) {
-        throw new Error('User is not authenticated');
+        navigate('/login')
       }
 
       const response = await fetch(`http://localhost:8080/recipes?page=${page}&size=${size}`, {
