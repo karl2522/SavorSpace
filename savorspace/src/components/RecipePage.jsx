@@ -191,7 +191,7 @@ export default function RecipePage() {
       {}
       {trendingItems.length > 0 && currentItem && (
         <>
-          <h2 className="trending-title">Trending <span>Now</span></h2>
+          <h2 className="trending-title">Latest <span className="highlight-span">Recipes</span></h2>
           <div className="trending-content">
             <div className="trending-image">
               <img 
@@ -242,7 +242,7 @@ export default function RecipePage() {
       {/* More Recipes Section */}
       <div className="user-recipe-container">
         <div className="user-recipe-header">
-          <h2>More Recipes</h2>
+          <h2><span className="highlight-span">More</span> Recipes</h2>
           {activeSearch ? (
               <MdClose 
                 size={40}

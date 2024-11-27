@@ -7,6 +7,8 @@ import { VscSettings } from "react-icons/vsc";
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import '../styles/SettingsStyles.css';
 import EditProfileSettings from './EditProfileSettings';
+import GeneralSettings from "./GeneralSettings";
+import NotificationSettings from "./NotificationSettings";
 
 export default function SettingsPage() {
   const location = useLocation();
@@ -75,11 +77,11 @@ export default function SettingsPage() {
       <main className="content">
         {/* Use relative paths for routes */}
         <Routes>
-          <Route path="general" element={<div>General Settings</div>} />
+          <Route path="general" element={<GeneralSettings />} />
           <Route path="edit-profile" element={<EditProfileSettings />} />
           <Route path="account" element={<div>Account Settings</div>} />
           <Route path="privacy" element={<div>Privacy Settings</div>} />
-          <Route path="notifications" element={<div>Notification Settings</div>} />
+          <Route path="notifications" element= {< NotificationSettings />}/>
           <Route path="logout" element={<div>Logging Out...</div>} />
         </Routes>
       </main>

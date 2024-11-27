@@ -1,9 +1,9 @@
 import axios from 'axios'; // Make sure axios is installed
 import React, { useState } from 'react';
 import { IoIosArrowBack } from "react-icons/io";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import '../styles/ForgotPasswordForm.css';
-import { IoEyeOffOutline, IoEyeOutline} from "react-icons/io5";
 
 
 const ForgotPasswordForm = () => {
@@ -72,7 +72,7 @@ const ForgotPasswordForm = () => {
 
   return (
     <div className="main-container">
-      <IoIosArrowBack className="forgot-arrow" size={30} color="#000" cursor="pointer" onClick={() => navigate('/login')} />
+      <IoIosArrowBack className="forgot-arrow" size={40} color="#000" cursor="pointer" onClick={() => navigate('/login')} />
       <div className="forgot-password-container">
         <h2 className="form-title">Reset Password</h2>
         <form className="forgot-password-form" onSubmit={handleSubmit}>

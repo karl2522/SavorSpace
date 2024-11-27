@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { IoIosArrowBack } from 'react-icons/io';
+import { useEffect, useRef, useState } from 'react';
+import { IoIosArrowBack, IoMdNotificationsOutline } from 'react-icons/io';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ProfilePageStyles.css';
@@ -8,17 +8,19 @@ export default function ProfilePage() {
   const [profilePic, setProfilePic] = useState(null);
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
+  const [isNotificationModal, setIsNotificationModal] = useState(false); 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const [joinDate, setJoinDate] = useState('');
   const [userStats, setUserStats] = useState({
     recipeCount: 0,
-    rateCount: 0,
+    ratingCount: 0,
     commentCount: 0
   });
   const [isLoading, setIsLoading] = useState(false);
   const [latestRecipes, setLatestRecipes] = useState([]);
   const [popularRecipes, setPopularRecipes] = useState([]);
+  const notificationRef = useRef(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -123,6 +125,25 @@ export default function ProfilePage() {
     navigate('/profile/settings/general');
   };
 
+  const handleNotificationModal = () => {
+    setIsNotificationModal(!isNotificationModal);
+    console.log(isNotificationModal ? 'Notification modal closed' : 'Notification modal opened');
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+        setIsNotificationModal(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+
   const handleHome = () => {
     navigate('/homepage');
   };
@@ -188,92 +209,117 @@ export default function ProfilePage() {
   }, []);
 
   return (
-    <div className="profile-container">
+
+    <div className="profile-main-container">
       <div className="profile-top">
         <button className="back-button-profile" onClick={handleHome}>
           <IoIosArrowBack size={30} />
         </button>
         <h1>My <span className="highlight">Profile</span></h1>
-        <button className="settings-button" onClick={handleSettings}>
-          <IoSettingsOutline size={30}/>
-        </button>
+        <div className="left-buttons">
+          <div className="notification-container" ref={notificationRef}>
+            <button className="notif-button" onClick={handleNotificationModal}>
+              <IoMdNotificationsOutline size={33}/>
+            </button>
+            {isNotificationModal && (
+              <div className="notification-modal">
+                <div className="notification-item">
+                  <p className="notification-text">New recipe comment</p>
+                  <span className="notification-time">2m ago</span>
+                </div>
+                <div className="notification-item">
+                  <p className="notification-text">Your recipe was liked</p>
+                  <span className="notification-time">1h ago</span>
+                </div>
+                <div className="notification-item">
+                  <p className="notification-text">New follower</p>
+                  <span className="notification-time">3h ago</span>
+                </div>
+              </div>
+            )}
+          </div>
+          <button className="settings-button" onClick={handleSettings}>
+            <IoSettingsOutline size={30}/>
+          </button>
+        </div>
       </div>
-
-      <div className="profile-info">
-        <div className="profile-main">
-          <div className="profile-avatar">
-            <img 
-              src={imgSrc}
-              alt="Profile"
-              onError={handleImageError} 
-            />
-            <button className="edit-profile" onClick={handleEditProfile }>Edit Profile</button>
-          </div>
-          <div className="profile-details">
-            <h2>Hi, {username || 'User001'}</h2>
-            <p className="join-date">{joinDate}</p>
-            <p className="profession">{role || 'Chef'}</p>
-          </div>
-          <div className="stats-container-profile">
-            <div className="stat-item">
-              <p className="stat-number">{userStats.recipeCount}</p>
-              <p className="stat-labels">Recipes</p>
+      <div className="profile-container">
+        <div className="profile-info">
+          <div className="profile-main">
+            <div className="profile-avatar">
+              <img 
+                src={imgSrc}
+                alt="Profile"
+                onError={handleImageError} 
+              />
+              <button className="edit-profile" onClick={handleEditProfile }>Edit Profile</button>
             </div>
-            <div className="stat-item">
-              <p className="stat-number">{userStats.rateCount}</p>
-              <p className="stat-labels">Rates</p>
+            <div className="profile-details">
+              <h2>Hi, {username || 'User001'}</h2>
+              <p className="join-date">{joinDate}</p>
+              <p className="profession">{role || 'Chef'}</p>
             </div>
-            <div className="stat-item">
-              <p className="stat-number">{userStats.commentCount}</p>
-              <p className="stat-labels">Comments</p>
+            <div className="stats-container-profile">
+              <div className="stat-item">
+                <p className="stat-number">{userStats.recipeCount}</p>
+                <p className="stat-labels">Recipes</p>
+              </div>
+              <div className="stat-item">
+                <p className="stat-number">{userStats.ratingCount}</p>
+                <p className="stat-labels">Rates</p>
+              </div>
+              <div className="stat-item">
+                <p className="stat-number">{userStats.commentCount}</p>
+                <p className="stat-labels">Comments</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="user-recipes">
+        <div className="user-recipes">
 
-      <div className="latest-recipes">
-      <div className="latest-recipes-header">
-        <h2>Latest <span>Recipes</span></h2>
-        <button className="view-all">View all</button>
-      </div>
-      <div className="latest-recipes-container">
-        {latestRecipes.map(recipe => (
-          <div key={recipe.recipeID} className="recipe-item">
-            <img 
-              src={formatImageURL(recipe.imageURL) || "/src/images/defaultProfiles.png"} 
-              alt={recipe.title} 
-              onError={(e) => {
-                e.target.src = "/src/images/defaultProfiles.png";
-              }}
-            />
-            <p className="profile-recipe-title">{recipe.title}</p>
+          <div className="latest-recipes">
+          <div className="latest-recipes-header">
+            <h2>Latest <span>Recipes</span></h2>
+            <button className="view-all">View all</button>
           </div>
-        ))}
-      </div>
-    </div>
-
-    <div className="popular-recipes">
-      <div className="popular-recipes-header">
-        <h2>Popular <span>Recipes</span></h2>
-        <button className="view-all">View all</button>
-      </div>
-      <div className="latest-recipes-container">
-        {popularRecipes.map(recipe => (
-          <div key={recipe.recipeID} className="recipe-item">
-            <img 
-              src={formatImageURL(recipe.imageURL) || "/src/images/defaultProfiles.png"} 
-              alt={recipe.title} 
-              onError={(e) => {
-                e.target.src = "/src/images/defaultProfiles.png";
-              }}
-            />
-            <p className="profile-recipe-title">{recipe.title}</p>
+          <div className="latest-recipes-container">
+            {latestRecipes.map(recipe => (
+              <div key={recipe.recipeID} className="recipe-item">
+                <img 
+                  src={formatImageURL(recipe.imageURL) || "/src/images/defaultProfiles.png"} 
+                  alt={recipe.title} 
+                  onError={(e) => {
+                    e.target.src = "/src/images/defaultProfiles.png";
+                  }}
+                />
+                <p className="profile-recipe-title">{recipe.title}</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+
+          <div className="popular-recipes">
+            <div className="popular-recipes-header">
+              <h2>Popular <span>Recipes</span></h2>
+              <button className="view-all">View all</button>
+            </div>
+            <div className="latest-recipes-container">
+              {popularRecipes.map(recipe => (
+                <div key={recipe.recipeID} className="recipe-item">
+                  <img 
+                    src={formatImageURL(recipe.imageURL) || "/src/images/defaultProfiles.png"} 
+                    alt={recipe.title} 
+                    onError={(e) => {
+                      e.target.src = "/src/images/defaultProfiles.png";
+                    }}
+                  />
+                  <p className="profile-recipe-title">{recipe.title}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

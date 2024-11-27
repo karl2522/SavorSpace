@@ -5,26 +5,28 @@ import AboutUs from './components/AboutUs';
 import AdminDashboard from './components/AdminDashboard';
 import AdminLogin from './components/AdminLogin';
 import AdminManageAccounts from './components/AdminManageAccounts';
+import AdminManageComments from './components/AdminManageComments';
+import AdminManageNotifications from './components/AdminManageNotifications';
 import AdminManagePosts from './components/AdminManagePosts';
 import AdminSignup from './components/AdminSignup';
-import AdminManageComments from './components/AdminManageComments';
 import PostingPage from './components/CommunityPage';
 import AccountDeactivation from './components/DeactivationAccount';
 import EditProfileSettings from './components/EditProfileSettings';
 import ForgotPasswordForm from './components/ForgotPassword';
+import GeneralSettings from './components/GeneralSettings';
 import HomePage from './components/Homepage';
 import LandingPage from './components/LandingPage';
 import Login from './components/LoginScreen';
 import NotFound from './components/NotFound';
+import NotificationSettings from './components/NotificationSettings';
 import PrivateRoute from './components/PrivateRoute';
 import ProfilePage from './components/ProfilePage';
 import ReactivateAccount from './components/ReactivateAccount';
+import RecipeDetail from './components/RecipeDetail';
 import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
-import RecipeDetail from './components/RecipeDetail';
-import AdminManageNotifications from './components/AdminManageNotifications';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
@@ -82,8 +84,8 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
     <>
       {showNavbar && (
         <nav className="navbar">
-          <Link to="/" className="logo">
-            <img src="/src/images/savorspaceLogo.png" alt="SavorSpace Logo" className="logo" />
+          <Link to="/" className="navbar-logo">
+            <img src="/src/images/savorspaceLogo.png" alt="SavorSpace Logo" className="navbar-logo" />
           </Link>
           <h1>
             Savor<span className='highlight'>Space</span>
@@ -222,15 +224,16 @@ const App = () => {
           <Route path="/recipes" element={<RecipePage />} />
           <Route path="/community" element={<PostingPage isAuthenticated={isAuthenticated} />} />
           <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/profile/settings" element={<SettingsPage />}>
+            <Route path="/profile/settings/*" element={<SettingsPage />}>
               {/* Routes for Settings Sections */}
-              <Route path="general" element={<div>General Settings</div>} />
+              <Route path="general" element={<GeneralSettings />} />
               <Route path="edit-profile" element={<EditProfileSettings />} />
               <Route path="account" element={<div>Account</div>} />
               <Route path="privacy" element={<div>Privacy</div>} />
-              <Route path="notifications" element={<div>Notifications</div>} />
+              <Route path="notifications" element={<NotificationSettings />} />
             </Route>
           <Route path="edit-profile" element={<EditProfileSettings />} />
+          <Route path="notifications" element={<NotificationSettings />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/register" element={<Register />} />
           <Route

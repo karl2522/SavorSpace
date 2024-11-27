@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowBack } from "react-icons/io";
-import { IoCloudUploadOutline, IoLogoGithub , IoEyeOffOutline, IoEyeOutline} from "react-icons/io5";
+import { IoCloudUploadOutline, IoEyeOffOutline, IoEyeOutline, IoLogoGithub } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
+import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import '../styles/SignupStyles.css';
-import { useNavigate, useLocation } from 'react-router-dom';
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -325,7 +325,7 @@ const Register = () => {
             {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Display error message */}
           </div>
 
-          <div className="checkbox">
+          <div className="signup-checkbox">
             <input type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
             <span>I agree with SavorSpace&apos;s Terms, Services, Privacy and Policy</span>
           </div>
