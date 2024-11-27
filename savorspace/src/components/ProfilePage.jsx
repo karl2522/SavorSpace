@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { IoIosArrowBack, IoMdNotificationsOutline } from 'react-icons/io';
+import { IoIosArrowBack } from 'react-icons/io';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ProfilePageStyles.css';
@@ -9,7 +9,6 @@ export default function ProfilePage() {
   const [profilePic, setProfilePic] = useState(null);
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
-  const [isNotificationModal, setIsNotificationModal] = useState(false); 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
   const [joinDate, setJoinDate] = useState('');
@@ -126,10 +125,6 @@ export default function ProfilePage() {
     navigate('/profile/settings/general');
   };
 
-  const handleNotificationModal = () => {
-    setIsNotificationModal(!isNotificationModal);
-    console.log(isNotificationModal ? 'Notification modal closed' : 'Notification modal opened');
-  };
 
   useEffect(() => {
     function handleClickOutside(event) {

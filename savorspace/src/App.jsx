@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, Route, BrowserRouter as Router, Routes, useLocation, useNavigate } from 'react-router-dom';
 import AboutUs from './components/AboutUs';
+import AccountSettings from './components/AccountSettings';
 import AdminDashboard from './components/AdminDashboard';
 import AdminLogin from './components/AdminLogin';
 import AdminManageAccounts from './components/AdminManageAccounts';
@@ -228,7 +229,7 @@ const App = () => {
               {/* Routes for Settings Sections */}
               <Route path="general" element={<GeneralSettings />} />
               <Route path="edit-profile" element={<EditProfileSettings />} />
-              <Route path="account" element={<div>Account</div>} />
+              <Route path="account" element={<AccountSettings />} />
               <Route path="privacy" element={<div>Privacy</div>} />
               <Route path="notifications" element={<NotificationSettings />} />
             </Route>

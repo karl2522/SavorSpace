@@ -11,10 +11,12 @@
     color: #111;
     margin-bottom: 2rem;
     text-align: center;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
   }
   
   .notif-h2 {
-    color: #111;
+    color: #333;
     margin-bottom: 1rem;
     font-size: 1.2rem;
   }
@@ -29,7 +31,6 @@
     background-color: #fff;
     border-radius: 8px;
     padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
   
   .setting-item {

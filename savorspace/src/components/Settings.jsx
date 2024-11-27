@@ -6,6 +6,7 @@ import { SlLock } from "react-icons/sl";
 import { VscSettings } from "react-icons/vsc";
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import '../styles/SettingsStyles.css';
+import AccountSettings from "./AccountSettings";
 import EditProfileSettings from './EditProfileSettings';
 import GeneralSettings from "./GeneralSettings";
 import NotificationSettings from "./NotificationSettings";
@@ -79,7 +80,7 @@ export default function SettingsPage() {
         <Routes>
           <Route path="general" element={<GeneralSettings />} />
           <Route path="edit-profile" element={<EditProfileSettings />} />
-          <Route path="account" element={<div>Account Settings</div>} />
+          <Route path="account" element={<AccountSettings />} />
           <Route path="privacy" element={<div>Privacy Settings</div>} />
           <Route path="notifications" element= {< NotificationSettings />}/>
           <Route path="logout" element={<div>Logging Out...</div>} />

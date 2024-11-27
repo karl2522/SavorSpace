@@ -1,0 +1,68 @@
+.account-settings {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    margin-left: 100px;
+    width: 100%;
+  }
+  
+  .account-h1 {
+    color: #111;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+    margin-bottom: 60px;
+  }
+  
+  .account-h2 {
+    color: #111;
+    margin-top: 30px;
+    margin-bottom: 35px;
+  }
+  
+  .form-group-account {
+    margin-bottom: 20px;
+  }
+  
+  .account-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .account-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+  }
+  
+  .account-select:focus {
+    outline: none;
+    border-color: #D6589F;
+  }
+  
+  .account-save-btn {
+    background-color: #D6589F;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+  }
+  
+  .account-save-btn:hover {
+    background-color: #ce2786;
+  }
+
+  
