@@ -24,12 +24,10 @@
   box-sizing: border-box;
 }
 
-.navbar .logo {
+.navbar-logo {
   height: auto;
   width: 100%;
-  padding-top: 10px;
   max-width: 100px; 
-  margin-top: 10px; 
   margin-left: 20px;
 }
 
@@ -188,11 +186,11 @@
   border: 1px solid #D6589F;
   color: #111;
   margin-left: 20px;
+  background-color: neo;
 }
 
 .get-started-btn:hover {
   background-color: #ce2786;
-  color: #fff;
   background-color: #fff;
   transform: translateY(-2px);
 }

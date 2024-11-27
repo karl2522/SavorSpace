@@ -100,7 +100,7 @@
 }
 
 
-.checkbox {
+.signup-checkbox {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -188,8 +188,8 @@
 
 .register-hero {
   width: 100%;
-  max-width: 600px;
-  height: 685px;
+  max-width: 695px;
+  height: 695px;
   border-radius: 15px;
   margin-left: 200px;
   margin-top: 50px;
@@ -204,8 +204,7 @@
 
 .register-hero img {
   position: absolute;
-  width: 100%;
-  max-width: 685px;
+  width: 646px;
   height: auto; 
   border-radius: 8px;
   object-fit: cover; 
