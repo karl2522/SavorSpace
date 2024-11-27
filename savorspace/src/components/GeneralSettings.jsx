@@ -53,10 +53,15 @@ const GeneralSettings = () => {
           </select>
         </div>
         <div className="form-group-general">
-          <label className="general-label" htmlFor="measurement-unit">Measurement Units</label>
+          <label className="general-label" htmlFor="measurement-unit">Region</label>
           <select id="measurement-unit" name="measurement-unit" defaultValue="metric">
-            <option value="metric">Metric (g, ml, °C)</option>
-            <option value="imperial">Imperial (oz, cups, °F)</option>
+            <option value="asia">Asia</option>
+            <option value="ant">Antarctica</option>
+            <option value="aus">Australia</option>
+            <option value="europe">Europe</option>
+            <option value="north">North America</option>
+            <option value="south">South America</option>
+
           </select>
         </div>
       </section>
