@@ -3,6 +3,7 @@ import { IoIosArrowBack, IoMdNotificationsOutline } from 'react-icons/io';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ProfilePageStyles.css';
+import NotificationComponent from './NotificationComponent';
 
 export default function ProfilePage() {
   const [profilePic, setProfilePic] = useState(null);
@@ -209,7 +210,6 @@ export default function ProfilePage() {
   }, []);
 
   return (
-
     <div className="profile-main-container">
       <div className="profile-top">
         <button className="back-button-profile" onClick={handleHome}>
@@ -217,27 +217,7 @@ export default function ProfilePage() {
         </button>
         <h1>My <span className="highlight">Profile</span></h1>
         <div className="left-buttons">
-          <div className="notification-container" ref={notificationRef}>
-            <button className="notif-button" onClick={handleNotificationModal}>
-              <IoMdNotificationsOutline size={33}/>
-            </button>
-            {isNotificationModal && (
-              <div className="notification-modal">
-                <div className="notification-item">
-                  <p className="notification-text">New recipe comment</p>
-                  <span className="notification-time">2m ago</span>
-                </div>
-                <div className="notification-item">
-                  <p className="notification-text">Your recipe was liked</p>
-                  <span className="notification-time">1h ago</span>
-                </div>
-                <div className="notification-item">
-                  <p className="notification-text">New follower</p>
-                  <span className="notification-time">3h ago</span>
-                </div>
-              </div>
-            )}
-          </div>
+          <NotificationComponent username={username} /> {}
           <button className="settings-button" onClick={handleSettings}>
             <IoSettingsOutline size={30}/>
           </button>
@@ -252,7 +232,7 @@ export default function ProfilePage() {
                 alt="Profile"
                 onError={handleImageError} 
               />
-              <button className="edit-profile" onClick={handleEditProfile }>Edit Profile</button>
+              <button className="edit-profile" onClick={handleEditProfile}>Edit Profile</button>
             </div>
             <div className="profile-details">
               <h2>Hi, {username || 'User001'}</h2>
@@ -277,27 +257,26 @@ export default function ProfilePage() {
         </div>
 
         <div className="user-recipes">
-
           <div className="latest-recipes">
-          <div className="latest-recipes-header">
-            <h2>Latest <span>Recipes</span></h2>
-            <button className="view-all">View all</button>
+            <div className="latest-recipes-header">
+              <h2>Latest <span>Recipes</span></h2>
+              <button className="view-all">View all</button>
+            </div>
+            <div className="latest-recipes-container">
+              {latestRecipes.map(recipe => (
+                <div key={recipe.recipeID} className="recipe-item">
+                  <img 
+                    src={formatImageURL(recipe.imageURL) || "/src/images/defaultProfiles.png"} 
+                    alt={recipe.title} 
+                    onError={(e) => {
+                      e.target.src = "/src/images/defaultProfiles.png";
+                    }}
+                  />
+                  <p className="profile-recipe-title">{recipe.title}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="latest-recipes-container">
-            {latestRecipes.map(recipe => (
-              <div key={recipe.recipeID} className="recipe-item">
-                <img 
-                  src={formatImageURL(recipe.imageURL) || "/src/images/defaultProfiles.png"} 
-                  alt={recipe.title} 
-                  onError={(e) => {
-                    e.target.src = "/src/images/defaultProfiles.png";
-                  }}
-                />
-                <p className="profile-recipe-title">{recipe.title}</p>
-              </div>
-            ))}
-          </div>
-        </div>
 
           <div className="popular-recipes">
             <div className="popular-recipes-header">
