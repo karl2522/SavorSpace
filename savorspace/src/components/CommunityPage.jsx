@@ -26,21 +26,21 @@ const PostingPage = () => {
   const location = useLocation();
   const {scrollToRecipeId, highlightRecipeId } = location.state || {};
 
-    useEffect(() => {
-      if(scrollToRecipeId) {
-        const element = document.getElementById(`recipe-${scrollToRecipeId}`);
-        if(element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-          if(highlightRecipeId === scrollToRecipeId) {
-            element.classList.add('highlighted-recipe');
-
-            setTimeout(() => {
-              element.classList.remove('highlighted-recipe');
-            }, 2000);
-          }
-        }
-      }
-    }, [scrollToRecipeId, highlightRecipeId])
+  useEffect(() => {
+    if (scrollToRecipeId) {
+        setTimeout(() => {
+            const element = document.getElementById(`recipe-${scrollToRecipeId}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.style.backgroundColor = 'rgba(255, 236, 179, 0.8)';
+                setTimeout(() => {
+                    element.style.backgroundColor = 'transparent';
+                    element.style.transition = 'background-color 1s ease-out';
+                }, 100);
+            }
+        }, 300);
+    }
+}, [scrollToRecipeId, recipes]);
 
   const fetchRecipes = useCallback(async () => {
       try {
@@ -522,7 +522,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
   );
 };
 
-  const RecipeCard = ({ recipe }) => {
+  const RecipeCard = ({ recipe, isHighlighted }) => {
     const [isCommentsVisible, setIsCommentsVisible] = useState(false);
     const [imageError, setImageError] = useState(false);
     const [totalRatings, setTotalRatings] = useState(0);
@@ -803,9 +803,15 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
   };
 
     return (
-      <div className="community-post">
+      <div 
+        id={`recipe-${recipe.recipeID}`}
+        className={`community-post ${isHighlighted ? 'highlighted-recipe' : ''}`}
+        style={{
+           transition: isHighlighted ? 'background-color 1s ease-out' : ''
+        }}
+        >
         <div className="post-card">
-        <div className="community-user">
+        <div className="community-user">  
           <img
               src={recipe.user?.imageURL
                   ? getImageURL(recipe.user?.imageURL)
@@ -1022,14 +1028,21 @@ StarRating.propTypes = {
                 </button>
             </div>
 
-        <div className="community-posts">
-            {recipes.map(recipe => (
-                <RecipeCard
-                    key={recipe.recipeID}
-                    recipe={recipe}
-                />
-            ))}
-        </div>
+            <div className="community-posts">
+                {loading ? (
+                    <div>Loading...</div>
+                ) : error ? (
+                    <div>Error: {error}</div>
+                ) : (
+                    recipes.map(recipe => (
+                        <RecipeCard
+                            key={recipe.recipeID}
+                            recipe={recipe}
+                            isHighlighted={recipe.recipeID === highlightRecipeId}
+                        />
+                    ))
+                )}
+            </div>
         <CreateRecipeModal
                 ref={modalRef}
                 show={showModal}

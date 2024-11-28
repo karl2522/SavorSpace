@@ -17,6 +17,7 @@ const NotificationComponent = ({ username }) => {
 
             if(notification.recipeId) {
                 setIsNotificationModal(false);
+                console.log("Navigating to recipe:", notification.recipeId); // Debug log
                 navigate(`/community`, {
                     state: {
                         scrollToRecipeId: notification.recipeId,
