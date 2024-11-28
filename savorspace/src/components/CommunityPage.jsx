@@ -9,7 +9,7 @@ import { MdClose } from 'react-icons/md';
 import { VscSend } from 'react-icons/vsc';
 import CreateRecipeModal from './RecipeModal';
 
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import '../styles/PostingPage.css';
 
 
@@ -23,6 +23,24 @@ const PostingPage = () => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
+  const location = useLocation();
+  const {scrollToRecipeId, highlightRecipeId } = location.state || {};
+
+    useEffect(() => {
+      if(scrollToRecipeId) {
+        const element = document.getElementById(`recipe-${scrollToRecipeId}`);
+        if(element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          if(highlightRecipeId === scrollToRecipeId) {
+            element.classList.add('highlighted-recipe');
+
+            setTimeout(() => {
+              element.classList.remove('highlighted-recipe');
+            }, 2000);
+          }
+        }
+      }
+    }, [scrollToRecipeId, highlightRecipeId])
 
   const fetchRecipes = useCallback(async () => {
       try {
@@ -113,8 +131,6 @@ const PostingPage = () => {
       return <div>Loading...</div>;
   }  
 
-
-  
 
 const RecipeComments = ({ recipeId, isVisible}) => {
     const [comments, setComments] = useState([]);
@@ -806,7 +822,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
              <div className="community-user-content"> 
                 <h3>{recipe.user?.fullName || recipe.user?.username || 'Unknown User'}</h3>
                 <span className="date">{formDate(recipe.createdAt)}</span>
-                {currentUser && currentUser.id === recipe.user?.id && (
+                {currentUser && currentUser.id === recipe.user?.id && ( 
                 <div className="action-dots-container" onClick={toggleDropdown}>
                   <BsThreeDotsVertical className="action-dots" size={20} cursor="pointer" />
                 </div>

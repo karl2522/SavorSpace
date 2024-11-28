@@ -264,6 +264,7 @@ const App = () => {
           <Route path='/deactivate-account' element={<AccountDeactivation />} />
           <Route path='/forgot-password' element= {<ForgotPasswordForm />} />
           <Route path="/community/recipe/:recipeId" element={<RecipeDetail />} />
+          <Route path="/community/:recipeId" element={<PostingPage />} />
         </Routes>
       </div>
     </Router>
