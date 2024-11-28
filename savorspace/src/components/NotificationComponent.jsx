@@ -2,15 +2,35 @@ import { useEffect, useRef, useState } from 'react';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import WebSocketService from './WebSocketService';
 import '../styles/Notification.css';
+import { useNavigate } from 'react-router-dom';
 
 
 const NotificationComponent = ({ username }) => {
     const [notifications, setNotifications] = useState([]);
     const [isNotificationModal, setIsNotificationModal] = useState(false);
     const notificationRef = useRef(null);
+    const navigate = useNavigate();
+
+    const handleNotificationClick = async (notification) => {
+        try {
+            await markAsRead(notification.id);
+
+            if(notification.recipeId) {
+                setIsNotificationModal(false);
+                console.log("Navigating to recipe:", notification.recipeId); // Debug log
+                navigate(`/community`, {
+                    state: {
+                        scrollToRecipeId: notification.recipeId,
+                        highlightRecipeId: notification.recipeId
+                    }
+                });
+            }
+        }catch (error) {
+            console.error('Error marking notification as read:', error);
+        }
+    };
 
     useEffect(() => {
-        // Fetch existing notifications when component mounts
         const fetchNotifications = async () => {
             try {
                 const response = await fetch('http://localhost:8080/api/notifications', {
@@ -30,7 +50,6 @@ const NotificationComponent = ({ username }) => {
 
         fetchNotifications();
 
-        // Connect to WebSocket for real-time notifications
         if (username) {
             WebSocketService.connect(username, handleNewNotification);
         }
@@ -75,7 +94,8 @@ const NotificationComponent = ({ username }) => {
                             <div 
                                 key={notification.id} 
                                 className={`notification-item ${notification.read ? 'read' : 'unread'}`}
-                                onClick={() => markAsRead(notification.id)}
+                                onClick={() => handleNotificationClick(notification)}
+                                style={{ cursor: notification.read ? 'default' : 'pointer' }}
                             >
                                 <p className="notification-text">{notification.message}</p>
                                 <span className="notification-time">

@@ -9,7 +9,7 @@ import { MdClose } from 'react-icons/md';
 import { VscSend } from 'react-icons/vsc';
 import CreateRecipeModal from './RecipeModal';
 
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import '../styles/PostingPage.css';
 
 
@@ -23,6 +23,24 @@ const PostingPage = () => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
+  const location = useLocation();
+  const {scrollToRecipeId, highlightRecipeId } = location.state || {};
+
+  useEffect(() => {
+    if (scrollToRecipeId) {
+        setTimeout(() => {
+            const element = document.getElementById(`recipe-${scrollToRecipeId}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.style.backgroundColor = 'rgba(255, 236, 179, 0.8)';
+                setTimeout(() => {
+                    element.style.backgroundColor = 'transparent';
+                    element.style.transition = 'background-color 1s ease-out';
+                }, 100);
+            }
+        }, 300);
+    }
+}, [scrollToRecipeId, recipes]);
 
   const fetchRecipes = useCallback(async () => {
       try {
@@ -113,8 +131,6 @@ const PostingPage = () => {
       return <div>Loading...</div>;
   }  
 
-
-  
 
 const RecipeComments = ({ recipeId, isVisible}) => {
     const [comments, setComments] = useState([]);
@@ -506,7 +522,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
   );
 };
 
-  const RecipeCard = ({ recipe }) => {
+  const RecipeCard = ({ recipe, isHighlighted }) => {
     const [isCommentsVisible, setIsCommentsVisible] = useState(false);
     const [imageError, setImageError] = useState(false);
     const [totalRatings, setTotalRatings] = useState(0);
@@ -787,9 +803,15 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
   };
 
     return (
-      <div className="community-post">
+      <div 
+        id={`recipe-${recipe.recipeID}`}
+        className={`community-post ${isHighlighted ? 'highlighted-recipe' : ''}`}
+        style={{
+           transition: isHighlighted ? 'background-color 1s ease-out' : ''
+        }}
+        >
         <div className="post-card">
-        <div className="community-user">
+        <div className="community-user">  
           <img
               src={recipe.user?.imageURL
                   ? getImageURL(recipe.user?.imageURL)
@@ -806,7 +828,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
              <div className="community-user-content"> 
                 <h3>{recipe.user?.fullName || recipe.user?.username || 'Unknown User'}</h3>
                 <span className="date">{formDate(recipe.createdAt)}</span>
-                {currentUser && currentUser.id === recipe.user?.id && (
+                {currentUser && currentUser.id === recipe.user?.id && ( 
                 <div className="action-dots-container" onClick={toggleDropdown}>
                   <BsThreeDotsVertical className="action-dots" size={20} cursor="pointer" />
                 </div>
@@ -1006,14 +1028,21 @@ StarRating.propTypes = {
                 </button>
             </div>
 
-        <div className="community-posts">
-            {recipes.map(recipe => (
-                <RecipeCard
-                    key={recipe.recipeID}
-                    recipe={recipe}
-                />
-            ))}
-        </div>
+            <div className="community-posts">
+                {loading ? (
+                    <div>Loading...</div>
+                ) : error ? (
+                    <div>Error: {error}</div>
+                ) : (
+                    recipes.map(recipe => (
+                        <RecipeCard
+                            key={recipe.recipeID}
+                            recipe={recipe}
+                            isHighlighted={recipe.recipeID === highlightRecipeId}
+                        />
+                    ))
+                )}
+            </div>
         <CreateRecipeModal
                 ref={modalRef}
                 show={showModal}
