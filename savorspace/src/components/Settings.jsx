@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BiLogOut } from "react-icons/bi";
 import { IoIosArrowBack, IoMdNotificationsOutline } from 'react-icons/io';
 import { LiaWalletSolid } from "react-icons/lia";
@@ -11,7 +12,6 @@ import EditProfileSettings from './EditProfileSettings';
 import GeneralSettings from "./GeneralSettings";
 import NotificationSettings from "./NotificationSettings";
 import PrivacySettings from "./PrivacySettings";
-import { useState } from 'react';
 
 export default function SettingsPage() {
   const location = useLocation();
@@ -19,6 +19,7 @@ export default function SettingsPage() {
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showLogoutValidation, setShowLogoutValidation] = useState(false);
 
   const activeLinkStyle = {
      color: '#fff', 
@@ -57,6 +58,14 @@ export default function SettingsPage() {
       console.error('Error logging out:', error);
       alert('Failed to logout. Please try again.');
     }
+  };
+
+  const confirmLogoutValidation = () => {
+    setShowLogoutValidation(true);
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutValidation(false);
   };
 
   const navigate = useNavigate();
@@ -100,12 +109,31 @@ export default function SettingsPage() {
               Notifications
             </Link>
           </li>
-          <li className="logout">
-            <Link to="/profile/settings/logout" style={isActive('/profile/settings/logout')} onClick={handleLogout}>
-            <BiLogOut size={23} />
-              Logout
-            </Link>
-          </li>
+          <li>
+              <div
+                className="logout-button-settings"
+                style={isActive('/profile/settings/logout')}
+                onClick={confirmLogoutValidation}
+              >
+                <BiLogOut size={23} />
+                Logout
+              </div>
+              {showLogoutValidation && (
+                <div className="modal-backdrop">
+                  <div className="logout-confirmation">
+                    <h2>Logout</h2>
+                    <p>
+                      Heading out, Chef? No problem!<br /> You can pick up right where you
+                      left off whenever you sign back in.
+                    </p>
+                    <div className="logout-buttons">
+                      <button onClick={handleLogout}>Yes</button>
+                      <button onClick={cancelLogout}>No</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </li>
         </ul>
       </nav>
 
@@ -117,7 +145,6 @@ export default function SettingsPage() {
           <Route path="account" element={<AccountSettings />} />
           <Route path="privacy" element={<PrivacySettings />} />
           <Route path="notifications" element= {< NotificationSettings />}/>
-          <Route path="logout" element={<div>Logging Out...</div>} />
         </Routes>
       </main>
     </div>

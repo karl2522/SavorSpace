@@ -244,6 +244,7 @@ const EditProfileSettings = () => {
         }
     };
 
+    
     return (
         <div className="edit-profile-container">
                 <div className="edit-profile-main">
