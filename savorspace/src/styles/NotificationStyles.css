@@ -5,6 +5,7 @@
     background-color: #ffff;
     border-radius: 10px;
     margin-left: 100px;
+    animation: fadeInSlideLeft 0.6s ease-out;
   }
   
   .notification-title {

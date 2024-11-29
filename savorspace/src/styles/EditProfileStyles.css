@@ -1,5 +1,6 @@
 .edit-profile-container {
     max-width: 1800px;
+    animation: fadeInSlideLeft 0.6s ease-out;
 }
 
 .edit-profile-main {

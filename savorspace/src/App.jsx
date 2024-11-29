@@ -20,6 +20,7 @@ import LandingPage from './components/LandingPage';
 import Login from './components/LoginScreen';
 import NotFound from './components/NotFound';
 import NotificationSettings from './components/NotificationSettings';
+import PrivacySettings from './components/PrivacySettings';
 import PrivateRoute from './components/PrivateRoute';
 import ProfilePage from './components/ProfilePage';
 import ReactivateAccount from './components/ReactivateAccount';
@@ -38,6 +39,7 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showLogoutValidation, setShowLogoutValidation] = useState(false);
 
   const defaultProfilePic = "/src/images/defaultProfiles.png";
   const [imgSrc, setImgSrc] = useState(profilePic || defaultProfilePic);
@@ -81,6 +83,15 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
     setShowDropdown(false); // Close the dropdown
   };
 
+  const confirmLogoutValidation = () => {
+    setShowLogoutValidation(true);
+    setShowDropdown(false); 
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutValidation(false);
+  };
+
   return (
     <>
       {showNavbar && (
@@ -118,7 +129,7 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
                 {showDropdown && (
                   <div className="dropdown-profile">
                     <button onClick={handleProfilePage}>Profile</button>
-                    <button onClick={handleLogout}>Logout</button>
+                    <button onClick={confirmLogoutValidation}>Logout</button>
                   </div>
                 )}
               </div>
@@ -127,6 +138,18 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
             <div className="auth-buttons">
               <Link to="/register" className="signup-btn">Sign up</Link>
               <Link to="/login" className="signin-btn">Log in</Link>
+            </div>
+          )}
+          {showLogoutValidation && (  
+            <div className="modal-backdrop">
+              <div className="logout-confirmation">
+                <h2>Logout</h2>
+                <p>Heading out, Chef? No problem!<br></br> You can pick up right where you left off whenever you sign back in.</p>
+                <div className="logout-buttons">
+                  <button onClick={handleLogout}>Yes</button>
+                  <button onClick={cancelLogout}>No</button>
+                </div>
+              </div>
             </div>
           )}
         </nav>
@@ -230,7 +253,7 @@ const App = () => {
               <Route path="general" element={<GeneralSettings />} />
               <Route path="edit-profile" element={<EditProfileSettings />} />
               <Route path="account" element={<AccountSettings />} />
-              <Route path="privacy" element={<div>Privacy</div>} />
+              <Route path="privacy" element={<PrivacySettings />} />
               <Route path="notifications" element={<NotificationSettings />} />
             </Route>
           <Route path="edit-profile" element={<EditProfileSettings />} />

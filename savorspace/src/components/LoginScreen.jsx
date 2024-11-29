@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { IoIosArrowForward } from "react-icons/io";
-import { IoLogoGithub, IoEyeOffOutline, IoEyeOutline} from "react-icons/io5";
+import { IoEyeOffOutline, IoEyeOutline, IoLogoGithub } from "react-icons/io5";
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import '../styles/LoginStyles.css';
@@ -77,22 +77,22 @@ const Login = ({ onLogin }) => {
     setIsLoading(true);
     try {
       const response = await login(loginData);
+      console.log('Login Response:', response); // Debug line
       onLogin(); 
 
       await new Promise(resolve => setTimeout(resolve, 1500));
-      if(response.token) {
-        localStorage.setItem('authToken', response.token);
-        localStorage.setItem('refreshToken', response.refreshToken);
+      if(response.data.token) {
+        localStorage.setItem('authToken', response.data.token);
+        localStorage.setItem('refreshToken', response.data.refreshToken);
       }
       navigate('/homepage');
     } catch (error) {
-      const errorMsg = error.response?.status === 401
-        ? "Invalid email or password. Please try again"
-        : "Something went wrong. Please try again later.";
+      console.log('Error Response:', error.response); // Debug line
+      let errorMsg = error.response?.data?.error || "Something went wrong. Please try again later.";
       setErrorMessage(errorMsg);
       setShowErrorToast(true);
       setTimeout(() => setShowErrorToast(false), 5000);
-    }finally {
+    } finally {
       setIsLoading(false);
     }
   };
@@ -192,12 +192,12 @@ const Login = ({ onLogin }) => {
               <span>Github</span> 
             </button>
           </div>
-          <div className="login-options">
+          <div className="reactivate">
             <span>Deactivated Account? Activate it here!</span>
+            <button onClick={handleReactivate} className="reactivate-btn">
+                <span>Reactivate Account</span>
+            </button>
           </div>
-          <button onClick={handleReactivate} className='reactivate-btn'>
-              <span>Reactivate Account</span>
-          </button>
         </div>
       </div>
     </div>

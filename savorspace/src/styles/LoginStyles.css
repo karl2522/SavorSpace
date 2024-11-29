@@ -116,8 +116,13 @@
     background-color: #ce2786;
   }
   
+  .reactivate {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    margin-top: 20px;
+  }
   .reactivate-btn {
-    margin-top: 30px;
     width: 100%;
     background-color: #d6589f;
     border: none;
@@ -329,6 +334,11 @@
   gap: 12px;
 }
 
+.error {
+  color: #ff4b4b;
+  font-size: 14px;
+  font-weight: 500;
+}
 .error-icon {
   font-size: 20px;
 }
@@ -383,4 +393,51 @@
 
 .password-field button:focus {
   outline: none;
+}
+
+/* Toast Styles */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  max-width: 350px;
+  z-index: 1000;
+  animation: slideIn 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.toast-success {
+  background-color: #4CAF50;
+}
+
+.toast-error {
+  background-color: #f44336;
+}
+
+.toast-info {
+  background-color: #2196F3;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }

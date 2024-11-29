@@ -9,6 +9,8 @@ const AccountReactivation = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
+    const [showErrorToast, setShowErrorToast] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(''); 
 
     const handleReactivate = async (e) => {
         e.preventDefault();
@@ -16,7 +18,7 @@ const AccountReactivation = () => {
 
     };
 
-
+    
     const confirmReactivation = async () => {
         setIsLoading(true);
         setError('');
@@ -36,24 +38,26 @@ const AccountReactivation = () => {
             const data = await response.json();
             if (!response.ok) {
                 if(data.error === "Account is already active") {
-                    alert('Account is already active. Please login to continue.');
-                    navigate('/login');
+                    setErrorMessage('Account is already active. Please login to continue.');
+                    setShowErrorToast(true);
+                    setTimeout(() => navigate('/login'), 3000);
                     return;
                 }
                 throw new Error(data.error || 'Failed to reactivate account');
             }
 
-            // Store tokens
+            // Store tokens 
             localStorage.setItem('token', data.token);
             localStorage.setItem('refreshToken', data.refreshToken);
             
             localStorage.setItem('user', JSON.stringify(data.user));
 
-            alert('Account reactivated successfully! Please login to continue.');
-            navigate('/login');
-            
+            setErrorMessage('Account reactivated successfully! Redirecting to login...');
+            setShowErrorToast(true);
+            setTimeout(() => navigate('/login'), 3000);  
         } catch (error) {
-            setError(error.message);
+            setErrorMessage(error.message);
+            setShowErrorToast(true);
         } finally {
             setIsLoading(false);
             setShowModal(false);
@@ -66,6 +70,14 @@ const AccountReactivation = () => {
 
     return (
         <div className="reactivate-account-container">
+            {showErrorToast && (
+                <div className="error-toast">
+                    <div className="error-toast-content">
+                        <div className="error-icon">❌</div>
+                        <p>{errorMessage}</p>
+                    </div>
+                </div>
+            )}
             <h2>Reactivate Your Account</h2>
             <form onSubmit={handleReactivate}>
                 <div className="form-deactivate">

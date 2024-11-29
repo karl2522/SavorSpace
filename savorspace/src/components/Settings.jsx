@@ -10,6 +10,7 @@ import AccountSettings from "./AccountSettings";
 import EditProfileSettings from './EditProfileSettings';
 import GeneralSettings from "./GeneralSettings";
 import NotificationSettings from "./NotificationSettings";
+import PrivacySettings from "./PrivacySettings";
 
 export default function SettingsPage() {
   const location = useLocation();
@@ -81,7 +82,7 @@ export default function SettingsPage() {
           <Route path="general" element={<GeneralSettings />} />
           <Route path="edit-profile" element={<EditProfileSettings />} />
           <Route path="account" element={<AccountSettings />} />
-          <Route path="privacy" element={<div>Privacy Settings</div>} />
+          <Route path="privacy" element={<PrivacySettings />} />
           <Route path="notifications" element= {< NotificationSettings />}/>
           <Route path="logout" element={<div>Logging Out...</div>} />
         </Routes>

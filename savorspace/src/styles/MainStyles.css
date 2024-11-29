@@ -356,7 +356,7 @@ body {
   top: calc(100% + 8px); 
   right: 0;
   width: 160px;
-  background-color: #D75A97;
+  background-color: #d6589F;
   border-radius: 12px;
   padding: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -417,4 +417,77 @@ body {
 
 .dropdown-profile button:last-child::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1'/%3E%3C/svg%3E");
+}
+
+/*Logout Validation Modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(23, 23, 23, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+}
+
+.logout-confirmation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1E1E1E;
+  color: white;
+  padding: 20px 30px;
+  border-radius: 15px;
+  z-index: 1000;
+  width: 600px;
+  height: 300px;
+}
+
+.logout-confirmation h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 10px;
+}
+
+.logout-confirmation p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.8;
+}
+
+.logout-confirmation button {
+  padding: 8px 20px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  width: 150px;
+  height: 40px;
+  transition: all 0.3s ease;
+}
+
+.logout-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 50px;
+  gap: 20px;
+}
+.logout-confirmation button:first-of-type {
+  background: #d6589F;
+  color: white;
+}
+
+.logout-confirmation button:last-of-type {
+  background: #333;
+  color: white;
+}
+
+.logout-confirmation button:hover {
+  transform: translateY(-2px);
 }
