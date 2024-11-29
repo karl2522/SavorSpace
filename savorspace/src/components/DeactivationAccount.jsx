@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/DeActivateStyles.css';
+import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 
 const AccountDeactivation = () => {
     const [email, setEmail] = useState('');
@@ -8,12 +9,13 @@ const AccountDeactivation = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleDeactivate = async (e) => {
         e.preventDefault();
         
-        setShowModal(true);  // Show the modal after the user submits the form
+        setShowModal(true);
     };
 
     const confirmDeactivation = async () => {
@@ -83,12 +85,39 @@ const AccountDeactivation = () => {
                 </div>
                 <div className="form-deactivate">
                     <label>Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                    <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            style={{
+                                width: '100%',
+                                paddingRight: '2.5rem',
+                                alignItems: 'center',
+                            }}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            style={{
+                                position: 'absolute',
+                                right: '10px',
+                                top: '50%',
+                                transform: 'translateY(-50%)',
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer',
+                                padding: '0',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: '#666'
+                            }}
+                        >
+                            {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+                        </button>            
+                    </div>
                 </div>
                 {error && <div className="error-message">{error}</div>}
                 <button 

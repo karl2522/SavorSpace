@@ -139,6 +139,20 @@ const RecipeComments = ({ recipeId, isVisible}) => {
     const token = localStorage.getItem('authToken');
     const [currentUser, setCurrentUser] = useState(null);
 
+    const cleanImagePath = (path) => {
+      if(!path) return null;
+      return path.replace(/\/uploads\/+/g, '/uploads/');
+  };
+
+    const getImageURL = (imageURL) => {
+      if(!imageURL) return "/src/images/defaultProfiles.png";
+
+      const cleanPath = cleanImagePath(imageURL);
+      return cleanPath.startsWith('http')
+          ? cleanPath
+          : `http://localhost:8080${cleanPath}`;
+  };
+
     const fetchCurrentUser = async () => {
         try {
             const response = await fetch('http://localhost:8080/users/me', {
@@ -421,7 +435,7 @@ const RecipeComments = ({ recipeId, isVisible}) => {
                 <div key={comment.commentID} className={`comment ${comment.flagged ? 'flagged' : ''}`}>
                   <div className="comment-header">
                     <img
-                      src={comment.userImageURL ? `${BACKEND_URL}${comment.userImageURL}` : '/src/images/defaultProfiles.png'}
+                      src={getImageURL(comment.userImageURL)}
                       alt={comment.username || 'User'}
                       className="comment-user-pic"
                       onError={(e) => {
