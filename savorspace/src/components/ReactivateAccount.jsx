@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/DeActivateStyles.css';
+import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 
 const AccountReactivation = () => {
     const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ const AccountReactivation = () => {
     const navigate = useNavigate();
     const [showErrorToast, setShowErrorToast] = useState(false);
     const [errorMessage, setErrorMessage] = useState(''); 
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleReactivate = async (e) => {
         e.preventDefault();
@@ -91,13 +93,36 @@ const AccountReactivation = () => {
                 </div>
                 <div className="form-deactivate">
                     <label>Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                    <div style={{ position: 'relative', display: 'inline-block', width: '100%'}}>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            style={{
+                                width: '100%',
+                                paddingRight: '2.5rem',
+                                alignItems: 'center',
+                            }}
+                        />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        style={{
+                            position: 'absolute',
+                            right: '10px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: '0',
+                        }}
+                    >
+                        {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
+                    </button>            
                 </div>
+            </div>
                 {error && <div className="error-message">{error}</div>}
                 <button className="reactivate-btn1" type="submit" disabled={isLoading}>
                     {isLoading ? 'Reactivating...' : 'Reactivate Account'}
@@ -107,7 +132,7 @@ const AccountReactivation = () => {
             {showModal && (
                 <div className="modal-deactivate">
                     <div className="modal-content">
-                        <h3>Are you sure you want to deactivate your account?</h3>
+                        <h3>Are you sure you want to reactivate your account?</h3>
                         <div className="button-container">
                             <button className="yes-button-reactivate" onClick={confirmReactivation}>YES</button>
                             <button className="no-button-reactivate" onClick={handleCancelReactivation}>NO</button>

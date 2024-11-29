@@ -11,9 +11,14 @@ import EditProfileSettings from './EditProfileSettings';
 import GeneralSettings from "./GeneralSettings";
 import NotificationSettings from "./NotificationSettings";
 import PrivacySettings from "./PrivacySettings";
+import { useState } from 'react';
 
 export default function SettingsPage() {
   const location = useLocation();
+  const [profilePic, setProfilePic] = useState(null);
+  const [username, setUsername] = useState('');
+  const [role, setRole] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const activeLinkStyle = {
      color: '#fff', 
@@ -24,6 +29,34 @@ export default function SettingsPage() {
 
   const isActive = (path) => {
     return location.pathname === path ? activeLinkStyle : {};
+  };
+
+  const handleLogout = async () => {
+    try {
+      // First, call your backend logout endpoint
+      const response = await fetch('http://localhost:8080/auth/logout/github', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      // Clear local storage
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('refreshToken');
+
+      // Reset all user-related states
+      setProfilePic(null);
+      setUsername('');
+      setRole('');
+      setIsAuthenticated(false);
+      window.location.href = '/login';
+    } catch (error) {
+      console.error('Error logging out:', error);
+      alert('Failed to logout. Please try again.');
+    }
   };
 
   const navigate = useNavigate();
@@ -68,7 +101,7 @@ export default function SettingsPage() {
             </Link>
           </li>
           <li className="logout">
-            <Link to="/settings/logout" style={isActive('/settings/logout')}>
+            <Link to="/profile/settings/logout" style={isActive('/profile/settings/logout')} onClick={handleLogout}>
             <BiLogOut size={23} />
               Logout
             </Link>
