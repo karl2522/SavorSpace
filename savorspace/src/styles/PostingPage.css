@@ -6,6 +6,7 @@
   width: 100%;
   padding: 20px;
   margin-top: 20px;
+  animation: fadeInSlideUp 1s ease-in;
 }
 
 .community-header {
@@ -639,4 +640,15 @@
   pointer-events: none;
   z-index: 1;
   animation: highlightAnimation 2s ease-out forwards;
+}
+
+@keyframes fadeInSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

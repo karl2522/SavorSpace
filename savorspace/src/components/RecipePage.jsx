@@ -29,6 +29,7 @@ export default function RecipePage() {
     setSearchQuery('');
   };
 
+
   const formatImageURL = (imageURL) => {
     if(!imageURL) return '';
     return imageURL.startsWith('http')
@@ -188,121 +189,122 @@ export default function RecipePage() {
 
   return (
     <div className="trending-container">
-      {}
-      {trendingItems.length > 0 && currentItem && (
-        <>
-          <h2 className="trending-title">Latest <span className="highlight-span">Recipes</span></h2>
-          <div className="trending-content">
-            <div className="trending-image">
-              <img 
-                  src={formatImageURL(currentItem.imageURL)}
-                  alt={currentItem.title}
-                  onError={(e) => {
-                    e.target.src = '/src/images/defaultProfiles.png';
-                  }}
-              />
-            </div>
-            <div className="trending-details">
-              <div className="trending-categories">
-                <span>Recipe</span>
-              </div>
-              <h3 className="trending-item-title">{currentItem.title}</h3>
-              <p className="trending-description">{currentItem.description}</p>
-              <div className="trending-author">
-                  {currentItem.user && (
-                    <>
-                     <img
-                        src={formatImageURL(currentItem.user.imageURL)}
-                        alt={currentItem.user.fullName}
-                        onError={(e) => {
-                          e.target.src = '/src/images/defaultProfiles.png';
-                        }}
-                      />
-                      <span>By: {currentItem.user.fullName || 'Anonymous'}</span>
-                    </>
-                  )}
-                <div className="trending-info">
-                  <MdAccessTime size={20}/>
-                  <span>{formDate(currentItem.createdAt)}</span>
-                </div>
-              </div>
-            </div>
+    {/* ScrollToTop component to reset scroll on navigation */}
+    {trendingItems.length > 0 && currentItem && (
+      <>
+        <h2 className="trending-title">Latest <span className="highlight-span">Recipes</span></h2>
+        <div className="trending-content">
+          <div className="trending-image">
+            <img 
+              src={formatImageURL(currentItem.imageURL)}
+              alt={currentItem.title}
+              onError={(e) => {
+                e.target.src = '/src/images/defaultProfiles.png';
+              }}
+            />
           </div>
-          <div className="trending-pagination">
-            {trendingItems.map((_, index) => (
-              <span 
-                key={index} 
-                className={`pagination-dot ${index === currentIndex ? 'active' : ''}`}
-              ></span>
-            ))}
-          </div>
-        </>
-      )}
-
-      {/* More Recipes Section */}
-      <div className="user-recipe-container">
-        <div className="user-recipe-header">
-          <h2><span className="highlight-span">More</span> Recipes</h2>
-          {activeSearch ? (
-              <MdClose 
-                size={40}
-                color="#D6589F"
-                cursor="pointer"
-                className="search-button"
-                onClick={resetSearch}
-              />
-            ) : (
-              <IoIosSearch
-                size={40}
-                color="#D6589F"
-                cursor="pointer"
-                className="search-button"
-                onClick={toggleSearch}
-              />
-            )}
-          {/* Search Overlay */}
-          <div className={`search-overlay ${isSearchOpen ? 'active' : ''}`}>
-            <div className="search-container">
-              <input
-                type="text"
-                className="search-input"
-                placeholder="Search recipes here..."
-                value={searchQuery}
-                onChange={handleSearchInputChange}
-                onKeyPress={handleSearch}
-                autoFocus
-              />
+          <div className="trending-details">
+            <div className="trending-categories">
+              <span>Recipe</span>
             </div>
-          </div>
-        </div>
-        <div className="user-recipe">
-          {(activeSearch ? filteredRecipes : recipes).map((recipe) => (
-            <div key={recipe.recipeID} className="user-recipe-card">
-              <div className="user-recipe-image">
-                  <img 
-                    src={formatImageURL(recipe.imageURL)}
-                    alt={recipe.title}
-                    onClick={() => handleRecipeClick(recipe.recipeID)}
-                    style={{ cursor: 'pointer' }}
+            <h3 className="trending-item-title">{currentItem.title}</h3>
+            <p className="trending-description">{currentItem.description}</p>
+            <div className="trending-author">
+              {currentItem.user && (
+                <>
+                  <img
+                    src={formatImageURL(currentItem.user.imageURL)}
+                    alt={currentItem.user.fullName}
                     onError={(e) => {
                       e.target.src = '/src/images/defaultProfiles.png';
                     }}
                   />
-              </div>
-              <div className="user-recipe-details">
-                <h3>{highlightText(recipe.title, activeSearch)}</h3>
-                <p>{highlightText(recipe.description, activeSearch)}</p>
-                <span className="user-recipe-info">By: {recipe.user ? recipe.user.fullName: 'Anonymous'}</span>
+                  <span>By: {currentItem.user.fullName || 'Anonymous'}</span>
+                </>
+              )}
+              <div className="trending-info">
+                <MdAccessTime size={20}/>
+                <span>{formDate(currentItem.createdAt)}</span>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="trending-pagination">
+          {trendingItems.map((_, index) => (
+            <span 
+              key={index} 
+              className={`pagination-dot ${index === currentIndex ? 'active' : ''}`}
+            ></span>
           ))}
-          {activeSearch && filteredRecipes.length === 0 && (
-            <div className="no-results">
-              No recipes found matching &quot;{activeSearch}&quot;
-            </div>
-          )}
+        </div>
+      </>
+    )}
+
+    {/* More Recipes Section */}
+    <div className="user-recipe-container">
+      <div className="user-recipe-header">
+        <h2><span className="highlight-span">More</span> Recipes</h2>
+        {activeSearch ? (
+          <MdClose 
+            size={40}
+            color="#D6589F"
+            cursor="pointer"
+            className="search-button"
+            onClick={resetSearch}
+          />
+        ) : (
+          <IoIosSearch
+            size={40}
+            color="#D6589F"
+            cursor="pointer"
+            className="search-button"
+            onClick={toggleSearch}
+          />
+        )}
+        {/* Search Overlay */}
+        <div className={`search-overlay ${isSearchOpen ? 'active' : ''}`}>
+          <div className="search-container">
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search recipes here..."
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+              onKeyPress={handleSearch}
+              autoFocus
+            />
+          </div>
         </div>
       </div>
+      <div className="user-recipe">
+        {(activeSearch ? filteredRecipes : recipes).map((recipe) => (
+          <div key={recipe.recipeID} className="user-recipe-card">
+            <div className="user-recipe-image">
+              <img 
+                src={formatImageURL(recipe.imageURL)}
+                alt={recipe.title}
+                onClick={() => handleRecipeClick(recipe.recipeID)}
+                style={{ cursor: 'pointer' }}
+                onError={(e) => {
+                  e.target.src = '/src/images/defaultProfiles.png';
+                }}
+              />
+            </div>
+            <div className="user-recipe-details">
+              <h3>{highlightText(recipe.title, activeSearch)}</h3>
+              <p>{highlightText(recipe.description, activeSearch)}</p>
+              <span className="user-recipe-info">By: {recipe.user ? recipe.user.fullName: 'Anonymous'}</span>
+            </div>
+          </div>
+        ))}
+        {activeSearch && filteredRecipes.length === 0 && (
+          <div className="no-results">
+            No recipes found matching &quot;{activeSearch}&quot;
+          </div>
+        )}
+      </div>
     </div>
+  </div>
+
   );
 }

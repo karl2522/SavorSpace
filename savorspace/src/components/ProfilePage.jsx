@@ -253,12 +253,15 @@ export default function ProfilePage() {
 
         <div className="user-recipes">
           <div className="latest-recipes">
-            <div className="latest-recipes-header">
-              <h2>Latest <span>Recipes</span></h2>
-              <button className="view-all">View all</button>
-            </div>
-            <div className="latest-recipes-container">
-              {latestRecipes.map(recipe => (
+          <div className="latest-recipes-header">
+            <h2>Latest <span>Recipes</span></h2>
+            <button className="view-all">View all</button>
+          </div>
+          <div className="latest-recipes-container">
+            {latestRecipes.length === 0 ? (
+              <p>No Latest Recipes</p> 
+            ) : (
+              latestRecipes.map(recipe => (
                 <div key={recipe.recipeID} className="recipe-item">
                   <img 
                     src={formatImageURL(recipe.imageURL) || "/src/images/defaultProfiles.png"} 
@@ -269,28 +272,34 @@ export default function ProfilePage() {
                   />
                   <p className="profile-recipe-title">{recipe.title}</p>
                 </div>
-              ))}
-            </div>
+              ))
+            )}
           </div>
+        </div>
 
-          <div className="popular-recipes">
+
+        <div className="popular-recipes">
             <div className="popular-recipes-header">
               <h2>Popular <span>Recipes</span></h2>
               <button className="view-all">View all</button>
             </div>
             <div className="latest-recipes-container">
-              {popularRecipes.map(recipe => (
-                <div key={recipe.recipeID} className="recipe-item">
-                  <img 
-                    src={formatImageURL(recipe.imageURL) || "/src/images/defaultProfiles.png"} 
-                    alt={recipe.title} 
-                    onError={(e) => {
-                      e.target.src = "/src/images/defaultProfiles.png";
-                    }}
-                  />
-                  <p className="profile-recipe-title">{recipe.title}</p>
-                </div>
-              ))}
+              {popularRecipes.length === 0 ? (
+                <p>No Popular Recipes</p> // Message when there are no popular recipes
+              ) : (
+                popularRecipes.map(recipe => (
+                  <div key={recipe.recipeID} className="recipe-item">
+                    <img 
+                      src={formatImageURL(recipe.imageURL) || "/src/images/defaultProfiles.png"} 
+                      alt={recipe.title} 
+                      onError={(e) => {
+                        e.target.src = "/src/images/defaultProfiles.png";
+                      }}
+                    />
+                    <p className="profile-recipe-title">{recipe.title}</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>

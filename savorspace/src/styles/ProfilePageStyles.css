@@ -3,7 +3,7 @@
     max-width: 2300px;
     display: flex;
     flex-direction: column;
-    animation: fadeInSlideUp 0.6s ease-out;
+    animation: fadeInSlideUp 0.8s ease-out;
 }
 
 .profile-top {

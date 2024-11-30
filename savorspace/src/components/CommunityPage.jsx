@@ -9,7 +9,7 @@ import { MdClose } from 'react-icons/md';
 import { VscSend } from 'react-icons/vsc';
 import CreateRecipeModal from './RecipeModal';
 
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../styles/PostingPage.css';
 
 
@@ -24,6 +24,8 @@ const PostingPage = () => {
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
   const location = useLocation();
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(''); 
   const {scrollToRecipeId, highlightRecipeId } = location.state || {};
 
   useEffect(() => {
@@ -768,7 +770,8 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
           }
       } catch (error) {
           console.error('Error updating recipe:', error);
-          alert('You cannot update this recipe its not yours');
+          setErrorMessage('You cannot update this recipe its not yours');
+          setShowErrorToast(true);
       }
   };
 
@@ -799,7 +802,8 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
         }
       }catch (error) {
         console.error('Failed to delete recipe:', error);
-        alert('Failed to delete recipe. Please try again.');
+        setErrorMessage('Failed to delete recipe. Please try again.');
+        setShowErrorToast(true);
       }
     };
 
@@ -1035,6 +1039,16 @@ StarRating.propTypes = {
 
   return (
     <div className="community-container">
+      {showErrorToast && (
+                <div className="error-alert">
+                    <div className="error-alert-content">
+                        <div className="error-x">
+                          <MdClose size={24} />
+                        </div>
+                        <p>{errorMessage}</p>
+                    </div>
+                </div>
+            )}
             <div className="community-header">
                 <h1>Community Recipes</h1>
                 <button onClick={() => setShowModal(true)} className="post-btn">

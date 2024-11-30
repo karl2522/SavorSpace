@@ -5,6 +5,7 @@
     max-width: 1800px;
     margin: 0 auto;
     padding: 20px;
+    animation: fadeSlideUp 1s ease-in !important;
   }
   
   .trending-title {
@@ -134,6 +135,7 @@
     max-width: 1800px;
     margin-top: 150px;
     position: relative;
+    animation: fadeSlideUp 1s ease-in !important;
   }
 
   .user-recipe {
