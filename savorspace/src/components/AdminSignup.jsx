@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MdClose } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/AdminConfig';
 import '../styles/AdminSignup.css';
@@ -22,6 +23,7 @@ export default function AdminSignup() {
   const [imageUrl, setImageUrl] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +35,7 @@ export default function AdminSignup() {
     if (file) {
       const fileSizeInKB = (file.size / 1024).toFixed(2);
       if (file.size > 800 * 1024) {
-        alert('File size too large!');
+        triggerError('File size too large!');
         setFormData((prev) => ({ ...prev, profilePic: null }));
         setImageUrl(null);
       } else {
@@ -55,6 +57,21 @@ export default function AdminSignup() {
     reader.readAsDataURL(file);
   };
 
+  const triggerError = (message) => {
+    setErrorMessage(message); 
+    setShowErrorToast(true);   
+    
+    setTimeout(() => {
+      setShowErrorToast(false); 
+    }, 4700); 
+  };
+
+  const handleAnimationEnd = () => {
+    if (!showErrorToast) {
+      setErrorMessage('');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -68,20 +85,33 @@ export default function AdminSignup() {
 
       await registerAdmin(data);
       console.log('Admin registration successful!');
-      alert('Admin registration successful!');
+      triggerError('Admin registration successful!');
       navigate('/admin/login');
     } catch (error) {
       console.error('Admin registration failed:', error);
       if (error.response) {
-        alert('Admin registration failed: ' + (error.response.data.message || error.response.data));
+        triggerError('Admin registration failed: ' + (error.response.data.message || error.response.data));
       } else {
-        alert('Admin registration failed: ' + error.message);
+        triggerError('Admin registration failed: ' + error.message);
       }
     }
   };
 
   return (
     <div className="signup-container">
+       {showErrorToast && (
+                <div 
+                className="error-alert-activate" 
+                onAnimationEnd={handleAnimationEnd} // Reset state after animation ends
+                >
+                <div className="error-alert-content-activate">
+                    <div className="error-x">
+                    <MdClose size={30} />
+                    </div>
+                    <p>{errorMessage}</p>
+                </div>
+                </div>
+            )}
       <div className="welcome-container">
         <div className="welcome-content">
           <h2>Welcome Back Admin!</h2>

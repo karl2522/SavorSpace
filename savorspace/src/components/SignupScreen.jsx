@@ -36,6 +36,7 @@ const Register = () => {
   const [showFileSizeError, setShowFileSizeError] = useState(false);  
   const errorRef = useRef(null); // Ref for the error message
   const [showPassword, setShowPassword] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
   const [passwordValidation, setPasswordValidation] = useState({
     minLength: false,
     hasNumber: false,
@@ -184,17 +185,35 @@ const Register = () => {
 
       if (error.response) {
         console.error('Error data:', error.response.data);
-        alert('Registration failed: ' + (error.response.data.message || error.response.data));
+        triggerError('Registration failed: ' + (error.response.data.message || error.response.data));
       } else {
-        alert('Registration failed: ' + error.message);
+        triggerError('Registration failed: ' + error.message);
       }
     }finally {
       setIsLoading(false);
     }
   };
 
+  const triggerError = (message) => {
+    setErrorMessage(message); 
+    setShowErrorToast(true);   
+    
+    setTimeout(() => {
+      setShowErrorToast(false); 
+    }, 4700); 
+  };
+
+
   return (
     <div className="register-container">
+       {showErrorToast && (
+                <div className="error-toast">
+                    <div className="error-toast-content">
+                        <div className="error-icon">❌</div>
+                        <p>{errorMessage}</p>
+                    </div>
+                </div>
+            )}
       {isLoading && (
       <div className="loading-overlay">
         <div className="loader-container">

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { FaCheck } from 'react-icons/fa';
 import { IoArrowBack } from "react-icons/io5";
 import { MdAccessTime, MdFavorite, MdFavoriteBorder, MdShare } from "react-icons/md";
 import { useNavigate, useParams } from 'react-router-dom';
@@ -18,6 +19,10 @@ export default function RecipeDetail() {
   const [newComment, setNewComment] = useState('');
   const [isLoading, setIsLoading] = useState(false)
   const BACKEND_URL = 'http://localhost:8080';
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const getLikesFromStorage = () => {
     try {
@@ -253,7 +258,8 @@ useEffect(() => {
         });
       } else {
         await navigator.clipboard.writeText(recipeUrl);
-        alert('Recipe link copied to clipboard!');
+        triggerSuccess('Recipe link copied to clipboard!');
+        console.log('Recipe link copied to clipboard:', recipeUrl);
       }
     } catch (error) {
       console.error('Error sharing:', error);
@@ -388,8 +394,36 @@ const handleDeleteComment = async (commentId) => {
       ? recipe.instructions
       : [];
 
+  const handleAnimationEnd = () => {
+    if (!showErrorToast) {
+      setErrorMessage('');
+    }
+  };
+
+  const triggerSuccess = (message) => {
+    setSuccessMessage(message);
+    setShowSuccessToast(true);
+
+    setTimeout(() => {
+      setShowSuccessToast(false);
+    }, 4700);
+  };
+
   return (
     <div className="recipe-detail-container">
+       {showSuccessToast && (
+                    <div 
+                    className="success-alert-activate" 
+                    onAnimationEnd={handleAnimationEnd} // Reset state after animation ends
+                    >
+                    <div className="success-alert-content">
+                        <div className="success-check">
+                        <FaCheck size={20} />
+                        </div>
+                        <p>{successMessage}</p>
+                    </div>
+                    </div>
+                )}
       <div className="recipe-detail-header">
         <button 
           className="back-button"

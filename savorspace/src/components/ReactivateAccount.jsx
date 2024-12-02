@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { FaCheck } from 'react-icons/fa';
+import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import '../styles/DeActivateStyles.css';
-import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 
 const AccountReactivation = () => {
     const [email, setEmail] = useState('');
@@ -13,12 +14,23 @@ const AccountReactivation = () => {
     const [showErrorToast, setShowErrorToast] = useState(false);
     const [errorMessage, setErrorMessage] = useState(''); 
     const [showPassword, setShowPassword] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [showSuccessToast, setShowSuccessToast] = useState(false);
 
     const handleReactivate = async (e) => {
         e.preventDefault();
         setShowModal(true);
 
     };
+
+    const triggerSuccess = (message) => {
+        setSuccessMessage(message);
+        setShowSuccessToast(true);
+    
+        setTimeout(() => {
+          setShowSuccessToast(false);
+        }, 4700);
+      };
 
     
     const confirmReactivation = async () => {
@@ -54,8 +66,7 @@ const AccountReactivation = () => {
             
             localStorage.setItem('user', JSON.stringify(data.user));
 
-            setErrorMessage('Account reactivated successfully! Redirecting to login...');
-            setShowErrorToast(true);
+            triggerSuccess('Account reactivated successfully! Redirecting to login...');
             setTimeout(() => navigate('/login'), 3000);  
         } catch (error) {
             setErrorMessage(error.message);
@@ -77,6 +88,18 @@ const AccountReactivation = () => {
                     <div className="error-toast-content">
                         <div className="error-icon">❌</div>
                         <p>{errorMessage}</p>
+                    </div>
+                </div>
+            )}
+            {showSuccessToast && (
+                <div 
+                    className="success-alert-activate" 
+                    >
+                    <div className="success-alert-content-activate">
+                        <div className="success-check">
+                        <FaCheck size={20} />
+                        </div>
+                        <p>{successMessage}</p>
                     </div>
                 </div>
             )}

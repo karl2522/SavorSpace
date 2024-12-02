@@ -20,6 +20,8 @@ export default function SettingsPage() {
   const [role, setRole] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLogoutValidation, setShowLogoutValidation] = useState(false);
+  const [showErrorToast, setShowErrorToast] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const activeLinkStyle = {
      color: '#fff', 
@@ -56,7 +58,7 @@ export default function SettingsPage() {
       window.location.href = '/login';
     } catch (error) {
       console.error('Error logging out:', error);
-      alert('Failed to logout. Please try again.');
+      triggerError('Failed to logout. Please try again.');
     }
   };
 
@@ -70,8 +72,26 @@ export default function SettingsPage() {
 
   const navigate = useNavigate();
 
+  const triggerError = (message) => {
+    setErrorMessage(message); 
+    setShowErrorToast(true);   
+    
+    setTimeout(() => {
+      setShowErrorToast(false); 
+    }, 4700); 
+  };
+
+
   return (
     <div className="settings-container">
+      {showErrorToast && (
+                <div className="error-toast">
+                    <div className="error-toast-content">
+                        <div className="error-icon">❌</div>
+                        <p>{errorMessage}</p>
+                    </div>
+                </div>
+            )}
       <nav className="side-nav">
         <div className="settings-header">
           <IoIosArrowBack size={30} className="back-btn" onClick={() => navigate('/profile')}/>

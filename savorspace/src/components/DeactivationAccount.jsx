@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { FaCheck } from 'react-icons/fa';
+import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
+import { MdClose } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import '../styles/DeActivateStyles.css';
-import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 
 const AccountDeactivation = () => {
     const [email, setEmail] = useState('');
@@ -11,6 +13,10 @@ const AccountDeactivation = () => {
     const [showModal, setShowModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorToast, setShowErrorToast] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [showSuccessToast, setShowSuccessToast] = useState(false);
 
     const handleDeactivate = async (e) => {
         e.preventDefault();
@@ -45,13 +51,11 @@ const AccountDeactivation = () => {
             localStorage.removeItem('refreshToken');
 
             // Show success message
-            alert(data.message);
-            
-            // Redirect to login page
-            navigate('/login');
+            triggerSuccess(data.message);
+            setTimeout(() => navigate('/login'), 3000);
 
         } catch (error) {
-            setError(error.message);
+            triggerError(error.message);
         } finally {
             setIsLoading(false);
             setShowModal(false);  
@@ -62,8 +66,58 @@ const AccountDeactivation = () => {
         setShowModal(false); 
     };
 
+    const triggerError = (message) => {
+        setErrorMessage(message); 
+        setShowErrorToast(true);   
+        
+        setTimeout(() => {
+          setShowErrorToast(false); 
+        }, 4700); 
+      };
+    
+      const handleAnimationEnd = () => {
+        if (!showErrorToast) {
+          setErrorMessage('');
+        }
+      };
+
+      const triggerSuccess = (message) => {
+        setSuccessMessage(message);
+        setShowSuccessToast(true);
+    
+        setTimeout(() => {
+          setShowSuccessToast(false);
+        }, 4700);
+      };
+
     return (
         <div className="deactivate-account-container">
+            {showErrorToast && (
+                <div 
+                className="error-alert-activate" 
+                onAnimationEnd={handleAnimationEnd} // Reset state after animation ends
+                >
+                <div className="error-alert-content-activate">
+                    <div className="error-x">
+                    <MdClose size={30} />
+                    </div>
+                    <p>{errorMessage}</p>
+                </div>
+                </div>
+            )}
+            {showSuccessToast && (
+                    <div 
+                    className="success-alert-activate" 
+                    onAnimationEnd={handleAnimationEnd} // Reset state after animation ends
+                    >
+                    <div className="success-alert-content">
+                        <div className="success-check">
+                        <FaCheck size={20} />
+                        </div>
+                        <p>{successMessage}</p>
+                    </div>
+                    </div>
+                )}
             <h2>Deactivate Your Account</h2>
             <div className="warning-message">
                 <p>⚠️ Warning: Deactivating your account will:</p>
@@ -119,7 +173,7 @@ const AccountDeactivation = () => {
                         </button>            
                     </div>
                 </div>
-                {error && <div className="error-message">{error}</div>}
+                {error && <div className="error-alert-activate">{error}</div>}
                 <button 
                     type="submit" 
                     disabled={isLoading}

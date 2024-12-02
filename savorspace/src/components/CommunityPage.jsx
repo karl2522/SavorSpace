@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { FaComment, FaRegComment, FaRegStar, FaStar } from 'react-icons/fa';
+import { FaCheck, FaComment, FaRegComment, FaRegStar, FaStar } from 'react-icons/fa';
 import { FiDelete, FiEdit } from 'react-icons/fi';
 import { IoFlagOutline } from 'react-icons/io5';
 import { MdClose } from 'react-icons/md';
@@ -26,7 +26,56 @@ const PostingPage = () => {
   const location = useLocation();
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState(''); 
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
   const {scrollToRecipeId, highlightRecipeId } = location.state || {};
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDeleteCommentModal, setShowDeleteCommentModal] = useState(false);
+  const [deleteCommentId, setDeleteCommentId] = useState(null);
+  const [comments, setComments] = useState([]);
+  const token = localStorage.getItem('authToken');
+
+
+  const deleteComment = (commentId) => {
+    if (!token) {
+        setErrorMessage('Please login to delete comments');
+        setShowErrorToast(true);
+        return;
+    } 
+    setShowDeleteCommentModal(true);
+    setDeleteCommentId(commentId); 
+  };
+
+
+    
+    const handleDeleteComment = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/comments/${deleteCommentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.message || 'Failed to delete comment');
+          }
+  
+          triggerSuccess('Comment deleted successfully');
+          setComments(prevComments => 
+              prevComments.filter(comment => comment.commentID !== deleteCommentId)
+          );
+        } catch (error) {
+            console.error('Error deleting comment:', error);
+        }
+        setShowDeleteCommentModal(false);
+    };
+
+    const cancelDeleteComment = () => {
+      setShowDeleteCommentModal(false);
+    };
+
 
   useEffect(() => {
     if (scrollToRecipeId) {
@@ -132,6 +181,41 @@ const PostingPage = () => {
   if (loading) {
       return <div>Loading...</div>;
   }  
+
+ 
+  const triggerError = (message) => {
+    setErrorMessage(message); 
+    setShowErrorToast(true);   
+    
+    setTimeout(() => {
+      setShowErrorToast(false); 
+    }, 4700); 
+  };
+
+  const handleAnimationEnd = () => {
+    if (!showErrorToast && !successMessage) {
+      setErrorMessage('');
+      setSuccessMessage('');
+    }
+  };
+
+  const triggerSuccess = (message) => {
+    setSuccessMessage(message);
+    setShowSuccessToast(true);
+
+    setTimeout(() => {
+      setShowSuccessToast(false);
+    }, 4700);
+  };
+
+  const handleReload = () => {  
+    // Reload the page after the success toast disappears (4700ms)
+    setTimeout(() => {
+      window.location.reload();
+    }, 4700); // Adjust this duration if needed
+  };
+
+
 
 
 const RecipeComments = ({ recipeId, isVisible}) => {
@@ -247,7 +331,8 @@ const RecipeComments = ({ recipeId, isVisible}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!token || !recipeId) {
-            alert('Please login to comment');
+            setErrorMessage('Please login to comment');
+            setShowErrorToast(true);
             return;
         }
         if (!newComment.trim()) return;
@@ -281,7 +366,8 @@ const RecipeComments = ({ recipeId, isVisible}) => {
             await fetchComments();
         } catch (error) {
             console.error('Error posting comment:', error);
-            alert('Failed to post comment. Please try again.');
+            setErrorMessage('Failed to post comment. Please try again.');
+            setShowErrorToast(true);
         } finally {
             setIsLoading(false);
         }
@@ -299,35 +385,8 @@ const RecipeComments = ({ recipeId, isVisible}) => {
           });
       }
   }, [comments]);
-    const handleDeleteComment = async (commentId) => {
-        if (!token) {
-            alert('Please login to delete comments');
-            return;
-        }
 
-        if (window.confirm('Are you sure you want to delete this comment?')) {
-            try {
-                const response = await fetch(`http://localhost:8080/api/comments/${commentId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-                if (!response.ok) {
-                  const errorData = await response.json();
-                  throw new Error(errorData.message || 'Failed to delete comment');
-              }
-      
-              // Remove the deleted comment from the state
-              setComments(prevComments => 
-                  prevComments.filter(comment => comment.commentID !== commentId)
-              );
-            } catch (error) {
-                console.error('Error deleting comment:', error);
-            }
-        }
-    };
+
 
     const formatDate = (dateTime) => {
       if (!dateTime) return 'Invalid date';
@@ -366,7 +425,8 @@ const RecipeComments = ({ recipeId, isVisible}) => {
 
   const handleFlagComment = async (commentId) => {
     if(!token) {
-      alert('Please log in to flag comments');
+      setErrorMessage('Please log in to flag comments');
+      setShowErrorToast(true);
       return;
     }
 
@@ -384,6 +444,7 @@ const RecipeComments = ({ recipeId, isVisible}) => {
         throw new Error(errorData.message || 'Failed to flag the comment');
       }
 
+      triggerSuccess('Comment flagged successfully');
       setComments(prevComments =>
         prevComments.map(comment => 
           comment.commentID === commentId
@@ -393,7 +454,7 @@ const RecipeComments = ({ recipeId, isVisible}) => {
       );
     }catch (error) {
       console.log('Error flagging comment: ', error);
-      alert('Failed to flag comment. Please try again.');
+      triggerError('Failed to flag comment. Please try again.');
     }
   }
 
@@ -459,7 +520,7 @@ const RecipeComments = ({ recipeId, isVisible}) => {
         {currentUser && currentUser.id === comment.userID && (
           <button 
             className="delete-comment"
-            onClick={() => handleDeleteComment(comment.commentID)}
+            onClick={() => deleteComment(comment.commentID)}
             aria-label="Delete Comment"
           >
             <MdClose size={24} />
@@ -626,7 +687,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
 
     const handleRatingChange = async (newRating) => {
         if(!token) {
-            alert('Please log in to rate recipes');
+            triggerError('Please log in to rate recipes');
             return;
         }
 
@@ -658,7 +719,8 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
               }
 
               localStorage.setItem(`recipe-${recipe.recipeID}-rating`, newRating);
-              alert('Rating updated successfully');
+              triggerSuccess('Rating updated successfully');
+              handleReload();
             }else {
                 const errorText = await response.text();
                 console.error('Failed to update rating: ', await response.text());
@@ -666,7 +728,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
             }
         }catch(error) {
             console.error('Failed to rate recipe:', error);
-            alert('Failed to update rating. Please try again.');
+            triggerError('Failed to update rating. Please try again.');
         }
     }
 
@@ -742,7 +804,8 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
 
     const handleSave = async () => {
       if (!token) {
-          alert('Please log in to update recipes');
+          setErrorMessage('Please log in to update recipes');
+          setShowErrorToast(true);
           return;
       }
 
@@ -764,27 +827,26 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
               recipe.imageURL = editedRecipe.imageURL;
               
               setIsEditing(false);
-              alert('Recipe updated successfully');
+              triggerSuccess('Recipe updated successfully');
+              handleReload();
           } else {
               throw new Error('You cannot update this recipe');
           }
       } catch (error) {
           console.error('Error updating recipe:', error);
-          setErrorMessage('You cannot update this recipe its not yours');
-          setShowErrorToast(true);
+          triggerError('You cannot update this recipe its not yours');
       }
   };
-
+  
     const handleDelete = async () => {
-      if(!token) {
-        alert('Please log in to delete recipes');
-        return;
-      }
+      setShowDeleteModal(true);
+    };
 
-      if(!window.confirm('Are you sure you want to delete this recipe?')) {
-        return;
-      }
+    const handleCancelDelete = () => {
+      setShowDeleteModal(false); 
+    };
 
+    const handleDeleteRecipes = async () => {
       try {
 
         const response = await fetch(`http://localhost:8080/recipes/${recipe.recipeID}`, {
@@ -795,8 +857,9 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
         });
 
         if(response.ok) {
-          alert('Recipe deleted successfully');
-          window.location.reload();
+          setShowDeleteModal(false);
+          triggerSuccess('Recipe deleted successfully');
+          handleReload();
         }else {
             throw new Error('Failed to delete recipe');
         }
@@ -999,6 +1062,17 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
                   /> 
               </div>
           </div>
+          {showDeleteModal && (
+                    <div className="confirmation-modal">
+                      <div className="confirmation-modal-content">
+                        <p>Are you sure you want to delete this recipe?</p>
+                        <div className="confirmation-modal-actions">
+                          <button onClick={handleDeleteRecipes}>Yes</button>
+                          <button onClick={handleCancelDelete}>No</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
         </div>
   );
 };
@@ -1040,15 +1114,31 @@ StarRating.propTypes = {
   return (
     <div className="community-container">
       {showErrorToast && (
-                <div className="error-alert">
-                    <div className="error-alert-content">
-                        <div className="error-x">
-                          <MdClose size={24} />
-                        </div>
-                        <p>{errorMessage}</p>
-                    </div>
-                </div>
-            )}
+        <div 
+          className="error-alert" 
+          onAnimationEnd={handleAnimationEnd} // Reset state after animation ends
+        >
+          <div className="error-alert-content">
+            <div className="error-x">
+              <MdClose size={30} />
+            </div>
+            <p>{errorMessage}</p>
+          </div>
+        </div>
+      )}
+      {showSuccessToast && (
+        <div 
+          className="success-alert" 
+          onAnimationEnd={handleAnimationEnd} // Reset state after animation ends
+        >
+          <div className="success-alert-content">
+            <div className="success-check">
+              <FaCheck size={20} />
+            </div>
+            <p>{successMessage}</p>
+          </div>
+        </div>
+      )}
             <div className="community-header">
                 <h1>Community Recipes</h1>
                 <button onClick={() => setShowModal(true)} className="post-btn">
@@ -1077,6 +1167,17 @@ StarRating.propTypes = {
                 onClose={() => setShowModal(false)}
                 onSubmit={handleSubmit}
             />
+            {showDeleteCommentModal && (
+                    <div className="confirmation-modal">
+                      <div className="confirmation-modal-content">
+                        <p>Are you sure you want to delete this comment?</p>
+                        <div className="confirmation-modal-actions">
+                          <button onClick={handleDeleteComment}>Yes</button>
+                          <button onClick={cancelDeleteComment}>No</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
         </div>
   );
 };

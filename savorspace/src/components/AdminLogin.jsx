@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MdClose } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/AdminConfig';
 import '../styles/AdminLogin.css';
@@ -28,11 +29,31 @@ export default function AdminLogin() {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showErrorToast, setShowErrorToast] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const handleAnimationEnd = () => {
+    if (!showErrorToast) {
+      setErrorMessage('');
+    }
+  };
+
+
+  const triggerError = (message) => {
+    setErrorMessage(message); 
+    setShowErrorToast(true);   
+    
+    setTimeout(() => {
+      setShowErrorToast(false); 
+    }, 4700); 
+  };
+
+  
 
   const validate = () => {
     const errors = {};
@@ -54,12 +75,25 @@ export default function AdminLogin() {
       await loginAdmin(loginData);
       navigate('/admin/dashboard');
     } catch (error) {
-      alert(`Admin login failed: ${error.response?.data?.message || error.message}`);
+      triggerError(`Admin login failed: ${error.response?.data?.message || error.message}`);
     }
   };
 
   return (
     <div className="login-container">
+      {showErrorToast && (
+        <div 
+          className="error-alert" 
+          onAnimationEnd={handleAnimationEnd} // Reset state after animation ends
+        >
+          <div className="error-alert-content">
+            <div className="error-x">
+              <MdClose size={30} />
+            </div>
+            <p>{errorMessage}</p>
+          </div>
+        </div>
+      )}
       <div className="login-form-container">
         <div className="logo">
           <div className="chef-hat">
