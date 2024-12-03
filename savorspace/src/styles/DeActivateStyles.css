@@ -222,5 +222,61 @@
 }
 
 
+.deactivate-notification {
+    position: fixed;
+    top: 20px; 
+    right: 20px;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    color: white;
+    animation: deactivateNotificationSlideIn 0.3s ease-out;
+    z-index: 10000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.deactivate-notification.deactivate-notification-success {
+    background: #28a745;
+}
+
+.deactivate-notification.deactivate-notification-error {
+    background: #dc3545;
+}
+
+@keyframes deactivateNotificationSlideIn {
+    from {
+        transform: translateY(-100%) translateX(0); 
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+    }
+}
 
 
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    color: white;
+}
+
+.toast-icon {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.toast p {
+    margin: 0;
+    font-size: 14px;
+}

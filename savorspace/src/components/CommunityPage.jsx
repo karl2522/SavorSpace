@@ -8,7 +8,7 @@ import { IoFlagOutline } from 'react-icons/io5';
 import { MdClose } from 'react-icons/md';
 import { VscSend } from 'react-icons/vsc';
 import CreateRecipeModal from './RecipeModal';
-
+import { createPortal } from 'react-dom';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import '../styles/PostingPage.css';
 
@@ -138,6 +138,16 @@ const RecipeComments = ({ recipeId, isVisible}) => {
     const [isLoading, setIsLoading] = useState(false);
     const token = localStorage.getItem('authToken');
     const [currentUser, setCurrentUser] = useState(null);
+    const [showDeleteCommentModal, setShowDeleteCommentModal] = useState(false);;
+    const [commentToDelete, setCommentToDelete] = useState(null);
+    const [notification, setNotification] = useState({ show: false, message: '', type: '' });
+
+
+    const renderPortal = (content) => {
+      const modalRoot = document.getElementById('modal-root');
+      if (!modalRoot) return null;
+      return createPortal(content, modalRoot);
+  };
 
     const cleanImagePath = (path) => {
       if(!path) return null;
@@ -297,35 +307,60 @@ const RecipeComments = ({ recipeId, isVisible}) => {
           });
       }
   }, [comments]);
-    const handleDeleteComment = async (commentId) => {
-        if (!token) {
-            alert('Please login to delete comments');
-            return;
-        }
 
-        if (window.confirm('Are you sure you want to delete this comment?')) {
-            try {
-                const response = await fetch(`http://localhost:8080/api/comments/${commentId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-                if (!response.ok) {
-                  const errorData = await response.json();
-                  throw new Error(errorData.message || 'Failed to delete comment');
-              }
+
+  const handleDeleteComment = async (commentId) => {
+    if (!token) {
+        setNotification({
+            show: true,
+            message: 'Please login to delete comments',
+            type: 'error'
+        });
+        return;
+    }
+    
+    setCommentToDelete(commentId);
+    setShowDeleteCommentModal(true);
+};
+
+const confirmDeleteComment = async () => {
+  try {
+      const response = await fetch(`http://localhost:8080/api/comments/${commentToDelete}`, {
+          method: 'DELETE',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+          }
+      });
       
-              // Remove the deleted comment from the state
-              setComments(prevComments => 
-                  prevComments.filter(comment => comment.commentID !== commentId)
-              );
-            } catch (error) {
-                console.error('Error deleting comment:', error);
-            }
-        }
-    };
+      if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to delete comment');
+      }
+
+      // Remove the deleted comment from the state
+      setComments(prevComments => 
+          prevComments.filter(comment => comment.commentID !== commentToDelete)
+      );
+
+      setNotification({
+          show: true,
+          message: 'Comment deleted successfully',
+          type: 'success'
+      });
+
+  } catch (error) {
+      console.error('Error deleting comment:', error);
+      setNotification({
+          show: true,
+          message: 'Failed to delete comment',
+          type: 'error'
+      });
+  } finally {
+      setShowDeleteCommentModal(false);
+      setCommentToDelete(null);
+  }
+};
 
     const formatDate = (dateTime) => {
       if (!dateTime) return 'Invalid date';
@@ -399,90 +434,109 @@ const RecipeComments = ({ recipeId, isVisible}) => {
   return (
     <div className="comment-container">
         <div className={`recipe-comments ${isVisible ? 'block' : 'hidden'}`}>
-          <h4>Comments</h4>
+            <h4>Comments</h4>
 
-          {token ? (
-            <form onSubmit={handleSubmit} className="comment-form">
-              <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add a comment..."
-                className="comment-input"
-                disabled={isLoading}
-              />
-              <button
-                  type="submit"
-                  className="comment-submit"
-                  disabled={isLoading || !newComment.trim()}
-                >
-                  {isLoading ? (
-                    <span>Posting...</span>
-                  ) : (
-                    <VscSend style={{ fontSize: '24px', color: '#D6589F' }} />
-                  )}
-              </button>
-            </form>
-          ) : (
-            <p>Please login to comment</p>
-          )}
-
-          {/* Comments List */}
-          <div className="comments-list">
-            {comments.length === 0 ? (
-              <p>No comments yet. Be the first to comment!</p>
-            ) : (
-              comments.map((comment) => (
-                <div key={comment.commentID} className={`comment ${comment.flagged ? 'flagged' : ''}`}>
-                  <div className="comment-header">
-                    <img
-                      src={getImageURL(comment.userImageURL)}
-                      alt={comment.username || 'User'}
-                      className="comment-user-pic"
-                      onError={(e) => {
-                        console.error('Failed to load image:', comment.userImageURL);
-                        e.target.src = "/src/images/defaultProfiles.png";
-                      }}
+            {token ? (
+                <form onSubmit={handleSubmit} className="comment-form">
+                    <textarea
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        placeholder="Add a comment..."
+                        className="comment-input"
+                        disabled={isLoading}
                     />
-                    <div className="comment-user-details">
-                      <span className="comment-username">
-                        {comment.username || comment.userEmail || 'Anonymous'}
-                      </span>
-                      <span className="comment-date">
-                        {formatDate(comment.createdAt)}
-                      </span>
-                      <span className="comment-text">{comment.content}</span>
+                    <button
+                        type="submit"
+                        className="comment-submit"
+                        disabled={isLoading || !newComment.trim()}
+                    >
+                        {isLoading ? (
+                            <span>Posting...</span>
+                        ) : (
+                            <VscSend style={{ fontSize: '24px', color: '#D6589F' }} />
+                        )}
+                    </button>
+                </form>
+            ) : (
+                <p>Please login to comment</p>
+            )}
+
+            {/* Comments List */}
+            <div className="comments-list">
+                {comments.length === 0 ? (
+                    <p>No comments yet. Be the first to comment!</p>
+                ) : (
+                    comments.map((comment) => (
+                        <div key={comment.commentID} className={`comment ${comment.flagged ? 'flagged' : ''}`}>
+                            <div className="comment-header">
+                                <img
+                                    src={getImageURL(comment.userImageURL)}
+                                    alt={comment.username || 'User'}
+                                    className="comment-user-pic"
+                                    onError={(e) => {
+                                        console.error('Failed to load image:', comment.userImageURL);
+                                        e.target.src = "/src/images/defaultProfiles.png";
+                                    }}
+                                />
+                                <div className="comment-user-details">
+                                    <span className="comment-username">
+                                        {comment.username || comment.userEmail || 'Anonymous'}
+                                    </span>
+                                    <span className="comment-date">
+                                        {formatDate(comment.createdAt)}
+                                    </span>
+                                    <span className="comment-text">{comment.content}</span>
+                                </div>
+                                <div className="comment-actions">
+                                    {currentUser && currentUser.id === comment.userID && (
+                                        <button 
+                                            className="delete-comment"
+                                            onClick={() => handleDeleteComment(comment.commentID)}
+                                            aria-label="Delete Comment"
+                                        >
+                                            <MdClose size={24} />
+                                        </button>
+                                    )}
+
+                                    {currentUser && currentUser.id !== comment.userID && (
+                                        <button 
+                                            className={`flag-comment ${comment.flagged ? 'flagged' : ''}`}
+                                            onClick={() => handleFlagComment(comment.commentID)}
+                                            aria-label="Flag Comment"
+                                        >
+                                            <IoFlagOutline size={24} color={comment.flagged ? '#ff0000' : undefined} />
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+        </div>
+
+        {showDeleteCommentModal && renderPortal (
+            <div className="delete-comment-modal-backdrop">
+                <div className="delete-comment-modal-content">
+                    <h3>Delete Comment</h3>
+                    <p>Are you sure you want to delete this comment?</p>
+                    <div className="delete-comment-modal-actions">
+                        <button onClick={() => setShowDeleteCommentModal(false)}>Cancel</button>
+                        <button onClick={confirmDeleteComment} className="delete-comment-confirm-btn">Delete</button>
                     </div>
-                    <div className="comment-actions">
-        {/* Delete button - only shown for user's own comments */}
-        {currentUser && currentUser.id === comment.userID && (
-          <button 
-            className="delete-comment"
-            onClick={() => handleDeleteComment(comment.commentID)}
-            aria-label="Delete Comment"
-          >
-            <MdClose size={24} />
-          </button>
+                </div>
+            </div>
         )}
 
-        {/* Flag button - only shown for other users' comments */}
-        {currentUser && currentUser.id !== comment.userID && (
-          <button 
-            className={`flag-comment ${comment.flagged ? 'flagged' : ''}`}
-            onClick={() => handleFlagComment(comment.commentID)}
-            aria-label="Flag Comment"
-          >
-            <IoFlagOutline size={24} color={comment.flagged ? '#ff0000' : undefined} />
-          </button>
+        {notification.show && renderPortal (
+            <div 
+                className={`comment-notification ${notification.type === 'success' ? 'comment-notification-success' : 'comment-notification-error'}`}
+                onAnimationEnd={() => setTimeout(() => setNotification({ ...notification, show: false }), 3000)}
+            >
+                {notification.message}
+            </div>
         )}
-      </div>
-                  </div>
-                </div>
-              ))
-            )}
-        </div>
-      </div>
     </div>
-    
   );
 };
 
@@ -541,6 +595,11 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
     const [imageError, setImageError] = useState(false);
     const [totalRatings, setTotalRatings] = useState(0);
     const [rating, setRating] = useState(recipe.averageRating || 0);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [notification, setNotification] = useState({ show: false, message: '', type: '' });
+    const [showRatingModal, setShowRatingModal] = useState(false);
+    const [ratingNotification, setRatingNotification] = useState({ show: false, message: '', type: '' });
+    const [saveNotification, setSaveNotification] = useState({ show: false, message: '', type: '' });
     const [isEditing, setIsEditing] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -623,49 +682,60 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
 };
 
     const handleRatingChange = async (newRating) => {
-        if(!token) {
-            alert('Please log in to rate recipes');
-            return;
-        }
+      if(!token) {
+          setRatingNotification({
+              show: true,
+              message: 'Please log in to rate recipes',
+              type: 'error'
+          });
+          return;
+      }
 
-        setRating(newRating);
+      setRating(newRating);
 
-        try {
+      try {
+          const params = new URLSearchParams({
+              recipeId: recipe.recipeID,
+              rating: newRating
+          }).toString();
 
-            const params = new URLSearchParams({
-                recipeId: recipe.recipeID,
-                rating: newRating
-            }).toString();
+          const response = await fetch(`http://localhost:8080/api/ratings/rate?${params}`, {
+              method: 'POST',
+              headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+              },
+          });
 
-            const response = await fetch(`http://localhost:8080/api/ratings/rate?${params}`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-            });
-
-            if(response.ok) {
+          if(response.ok) {
               const data = await response.json();
               console.log('Rating updated:', data);
               setRating(newRating || data.averageRating);
               setTotalRatings(data.totalRatings || 0);
 
               if(recipe.averageRating !== undefined) {
-                recipe.averageRating = data.averageRating;
+                  recipe.averageRating = data.averageRating;
               }
 
               localStorage.setItem(`recipe-${recipe.recipeID}-rating`, newRating);
-              alert('Rating updated successfully');
-            }else {
-                const errorText = await response.text();
-                console.error('Failed to update rating: ', await response.text());
-                throw new Error(errorText);
-            }
-        }catch(error) {
-            console.error('Failed to rate recipe:', error);
-            alert('Failed to update rating. Please try again.');
-        }
+              setRatingNotification({
+                  show: true,
+                  message: 'Rating updated successfully',
+                  type: 'success'
+              });
+          } else {
+              const errorText = await response.text();
+              console.error('Failed to update rating: ', errorText);
+              throw new Error(errorText);
+          }
+      } catch(error) {
+          console.error('Failed to rate recipe:', error);
+          setRatingNotification({
+              show: true,
+              message: 'Failed to update rating. Please try again.',
+              type: 'error'
+          });
+      }
     }
 
     useEffect(() => {
@@ -740,10 +810,14 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
 
     const handleSave = async () => {
       if (!token) {
-          alert('Please log in to update recipes');
+          setSaveNotification({
+              show: true,
+              message: 'Please log in to update recipes',
+              type: 'error'
+          });
           return;
       }
-
+  
       try {
           const response = await fetch(`http://localhost:8080/recipes/${recipe.recipeID}`, {
               method: 'PUT',
@@ -753,7 +827,7 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
               },
               body: JSON.stringify(editedRecipe)
           });
-
+  
           if (response.ok) {
               recipe.title = editedRecipe.title;
               recipe.description = editedRecipe.description;
@@ -762,46 +836,73 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
               recipe.imageURL = editedRecipe.imageURL;
               
               setIsEditing(false);
-              alert('Recipe updated successfully');
+              setIsDropdownOpen(false);
+              setSaveNotification({
+                  show: true,
+                  message: 'Recipe updated successfully',
+                  type: 'success'
+              });
           } else {
               throw new Error('You cannot update this recipe');
           }
       } catch (error) {
           console.error('Error updating recipe:', error);
-          alert('You cannot update this recipe its not yours');
+          setSaveNotification({
+              show: true,
+              message: 'You cannot update this recipe - it\'s not yours',
+              type: 'error'
+          });
       }
   };
 
-    const handleDelete = async () => {
-      if(!token) {
-        alert('Please log in to delete recipes');
-        return;
-      }
+  const handleDelete = async () => {
+    if (!token) {
+      setNotification({
+        show: true,
+        message: 'Please log in to delete recipes',
+        type: 'error'
+      });
+      return;
+    }
+  
+    // Show the modal instead of window.confirm
+    setShowDeleteModal(true);
+  };
 
-      if(!window.confirm('Are you sure you want to delete this recipe?')) {
-        return;
-      }
-
-      try {
-
-        const response = await fetch(`http://localhost:8080/recipes/${recipe.recipeID}`, {
-          method: 'DELETE',
-          headers: {
-              'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if(response.ok) {
-          alert('Recipe deleted successfully');
-          window.location.reload();
-        }else {
-            throw new Error('Failed to delete recipe');
+  const confirmDelete = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/recipes/${recipe.recipeID}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
         }
-      }catch (error) {
-        console.error('Failed to delete recipe:', error);
-        alert('Failed to delete recipe. Please try again.');
+      });
+  
+      if (response.ok) {
+        setNotification({
+          show: true,
+          message: 'Recipe deleted successfully',
+          type: 'success'
+        });
+        
+        
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        throw new Error('Failed to delete recipe');
       }
-    };
+    } catch (error) {
+      console.error('Failed to delete recipe:', error);
+      setNotification({
+        show: true,
+        message: 'Failed to delete recipe. Please try again.',
+        type: 'error'
+      });
+    } finally {
+      setShowDeleteModal(false);
+    }
+  };
 
 
     const toggleContentVisibility = () => {
@@ -816,186 +917,219 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
       setIsCommentsVisible(!isCommentsVisible);
   };
 
-    return (
-      <div 
-        id={`recipe-${recipe.recipeID}`}
-        className={`community-post ${isHighlighted ? 'highlighted-recipe' : ''}`}
-        style={{
-           transition: isHighlighted ? 'background-color 1s ease-out' : ''
-        }}
-        >
-        <div className="post-card">
+  return (
+    <div 
+      id={`recipe-${recipe.recipeID}`}
+      className={`community-post ${isHighlighted ? 'highlighted-recipe' : ''}`}
+      style={{
+        transition: isHighlighted ? 'background-color 1s ease-out' : ''
+      }}
+    >
+      <div className="post-card">
         <div className="community-user">  
           <img
-              src={recipe.user?.imageURL
-                  ? getImageURL(recipe.user?.imageURL)
-                  : "/src/images/defaultProfiles.png"
-              }
-              alt={`${recipe.user?.name || 'User'}'s profile`}
-              className="profile-pic"
-              onError={(e) => {
-                  console.log('Profile image failed to load:', recipe.user?.imageURL);
-                  setImageError(true);
-                  e.target.src = "/src/images/defaultProfiles.png";
-              }}
+            src={recipe.user?.imageURL
+              ? getImageURL(recipe.user?.imageURL)
+              : "/src/images/defaultProfiles.png"
+            }
+            alt={`${recipe.user?.name || 'User'}'s profile`}
+            className="profile-pic"
+            onError={(e) => {
+              console.log('Profile image failed to load:', recipe.user?.imageURL);
+              setImageError(true);
+              e.target.src = "/src/images/defaultProfiles.png";
+            }}
           />
-             <div className="community-user-content"> 
-                <h3>{recipe.user?.fullName || recipe.user?.username || 'Unknown User'}</h3>
-                <span className="date">{formDate(recipe.createdAt)}</span>
-                {currentUser && currentUser.id === recipe.user?.id && ( 
-                <div className="action-dots-container" onClick={toggleDropdown}>
-                  <BsThreeDotsVertical className="action-dots" size={20} cursor="pointer" />
-                </div>
-              )}
-             </div>
-        </div>
-
-                {isDropdownOpen && (
-                  <div className="dropdown-menu">
-                    {isEditing ? (
-                      <ul>
-                        <li>
-                          <div className="save-container">
-                            <AiOutlineSave size={23} color="#fff" />
-                            <button className="save-btn" onClick={handleSave}>
-                              Save
-                            </button>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="cancel-container">
-                            <FiDelete size={23} color="#fff" />
-                            <button className="cancel-btn" onClick={handleCancel}>
-                              Cancel
-                            </button>
-                          </div>
-                        </li>
-                      </ul>
-                    ) : (
-                      <ul>
-                        <li>
-                          <div className="edit-container">
-                            <FiEdit size={23} color="#fff" />
-                            <button className="edit-btn" onClick={handleEdit}>
-                              Edit
-                            </button>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="delete-container">
-                            <AiOutlineDelete size={23} color="#fff" />
-                            <button className="delete-btn" onClick={handleDelete}>
-                              Delete
-                            </button>
-                          </div>
-                        </li>
-                      </ul>
-                    )}
-                  </div>
-                )}
-
-
-
-            {recipe.imageURL && (
-              <div className="post-card-content">
-                  <div className="post-card-header" onClick={toggleContentVisibility}>
-                    <h4>{recipe.title}</h4>
-                    <p>Click to {isContentVisible ? "hide" : "show"} details</p>
-                  </div>
-                  
-                  {isContentVisible && (
-                    <div
-                      className="post-card-recipes-container content-visible-animation"
-                      style={{ animation: isContentVisible ? "fadeIn 0.5s ease-in-out" : "" }}
-                    >
-                      <div className="post-card-recipes-details">
-                        {}
-                        {isEditing ? (
-                          <input
-                            type="text"
-                            className="edit-title"
-                            value={editedRecipe.title}
-                            onChange={(e) => setEditedRecipe({ ...editedRecipe, title: e.target.value })}
-                          />
-                        ) : (
-                          <h4 className="description">{recipe.title}</h4>
-                        )}
-
-                        {/* Editable Description */}
-                        {isEditing ? (
-                          <textarea
-                            className="edit-description"
-                            value={editedRecipe.description}
-                            onChange={(e) => setEditedRecipe({ ...editedRecipe, description: e.target.value })}
-                          />
-                        ) : (
-                          <h4 className="description">{recipe.description}</h4>
-                        )}
-
-                        {/* Ingredients Section */}
-                        {recipe.ingredients && (
-                          <div className="ingredients-section">
-                            <h4>Ingredients:</h4>
-                            {isEditing ? (
-                              <textarea
-                                className="edit-ingredients"
-                                value={editedRecipe.ingredients}
-                                onChange={(e) => setEditedRecipe({ ...editedRecipe, ingredients: e.target.value })}
-                              />
-                            ) : (
-                              <p>{recipe.ingredients}</p>
-                            )}
-                          </div>
-                        )}
-
-                        {/* Instructions Section */}
-                        {recipe.instructions && (
-                          <div className="instructions-section">
-                            <h4>Instructions</h4>
-                            {isEditing ? (
-                              <textarea
-                                className="edit-instructions"
-                                value={editedRecipe.instructions}
-                                onChange={(e) => setEditedRecipe({ ...editedRecipe, instructions: e.target.value })}
-                              />
-                            ) : (
-                              <p>{recipe.instructions}</p>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Recipe Image */}
-                  <div className="post-card-image">
-                  <img
-                    src={imageURL}
-                    alt={recipe.title}
-                    onError={(e) => {
-                      console.error('Failed to load image:', imageURL);
-                      e.target.style.display = 'none';
-                    }}
-                  />
-                  </div>
+          <div className="community-user-content"> 
+            <h3>{recipe.user?.fullName || recipe.user?.username || 'Unknown User'}</h3>
+            <span className="date">{formDate(recipe.createdAt)}</span>
+            {currentUser && currentUser.id === recipe.user?.id && ( 
+              <div className="action-dots-container" onClick={toggleDropdown}>
+                <BsThreeDotsVertical className="action-dots" size={20} cursor="pointer" />
               </div>
             )}
-              <div className="recipe-engagement-community">
-                  <StarRating 
-                      rating={rating}
-                      onRatingChange={handleRatingChange}
-                      totalRatings={totalRatings}
-                      onToggleComments={handleToggleComments}
-                      recipeId={recipe.recipeID}
-                  />
-
-                  <RecipeComments
-                      recipeId = {recipe.recipeID || recipe.id}
-                      isVisible={isCommentsVisible}
-                  /> 
-              </div>
           </div>
         </div>
+  
+        {isDropdownOpen && (
+          <div className="dropdown-menu">
+            {isEditing ? (
+              <ul>
+                <li>
+                  <div className="save-container">
+                    <AiOutlineSave size={23} color="#fff" />
+                    <button className="save-btn" onClick={handleSave}>
+                      Save
+                    </button>
+                  </div>
+                </li>
+                <li>
+                  <div className="cancel-container">
+                    <FiDelete size={23} color="#fff" />
+                    <button className="cancel-btn" onClick={handleCancel}>
+                      Cancel
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            ) : (
+              <ul>
+                <li>
+                  <div className="edit-container">
+                    <FiEdit size={23} color="#fff" />
+                    <button className="edit-btn" onClick={handleEdit}>
+                      Edit
+                    </button>
+                  </div>
+                </li>
+                <li>
+                  <div className="delete-container">
+                    <AiOutlineDelete size={23} color="#fff" />
+                    <button className="delete-btn" onClick={handleDelete}>
+                      Delete
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            )}
+          </div>
+        )}
+  
+        {recipe.imageURL && (
+          <div className="post-card-content">
+            <div className="post-card-header" onClick={toggleContentVisibility}>
+              <h4>{recipe.title}</h4>
+              <p>Click to {isContentVisible ? "hide" : "show"} details</p>
+            </div>
+            
+            {isContentVisible && (
+              <div
+                className="post-card-recipes-container content-visible-animation"
+                style={{ animation: isContentVisible ? "fadeIn 0.5s ease-in-out" : "" }}
+              >
+                <div className="post-card-recipes-details">
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      className="edit-title"
+                      value={editedRecipe.title}
+                      onChange={(e) => setEditedRecipe({ ...editedRecipe, title: e.target.value })}
+                    />
+                  ) : (
+                    <h4 className="description">{recipe.title}</h4>
+                  )}
+  
+                  {isEditing ? (
+                    <textarea
+                      className="edit-description"
+                      value={editedRecipe.description}
+                      onChange={(e) => setEditedRecipe({ ...editedRecipe, description: e.target.value })}
+                    />
+                  ) : (
+                    <h4 className="description">{recipe.description}</h4>
+                  )}
+  
+                  {recipe.ingredients && (
+                    <div className="ingredients-section">
+                      <h4>Ingredients:</h4>
+                      {isEditing ? (
+                        <textarea
+                          className="edit-ingredients"
+                          value={editedRecipe.ingredients}
+                          onChange={(e) => setEditedRecipe({ ...editedRecipe, ingredients: e.target.value })}
+                        />
+                      ) : (
+                        <p>{recipe.ingredients}</p>
+                      )}
+                    </div>
+                  )}
+  
+                  {recipe.instructions && (
+                    <div className="instructions-section">
+                      <h4>Instructions</h4>
+                      {isEditing ? (
+                        <textarea
+                          className="edit-instructions"
+                          value={editedRecipe.instructions}
+                          onChange={(e) => setEditedRecipe({ ...editedRecipe, instructions: e.target.value })}
+                        />
+                      ) : (
+                        <p>{recipe.instructions}</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+  
+            <div className="post-card-image">
+              <img
+                src={imageURL}
+                alt={recipe.title}
+                onError={(e) => {
+                  console.error('Failed to load image:', imageURL);
+                  e.target.style.display = 'none';
+                }}
+              />
+            </div>
+          </div>
+        )}
+  
+        <div className="recipe-engagement-community">
+          <StarRating 
+            rating={rating}
+            onRatingChange={handleRatingChange}
+            totalRatings={totalRatings}
+            onToggleComments={handleToggleComments}
+            recipeId={recipe.recipeID}
+          />
+  
+          <RecipeComments
+            recipeId={recipe.recipeID || recipe.id}
+            isVisible={isCommentsVisible}
+          /> 
+        </div>
+      </div>
+  
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="delete-modal-backdrop">
+          <div className="delete-modal-content">
+            <h3>Delete Recipe</h3>
+            <p>Are you sure you want to delete this recipe?</p>
+            <div className="delete-modal-actions">
+              <button onClick={() => setShowDeleteModal(false)}>Cancel</button>
+              <button onClick={confirmDelete} className="delete-confirm-btn">Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
+  
+      {/* Notification Toast */}
+      {notification.show && (
+        <div className={`recipe-notification ${notification.type === 'success' ? 'notification-success' : 'notification-error'}`}>
+          {notification.message}
+        </div>
+      )}
+
+      {ratingNotification.show && (
+          <div 
+              className={`rating-notification ${ratingNotification.type === 'success' ? 'rating-notification-success' : 'rating-notification-error'}`}
+              onAnimationEnd={() => setTimeout(() => setRatingNotification({ ...ratingNotification, show: false }), 3000)}
+          >
+              {ratingNotification.message}
+          </div>
+      )}
+
+      {saveNotification.show && (
+          <div 
+              className={`save-notification ${saveNotification.type === 'success' ? 'save-notification-success' : 'save-notification-error'}`}
+              onAnimationEnd={() => setTimeout(() => setSaveNotification({ ...saveNotification, show: false }), 3000)}
+          >
+              {saveNotification.message}
+          </div>
+      )}
+    </div>
   );
 };
 

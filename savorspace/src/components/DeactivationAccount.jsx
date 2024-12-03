@@ -10,11 +10,11 @@ const AccountDeactivation = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [deactivateNotification, setDeactivateNotification] = useState({ show: false, message: '', type: '' });
     const navigate = useNavigate();
 
     const handleDeactivate = async (e) => {
         e.preventDefault();
-        
         setShowModal(true);
     };
 
@@ -44,14 +44,25 @@ const AccountDeactivation = () => {
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
 
-            // Show success message
-            alert(data.message);
+            // Show success notification
+            setDeactivateNotification({
+                show: true,
+                message: data.message || 'Account deactivated successfully',
+                type: 'success'
+            });
             
-            // Redirect to login page
-            navigate('/login');
+            // Navigate to login after 3 seconds
+            setTimeout(() => {
+                navigate('/login');
+            }, 3000);
 
         } catch (error) {
             setError(error.message);
+            setDeactivateNotification({
+                show: true,
+                message: error.message,
+                type: 'error'
+            });
         } finally {
             setIsLoading(false);
             setShowModal(false);  
@@ -138,6 +149,15 @@ const AccountDeactivation = () => {
                             <button className="no-button" onClick={handleCancelDeactivation}>NO</button>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {deactivateNotification.show && (
+                <div 
+                    className={`deactivate-notification ${deactivateNotification.type === 'success' ? 'deactivate-notification-success' : 'deactivate-notification-error'}`}
+                    onAnimationEnd={() => setTimeout(() => setDeactivateNotification({ ...deactivateNotification, show: false }), 3000)}
+                >
+                    {deactivateNotification.message}
                 </div>
             )}
         </div>
