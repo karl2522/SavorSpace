@@ -222,6 +222,8 @@ const RecipeComments = ({ recipeId, isVisible}) => {
               content: comment.content,
               createdAt: comment.createdAt, // Match the case from CommentDTO
               flagged: comment.flagged,
+              flaggedByUsers: comment.flaggedByUsers || [],
+              flagCount: comment.flaggedByUsers ? comment.flaggedByUsers.length : 0,
               recipeID: comment.recipeID, // Match the case from CommentDTO
               userID: comment.userID, // Match the case from CommentDTO
               username: comment.username,
@@ -399,36 +401,43 @@ const confirmDeleteComment = async () => {
 
   const handleFlagComment = async (commentId) => {
     if(!token) {
-      alert('Please log in to flag comments');
-      return;
+        alert('Please log in to flag comments');
+        return;
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/comments/${commentId}/flag`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+        const response = await fetch(`http://localhost:8080/api/comments/${commentId}/flag`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if(!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to flag the comment');
         }
-      });
 
-      if(!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to flag the comment');
-      }
-
-      setComments(prevComments =>
-        prevComments.map(comment => 
-          comment.commentID === commentId
-            ? { ...comment, flagged: !comment.flagged }
-            : comment
-        )
-      );
-    }catch (error) {
-      console.log('Error flagging comment: ', error);
-      alert('Failed to flag comment. Please try again.');
+        const updatedComment = await response.json();
+        
+        setComments(prevComments =>
+            prevComments.map(comment => 
+                comment.commentID === commentId
+                    ? {
+                        ...comment,
+                        flaggedByUsers: updatedComment.flaggedByUsers || [],
+                        flagCount: updatedComment.flaggedByUsers ? updatedComment.flaggedByUsers.length : 0,
+                        flagged: updatedComment.flaggedByUsers?.some(user => user.id === currentUser?.id) || false
+                    }
+                    : comment
+            )
+        );
+    } catch (error) {
+        console.log('Error flagging comment: ', error);
+        alert('Failed to flag comment. Please try again.');
     }
-  }
+};
 
 
   return (
@@ -498,15 +507,19 @@ const confirmDeleteComment = async () => {
                                         </button>
                                     )}
 
-                                    {currentUser && currentUser.id !== comment.userID && (
-                                        <button 
-                                            className={`flag-comment ${comment.flagged ? 'flagged' : ''}`}
-                                            onClick={() => handleFlagComment(comment.commentID)}
-                                            aria-label="Flag Comment"
-                                        >
-                                            <IoFlagOutline size={24} color={comment.flagged ? '#ff0000' : undefined} />
-                                        </button>
-                                    )}
+                                      {currentUser && currentUser.id !== comment.userID && (
+                                          <button 
+                                              className={`flag-comment ${comment.flagged ? 'flagged' : ''}`}
+                                              onClick={() => handleFlagComment(comment.commentID)}
+                                              aria-label="Flag Comment"
+                                          >
+                                              <IoFlagOutline 
+                                                  size={24} 
+                                                  color={comment.flagged ? '#ff0000' : undefined} 
+                                              />
+                                              <span>{comment.flagCount}</span>
+                                          </button>
+                                      )}
                                 </div>
                             </div>
                         </div>
