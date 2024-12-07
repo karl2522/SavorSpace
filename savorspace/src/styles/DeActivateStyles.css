@@ -1,282 +1,291 @@
 .deactivate-account-container {
-    max-width: 500px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  animation: fadeInSlideTop 2s ease;
+}
+
 .deactivate-account-container h2 {
-    color: #111;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-size: 32px;
-    font-weight: 700;
-  }
-  
+  color: #111;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 32px;
+  font-weight: 700;
+}
+
 .warning-message {
-    background-color: #fff5f5;
-    border: 1px solid #fed7d7;
-    border-radius: 4px;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+  background-color: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .warning-message p {
-    color: #111;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+  color: #111;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .warning-message ul {
-    color: #111;
-    padding-left: 1.5rem;
+  color: #111;
+  padding-left: 1.5rem;
 }
 
 .form-deactivate {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .form-deactivate label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #111;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #111;
 }
 
 .form-deactivate input {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #908e8e;
-    border-radius: 4px;
-    font-size: 15px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #908e8e;
+  border-radius: 4px;
+  font-size: 15px;
 }
 
 .error-message {
-    color: #e53e3e;
-    font-weight: 500;
-    margin-bottom: 1rem;
+  color: #e53e3e;
+  font-weight: 500;
+  margin-bottom: 1rem;
 }
 
 .deactivate-button {
-    margin-top: 30px;
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #e53e3e;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
+  margin-top: 30px;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
 
 .deactivate-button:hover {
-    background-color: #bd1414;
+  background-color: #bd1414;
 }
 
 .deactivate-button:disabled {
-    background-color: #feb2b2;
-    cursor: not-allowed;
+  background-color: #feb2b2;
+  cursor: not-allowed;
 }
 
 .deactivate-cancel {
-    margin-top: 20px;
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #fff;
-    color: #111;
-    border: 1px solid #e53e3e;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
+  margin-top: 20px;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #fff;
+  color: #111;
+  border: 1px solid #e53e3e;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
 
 /*Reactive Account Styles*/
 .reactivate-account-container {
-    max-width: 500px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  animation: fadeInSlideTop 2s ease;
+}
 
 .reactivate-account-container h2 {
-    color: #111;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-size: 32px;
-    font-weight: 700;
+  color: #111;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 32px;
+  font-weight: 700;
 }
 
 .reactivate-btn1 {
-    margin-top: 30px;
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #10b354;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
+  margin-top: 30px;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #10b354;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
 
 .reactivate-btn1:hover {
-    background-color: #0a8d45;
+  background-color: #0a8d45;
 }
 
 .reactivate-cancel {
-    margin-top: 20px;
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #fff;
-    color: #111;
-    border: 1px solid #10b354;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
+  margin-top: 20px;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #fff;
+  color: #111;
+  border: 1px solid #10b354;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
-
-
 
 /* Modal styles */
 .modal-deactivate {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
 }
 
 .modal-content h2 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
 }
 
 .button-container {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .button-container button {
-    margin-top: 50px;
-    padding: 10px 30px;
-    border: none;
-    border-radius: 15px;
-    font-size: 20px;
-    font-weight: 500;
-    cursor: pointer;
-    width: 150px;
+  margin-top: 50px;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 15px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 150px;
 }
 
 .yes-button {
-    background-color: #e53e3e;
-    transition: background-color 0.3s;
-    color: white;
+  background-color: #e53e3e;
+  transition: background-color 0.3s;
+  color: white;
 }
 
 .yes-button:hover {
-    background-color: #bd1414;
+  background-color: #bd1414;
 }
 
 .no-button {
-    color: #111;
-    border: 2px solid #e53e3e !important;
+  color: #111;
+  border: 2px solid #e53e3e !important;
 }
 
 .yes-button-reactivate {
-    background-color: #10b354;
-    transition: background-color 0.3s;
-    color: white;
+  background-color: #10b354;
+  transition: background-color 0.3s;
+  color: white;
 }
 
 /* reactivate buttons effect */
 .yes-button-reactivate:hover {
-    background-color: #0a8d45;
+  background-color: #0a8d45;
 }
 .no-button-reactivate {
-    color: #111;
-    border: 2px solid #10b354 !important;
+  color: #111;
+  border: 2px solid #10b354 !important;
 }
 
-
 .deactivate-notification {
-    position: fixed;
-    top: 20px; 
-    right: 20px;
-    padding: 1rem 2rem;
-    border-radius: 4px;
-    color: white;
-    animation: deactivateNotificationSlideIn 0.3s ease-out;
-    z-index: 10000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  color: white;
+  animation: deactivateNotificationSlideIn 0.3s ease-out;
+  z-index: 10000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .deactivate-notification.deactivate-notification-success {
-    background: #28a745;
+  background: #28a745;
 }
 
 .deactivate-notification.deactivate-notification-error {
-    background: #dc3545;
+  background: #dc3545;
 }
 
 @keyframes deactivateNotificationSlideIn {
-    from {
-        transform: translateY(-100%) translateX(0); 
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0) translateX(0);
-        opacity: 1;
-    }
+  from {
+    transform: translateY(-100%) translateX(0);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
 }
 
-
 .toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
 }
 
 .toast-content {
-    display: flex;
-    align-items: center;
-    padding: 12px 24px;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    color: white;
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  color: white;
 }
 
 .toast-icon {
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .toast p {
-    margin: 0;
-    font-size: 14px;
+  margin: 0;
+  font-size: 14px;
+}
+
+@keyframes fadeInSlideTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

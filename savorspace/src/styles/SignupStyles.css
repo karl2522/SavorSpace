@@ -5,8 +5,9 @@
   padding: 50px 50px 50px 50px;
   display: flex;
   gap: 2rem;
+  animation: fadeInSlideRight 2s ease;
 }
-  
+
 .form-section {
   flex: 1;
   padding: 3rem;
@@ -44,7 +45,6 @@
   font-size: 14px;
 }
 
-
 .profile-upload-container {
   display: flex;
   align-items: center;
@@ -58,7 +58,7 @@
   gap: 5px;
   padding: 10px 15px;
   color: white;
-  background-color: #D6589F;
+  background-color: #d6589f;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
@@ -99,7 +99,6 @@
   border: 2px solid #ddd;
 }
 
-
 .signup-checkbox {
   display: flex;
   align-items: center;
@@ -108,18 +107,17 @@
   color: #000;
 }
 
-
 .register-btn {
   font-family: "Montserrat", sans-serif;
   padding: 10px;
-  font-size: 14px; 
+  font-size: 14px;
   background-color: #d6589f;
   color: #fff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 500;
-  transition: color 0.3s ease, transform 0.3s ease; 
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .register-btn:hover {
@@ -146,8 +144,8 @@
   font-weight: 600;
 }
 
-
-.google-btn, .github-btn {
+.google-btn,
+.github-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,18 +157,19 @@
   border-radius: 10px;
   font-size: 16px;
   width: 100%;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
   cursor: pointer;
 }
 
 .google-btn {
   color: #000;
-  border: 2px solid #D6589F;
+  border: 2px solid #d6589f;
   background-color: #fff;
 }
 
 .google-btn:hover {
-  background-color: #D6589F;
+  background-color: #d6589f;
   color: #fff;
 }
 
@@ -205,19 +204,18 @@
 .register-hero img {
   position: absolute;
   width: 646px;
-  height: auto; 
+  height: auto;
   border-radius: 8px;
-  object-fit: cover; 
-  image-rendering: -webkit-optimize-contrast; 
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
 }
 
-.register-hero h3 { 
+.register-hero h3 {
   font-size: 48px;
   color: #fff;
   position: absolute;
   top: 20px;
   left: 50px;
-
 }
 
 .file-size-error {
@@ -233,10 +231,10 @@
   font-weight: 600;
   opacity: 1;
   z-index: 1000;
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  gap: 10px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -258,25 +256,25 @@
     flex-direction: column;
     justify-content: center;
   }
-  
+
   .form-section h2 {
     font-size: 30px;
     font-weight: 600;
     color: #000;
   }
-  
+
   .register-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .register-form label {
     font-size: 12 px;
     font-weight: 600;
     color: #000;
   }
-  
+
   .register-form input[type="text"],
   .register-form input[type="email"],
   .register-form input[type="password"] {
@@ -291,21 +289,21 @@
     width: 100%;
     max-width: 500px;
     height: 597px;
-    }
-  
+  }
+
   .register-hero img {
     position: absolute;
     width: 100%;
     max-width: 690px;
   }
 
-  .register-hero h3 { 
+  .register-hero h3 {
     font-size: 35px;
-    color: #fff;  
+    color: #fff;
   }
 
   .register-btn {
-    font-size: 13px; 
+    font-size: 13px;
   }
 
   .login-options {
@@ -315,21 +313,19 @@
     margin-top: 1rem;
     text-align: center;
   }
-  
+
   .login-options .login {
     font-size: 14px;
     color: #d6589f;
     font-weight: 600;
   }
-  
-  
-  .google-btn, .github-btn {
+
+  .google-btn,
+  .github-btn {
     font-size: 14px;
     width: 100%;
   }
-
 }
-
 
 @media (max-width: 1366px) {
   .register-hero {
@@ -351,18 +347,16 @@
   }
 
   .form-section h2 {
-    font-size: 30px; 
+    font-size: 30px;
   }
-  
+
   .register-form {
     gap: 10px;
   }
   .register-form label {
     font-size: 12px;
-
   }
 
-  
   .register-form input[type="text"],
   .register-form input[type="email"],
   .register-form input[type="password"] {
@@ -385,11 +379,10 @@
     font-size: 12px;
   }
 
-  .login-options .login{
+  .login-options .login {
     font-size: 13px;
   }
 }
-
 
 .loading-overlay {
   position: fixed;
@@ -452,39 +445,65 @@
 }
 
 .loading-dots::after {
-  content: '';
+  content: "";
   animation: dots 2s infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.1); }
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.6; transform: scale(0.98); }
-  50% { opacity: 1; transform: scale(1); }
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes dots {
-  0% { content: ''; }
-  25% { content: '.'; }
-  50% { content: '..'; }
-  75% { content: '...'; }
-  100% { content: ''; }
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
+  100% {
+    content: "";
+  }
 }
 
 @keyframes fadeIn {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(20px);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0);
   }
@@ -500,7 +519,6 @@
   padding-right: 40px; /* Make space for the eye icon */
 }
 
-
 .password-field button {
   opacity: 0.7;
   transition: opacity 0.2s;
@@ -513,7 +531,6 @@
 .password-field button:focus {
   outline: none;
 }
-
 
 .password-validation {
   margin-top: 5px;
@@ -531,7 +548,7 @@
 }
 
 .validation-item.valid {
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .validation-item.invalid {
@@ -563,17 +580,17 @@
 
 .strength-medium {
   width: 50%;
-  background-color: #FFA726;
+  background-color: #ffa726;
 }
 
 .strength-strong {
   width: 75%;
-  background-color: #66BB6A;
+  background-color: #66bb6a;
 }
 
 .strength-very-strong {
   width: 100%;
-  background-color: #43A047;
+  background-color: #43a047;
 }
 
 @keyframes slideDown {
@@ -599,9 +616,20 @@
 }
 
 .validation-item.valid {
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .validation-item.invalid {
   color: #f44336;
+}
+
+@keyframes fadeInSlideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

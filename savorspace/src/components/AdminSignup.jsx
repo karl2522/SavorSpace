@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../api/AdminConfig';
-import '../styles/AdminSignup.css';
+import { useState } from "react";
+import { IoCloudUploadOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
+import api from "../api/AdminConfig";
+import "../styles/AdminSignup.css";
 
 const registerAdmin = async (formData) => {
   const response = await api.post(`/create-admin`, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
     },
   });
   return response.data;
@@ -14,13 +15,13 @@ const registerAdmin = async (formData) => {
 
 export default function AdminSignup() {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
+    fullName: "",
+    email: "",
+    password: "",
     profilePic: null,
   });
   const [imageUrl, setImageUrl] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -33,16 +34,16 @@ export default function AdminSignup() {
     if (file) {
       const fileSizeInKB = (file.size / 1024).toFixed(2);
       if (file.size > 800 * 1024) {
-        alert('File size too large!');
+        alert("File size too large!");
         setFormData((prev) => ({ ...prev, profilePic: null }));
         setImageUrl(null);
       } else {
         setFormData((prev) => ({ ...prev, profilePic: file }));
         fetchImageURL(file);
-        setErrorMessage('');
+        setErrorMessage("");
       }
     } else {
-      setErrorMessage('');
+      setErrorMessage("");
       setImageUrl(null);
     }
   };
@@ -59,23 +60,26 @@ export default function AdminSignup() {
     e.preventDefault();
     try {
       const data = new FormData();
-      data.append('fullName', formData.fullName);
-      data.append('email', formData.email);
-      data.append('password', formData.password);
+      data.append("fullName", formData.fullName);
+      data.append("email", formData.email);
+      data.append("password", formData.password);
       if (formData.profilePic) {
-        data.append('profilePic', formData.profilePic);
+        data.append("profilePic", formData.profilePic);
       }
 
       await registerAdmin(data);
-      console.log('Admin registration successful!');
-      alert('Admin registration successful!');
-      navigate('/admin/login');
+      console.log("Admin registration successful!");
+      alert("Admin registration successful!");
+      navigate("/admin/login");
     } catch (error) {
-      console.error('Admin registration failed:', error);
+      console.error("Admin registration failed:", error);
       if (error.response) {
-        alert('Admin registration failed: ' + (error.response.data.message || error.response.data));
+        alert(
+          "Admin registration failed: " +
+            (error.response.data.message || error.response.data)
+        );
       } else {
-        alert('Admin registration failed: ' + error.message);
+        alert("Admin registration failed: " + error.message);
       }
     }
   };
@@ -86,7 +90,12 @@ export default function AdminSignup() {
         <div className="welcome-content">
           <h2>Welcome Back Admin!</h2>
           <p>Enter your Account details to keep connecting with us</p>
-          <button className="sign-in-btn" onClick={() => navigate('/admin/login')}>Sign in</button>
+          <button
+            className="sign-in-btn"
+            onClick={() => navigate("/admin/login")}
+          >
+            Sign in
+          </button>
         </div>
       </div>
       <div className="signup-form-container">
@@ -103,7 +112,9 @@ export default function AdminSignup() {
             </div>
           </div>
         </div>
-        <h1 className="signup-title">Create Admin Account</h1>
+        <h1 className="signup-title">
+          Create <span className="highlight">Admin</span> Account
+        </h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="fullName">Full Name</label>
@@ -140,14 +151,38 @@ export default function AdminSignup() {
           </div>
           <div className="form-group">
             <label htmlFor="profilePic">Profile Picture</label>
-            <input
-              type="file"
-              id="profilePic"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-            {imageUrl && <img src={imageUrl} alt="Profile Preview" className="profile-preview" />}
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            <div className="file-container">
+              <label htmlFor="file-input" className="custom-file-upload-admin">
+                <IoCloudUploadOutline color="white" size={18} />
+              </label>
+              <input
+                id="file-input"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="file-input"
+              />
+              <span className="file-name-admin">
+                {formData.profilePic ? (
+                  formData.profilePic.name
+                ) : (
+                  <>
+                    No file chosen <br />
+                    (File size should be 800kb or below)
+                  </>
+                )}
+              </span>
+            </div>
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt="Profile Preview"
+                className="profile-preview"
+              />
+            )}
+            {errorMessage && (
+              <div className="error-message">{errorMessage}</div>
+            )}
           </div>
           <button type="submit" className="create-account-btn">
             Create account

@@ -6,8 +6,12 @@
 }
 
 .hero-section {
-  background: linear-gradient(135deg, rgba(255, 105, 180, 0.5), rgba(255, 255, 255, 0.356)),
-  url('../images/AboutUsBackground.jpg');
+  background: linear-gradient(
+      135deg,
+      rgba(255, 105, 180, 0.5),
+      rgba(255, 255, 255, 0.356)
+    ),
+    url("../images/AboutUsBackground.jpg");
   background-size: cover;
   background-position: center;
   padding: 4rem 2rem;
@@ -21,10 +25,11 @@
 }
 
 .hero-section span {
-  color: #ff69b4;
+  color: #d6589f;
 }
 
-.join-button, .sign-up-button {
+.join-button,
+.sign-up-button {
   background-color: #333;
   color: white;
   border: none;
@@ -34,7 +39,8 @@
   transition: background-color 0.3s;
 }
 
-.join-button:hover, .sign-up-button:hover {
+.join-button:hover,
+.sign-up-button:hover {
   background-color: #555;
 }
 
@@ -57,7 +63,7 @@
 }
 
 .mission-card:first-child {
-  background-color: #D6589F;
+  background-color: #d6589f;
   color: white;
 }
 
@@ -101,7 +107,7 @@
 .mission-card {
   flex: 1;
   padding: 2rem;
-  border-radius: 10px;  /* Keyframes for fade-in animation */
+  border-radius: 10px; /* Keyframes for fade-in animation */
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -110,42 +116,42 @@
       opacity: 1;
     }
   }
-  
+
   /* Initial state for fade-in elements */
   .fade-in {
     opacity: 0;
     transition: opacity 1s ease-in;
   }
-  
+
   /* Visible state for fade-in elements */
   .fade-in-visible {
     opacity: 1;
     animation: fadeIn 1s ease-in;
   }
-  
+
   /* Existing styles */
   .mission-cards {
     display: flex;
     gap: 2rem;
     margin-top: 2rem;
   }
-  
+
   .mission-card {
     flex: 1;
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
-  
+
   .mission-card:first-child {
-    background-color: #D6589F;
+    background-color: #d6589f;
     color: white;
   }
-  
+
   .team-section {
     padding: 4rem 2rem;
   }
-  
+
   .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -156,7 +162,7 @@
 }
 
 .mission-card:first-child {
-  background-color: #D6589F;
+  background-color: #d6589f;
   color: white;
 }
 
@@ -219,10 +225,9 @@
   padding: 1rem;
   opacity: 0;
   transition: opacity 0.3s;
-  overflow-y: auto; 
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  
 }
 
 .team-card:hover .team-card-content {
@@ -239,7 +244,8 @@
   margin: 0.5rem 0;
 }
 
-.expertise, .projects {
+.expertise,
+.projects {
   margin-top: 1rem;
 }
 
@@ -291,7 +297,7 @@
   .mission-cards {
     flex-direction: column;
   }
-  
+
   .team-grid {
     grid-template-columns: 1fr;
   }

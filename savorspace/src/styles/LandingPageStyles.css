@@ -1,13 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap");
 
 /* Landing Page Styles */
 .LandingPage {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 20px 0   20px;
+  padding: 0;
   overflow-x: hidden;
   min-height: 100vh;
+  width: 100%;
 }
 
 .navbar {
@@ -27,12 +28,12 @@
 .navbar-logo {
   height: auto;
   width: 100%;
-  max-width: 100px; 
+  max-width: 100px;
   margin-left: 20px;
 }
 
 .navbar .highlight {
-  color: #D6589F;
+  color: #d6589f;
 }
 
 .navbar h1 {
@@ -52,22 +53,20 @@
   padding: 0;
 }
 
-
 .navbar li a {
   color: #111;
   text-decoration: none;
-  transition: color 0.3s ease, transform 0.3s ease; 
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .navbar li a:hover {
   color: #ce2786;
 }
 
-
 .navbar li:hover {
   color: #ce2786;
-  font-weight: normal; 
-  transform: translateY(-2px); 
+  font-weight: normal;
+  transform: translateY(-2px);
 }
 
 .auth-buttons {
@@ -76,9 +75,10 @@
   max-width: 200px;
   width: 100%;
   margin-right: 30px;
-} 
+}
 
-.signup-btn, .signin-btn {
+.signup-btn,
+.signin-btn {
   font-family: "Montserrat", sans-serif;
   display: flex;
   justify-content: center;
@@ -89,13 +89,13 @@
   font-size: 14px;
   font-weight: 500;
   height: 40px;
-  padding: 0 10px;  
+  padding: 0 10px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2, 0.4);
   text-decoration: none;
 }
 
 .signup-btn {
-  background-color: #D6589F;
+  background-color: #d6589f;
   color: #fff;
   border: none;
   width: 100%;
@@ -103,7 +103,7 @@
 }
 
 .signin-btn {
-  border: 1px solid #D6589F;
+  border: 1px solid #d6589f;
   color: #111;
   width: 100%;
 }
@@ -118,7 +118,7 @@
   background-color: #ce2786;
   transform: translateY(-2px);
 }
-  
+
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -142,22 +142,21 @@
   position: absolute;
   top: 50;
   right: 0;
-  margin-right: 50px;  
+  margin-right: 50px;
 }
 
-
 .hero {
-  display: flex; 
-  align-items: flex-start; 
+  display: flex;
+  align-items: flex-start;
   padding: 2rem;
   width: 100%;
-  max-width: 1800px; 
+  max-width: 1800px;
   margin: 0 auto;
 }
 
 .hero-text {
-  flex: 1; 
-  margin-right: 20px; 
+  flex: 1;
+  margin-right: 20px;
 }
 
 .hero h2 {
@@ -168,7 +167,7 @@
 }
 
 .hero h2 span {
-  color: #D6589F;
+  color: #d6589f;
 }
 
 .hero p {
@@ -176,14 +175,14 @@
 }
 
 .explore-recipes-btn {
-  background-color: #D6589F;
+  background-color: #d6589f;
   color: #fff;
   border: none;
   box-shadow: 0 5px 10px rgba(0, 0, 0.2, 0.4);
 }
 
 .get-started-btn {
-  border: 1px solid #D6589F;
+  border: 1px solid #d6589f;
   color: #111;
   margin-left: 20px;
   background-color: neo;
@@ -195,7 +194,8 @@
   transform: translateY(-2px);
 }
 
-.explore-recipes-btn, .get-started-btn {
+.explore-recipes-btn,
+.get-started-btn {
   margin-top: 30px;
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
@@ -246,7 +246,7 @@
 .recipe-image-container {
   width: 100%;
   max-height: 300px;
-  background-color: #D6589F;
+  background-color: #d6589f;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -302,7 +302,7 @@
 }
 
 .recipe-button {
-  background-color: #D6589F;
+  background-color: #d6589f;
   color: white;
   border: none;
   border-radius: 50%;
@@ -318,7 +318,6 @@
   transform: rotate(-40deg);
 }
 
-
 .community-cards-container {
   display: flex;
   gap: 3rem;
@@ -328,7 +327,6 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
-
 
 .community-cards-container::-webkit-scrollbar {
   display: none;
@@ -350,9 +348,8 @@
 }
 
 .more-recipes {
-  margin-top: 150px;
+  margin-top: 180px;
 }
-
 
 .more-recipes h2 {
   font-size: 60px !important;
@@ -362,7 +359,7 @@
 }
 
 .more-recipes h2 span {
-  color: #D6589F;
+  color: #d6589f;
 }
 
 .card-image {
@@ -381,7 +378,7 @@
   position: absolute;
   left: 12px;
   bottom: 12px;
-  background-color: #D6589F;
+  background-color: #d6589f;
   color: white;
   padding: 6px 12px;
   border-radius: 20px;
@@ -426,7 +423,7 @@
 }
 
 .stat-button:hover {
-  color: #D6589F;
+  color: #d6589f;
 }
 
 .stat-button svg {
@@ -435,7 +432,7 @@
 
 .stat-button:hover svg {
   transform: scale(1.1);
-  fill: #D6589F;
+  fill: #d6589f;
 }
 
 /* Hover effect for likes group */
@@ -479,43 +476,39 @@
 
 .likes:hover .stat-button svg {
   transform: scale(1.2);
-  fill: #D6589F;
+  fill: #d6589f;
 }
 
 .chef-container {
   margin-top: 150px;
   width: 100%;
   height: auto;
-  padding: 0px 20px 200px 20px;
+  padding: 20px 20px 250px 20px;
 }
 
 .chef-cards-container {
   display: flex;
-  gap: 150px;
+  gap: 150px !important;
   overflow-x: auto;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   justify-content: center;
-}
-
-.chef-cards-container::-webkit-scrollbar {
-  display: none;
+  padding-bottom: 40px;
 }
 
 .chef-container h2 {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  text-align: center  ;
+  text-align: center;
   font-size: 60px;
   color: #111;
 }
 
 .chef-container h2 span {
-  color: #D6589F;
+  color: #d6589f;
 }
 
 .chef-card {
-  width: 400px; 
+  width: 400px;
   background: white;
   border-radius: 16px;
   overflow: hidden;
@@ -532,9 +525,9 @@
 
 .chef-card img {
   width: 100%;
-  height: auto; 
-  object-fit: cover; 
-  border-radius: 8px; 
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .chef-card h3 {
@@ -551,7 +544,6 @@
   margin-bottom: 10px;
 }
 
-
 .shares-container {
   display: flex;
   align-items: center;
@@ -564,10 +556,9 @@
 }
 
 .chef-content {
-  padding: 16px; 
+  padding: 16px;
   text-align: center;
 }
-
 
 /* TeamCard Styles */
 .team-container {
@@ -582,7 +573,7 @@
 }
 
 .team-container h2 span {
-  color: #D6589F;
+  color: #d6589f;
 }
 
 .team-cards-container {
@@ -597,7 +588,7 @@
   width: 320px;
   border-radius: 24px;
   padding: 0.5rem;
-  background-color: #D6589F;
+  background-color: #d6589f;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -622,7 +613,7 @@
   overflow: hidden;
   border-radius: 18px;
   box-sizing: border-box;
-  object-position: center;    
+  object-position: center;
 }
 
 .team-image {
@@ -647,7 +638,6 @@
   font-size: 16px;
 }
 
-
 .questions-section {
   margin-top: 100px;
   width: 100%;
@@ -671,7 +661,7 @@
 }
 
 .questions-title span {
-  color: #D6589F;
+  color: #d6589f;
 }
 
 .contact-form {
@@ -693,7 +683,7 @@
   font-family: "Montserrat", sans-serif;
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid #D6589F;
+  border: 2px solid #d6589f;
   border-radius: 8px;
   font-size: 1rem;
   outline: none;
@@ -706,7 +696,7 @@
 
 .submit-btn {
   font-family: "Montserrat", sans-serif;
-  background-color: #D6589F;
+  background-color: #d6589f;
   color: white;
   border: none;
   padding: 0.75rem 2rem;
@@ -735,9 +725,8 @@
 }
 
 .footer h2 span {
-  color: #D6589F;
+  color: #d6589f;
 }
-
 
 .footer-content {
   max-width: 1800px;
@@ -751,7 +740,6 @@
   align-items: center;
   gap: 7rem;
 }
-
 
 .footer-logo-img {
   width: 200px;
@@ -792,7 +780,7 @@
 }
 
 .footer-section ul li a:hover {
-  color: #D6589F;
+  color: #d6589f;
 }
 
 .footer-bottom {
@@ -809,11 +797,10 @@
   font-size: 14px;
 }
 
-
 .back-to-top {
   background: none;
   border: none;
-  color: #D6589F;
+  color: #d6589f;
   cursor: pointer;
   font-size: 1rem;
   text-decoration: underline;
@@ -825,9 +812,8 @@
   color: #ce2786;
 }
 
-
 /* Responsiveness Styles for Screen Sizes 1716px to 1800px */
-@media(min-width: 1801px) and (max-width: 1875px) {
+@media (min-width: 1801px) and (max-width: 1875px) {
   .navbar {
     max-width: 1800px;
   }
@@ -838,34 +824,33 @@
 
   .navbar .logo {
     margin-left: 20px;
-  } 
+  }
 
   /* Community Card */
   .community-cards-container {
-    max-width: 1800px; 
+    max-width: 1800px;
   }
 
   .community-card {
     max-width: 330px;
   }
-  
-  /* Team Cards */    
+
+  /* Team Cards */
   .team-container {
     width: 100%;
     max-width: 1700px;
     height: auto;
   }
-  
+
   .team-cards-container {
     display: flex;
     gap: 3rem;
     width: 100%;
     margin: 0 auto;
   }
-  
 
   .team-card {
-    width: 285px; 
+    width: 285px;
   }
 
   .team-image-wrapper {
@@ -876,24 +861,19 @@
     font-size: 22px;
   }
 
-
   /* Questions and Footer */
   .questions-container {
     gap: 12rem;
     margin-left: 50px;
-  } 
+  }
 
   .footer-bottom {
     max-width: 1750px;
   }
-
-} 
-
-
-
+}
 
 /* Responsiveness Styles for Screen Sizes 1716px to 1800px */
-@media(min-width: 1716px) and (max-width: 1800px) {
+@media (min-width: 1716px) and (max-width: 1800px) {
   .navbar {
     max-width: 1700px;
   }
@@ -908,13 +888,13 @@
 
   /* Community Card */
   .community-cards-container {
-    max-width: 1700px; 
+    max-width: 1700px;
   }
 
   .community-card {
     max-width: 310px;
   }
-  
+
   /* Chef Cards */
   .chef-cards-container {
     gap: 150px;
@@ -926,23 +906,22 @@
     width: 400px;
   }
 
-  /* Team Cards */    
+  /* Team Cards */
   .team-container {
     width: 100%;
     max-width: 1700px;
     height: auto;
   }
-  
+
   .team-cards-container {
     display: flex;
     gap: 3rem;
     width: 100%;
     margin: 0 auto;
   }
-  
 
   .team-card {
-    width: 265px; 
+    width: 265px;
   }
 
   .team-image-wrapper {
@@ -962,12 +941,10 @@
   .footer-bottom {
     max-width: 1700px;
   }
-
-} 
-
+}
 
 /* Responsiveness Styles for Screen Sizes 1626px to 1715px */
-@media(min-width: 1626px) and (max-width: 1715px) {
+@media (min-width: 1626px) and (max-width: 1715px) {
   .navbar {
     max-width: 1600px;
   }
@@ -979,20 +956,20 @@
   .navbar .logo {
     margin-left: 20px;
   }
-  
+
   /* Community Card */
   .community-cards-container {
     display: flex;
     gap: 20px;
-    justify-content: center; 
-    align-items: center;  
-    max-width: 1600px; 
+    justify-content: center;
+    align-items: center;
+    max-width: 1600px;
   }
 
   .community-card {
     max-width: 295px;
   }
-  
+
   /* Chef Cards */
   .chef-cards-container {
     gap: 150px;
@@ -1004,24 +981,22 @@
     width: 380px;
   }
 
-
-  /* Team Cards */    
+  /* Team Cards */
   .team-container {
     width: 100%;
     max-width: 1500px;
     height: auto;
   }
-  
+
   .team-cards-container {
     display: flex;
     gap: 3rem;
     width: 100%;
     margin: 0 auto;
   }
-  
-  
+
   .team-card {
-    width: 240px; 
+    width: 240px;
   }
 
   .team-image-wrapper {
@@ -1031,11 +1006,10 @@
   .team-name {
     font-size: 18px;
   }
-
 }
 
 /* Responsiveness Styles for Screen Sizes 1515px to 1625px */
-@media(min-width: 1515px) and (max-width: 1625px) {
+@media (min-width: 1515px) and (max-width: 1625px) {
   .navbar {
     display: flex;
     align-items: center;
@@ -1069,8 +1043,8 @@
     height: auto;
     width: 100%;
     padding-top: 10px;
-    max-width: 100px; 
-    margin-top: 10px; 
+    max-width: 100px;
+    margin-top: 10px;
     margin-left: 20px;
   }
 
@@ -1084,10 +1058,10 @@
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    justify-content: center; 
-    align-items: center; 
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    max-width: 1600px; 
+    max-width: 1600px;
     margin-left: 10px;
   }
 
@@ -1114,13 +1088,13 @@
     width: 100%;
     max-width: 1500px;
     height: auto;
-    margin-left: 15px; 
+    margin-left: 15px;
   }
 
   .team-container h2 {
     text-align: center;
   }
-  
+
   /* Team Cards */
   .team-cards-container {
     display: flex;
@@ -1128,11 +1102,10 @@
     width: 100%;
     margin: 0 auto;
   }
-  
-  
+
   .team-card {
-    width: 220px; 
-    background-color: #D6589F;
+    width: 220px;
+    background-color: #d6589f;
     border-radius: 24px;
     padding: 0.5rem;
     display: flex;
@@ -1168,13 +1141,10 @@
     align-items: center;
     gap: 3rem;
   }
-
-  
 }
 
 /* Responsiveness Styles for Max Screen Size 1366px*/
-@media (max-width: 1366px){
-
+@media (max-width: 1366px) {
   .LandingPage {
     overflow: hidden;
     padding: 10px;
@@ -1212,23 +1182,24 @@
     height: auto;
     width: 100%;
     padding-top: 10px;
-    max-width: 90px; 
-    margin-top: 10px; 
+    max-width: 90px;
+    margin-top: 10px;
     margin-left: 20px;
   }
 
-  .signup-btn, .signin-btn {
+  .signup-btn,
+  .signin-btn {
     font-size: 12px;
     max-width: 90px;
     text-decoration: none;
   }
 
   .hero {
-    display: flex; 
-    align-items: flex-start; 
+    display: flex;
+    align-items: flex-start;
     padding: 20px;
     width: 100%;
-    max-width: 1800px; 
+    max-width: 1800px;
     margin: 0 auto;
   }
 
@@ -1258,7 +1229,8 @@
     width: 60% !important;
   }
 
-  .explore-recipes-btn, .get-started-btn {
+  .explore-recipes-btn,
+  .get-started-btn {
     font-size: 14px;
     max-width: 150px;
     height: 50px;
@@ -1279,7 +1251,7 @@
   }
 
   .community-cards-container {
-    max-width: 1700px; 
+    max-width: 1700px;
     margin-left: 30px;
   }
 
@@ -1290,7 +1262,7 @@
   .card-title {
     font-size: 16px !important;
   }
-  
+
   .chef-container {
     width: 100%;
   }
@@ -1306,27 +1278,25 @@
     width: 280px;
   }
 
-
   .team-container {
     width: 100%;
     margin-left: 30px;
     max-width: 1425px;
     height: auto;
   }
-  
+
   /* Team Cards */
   .team-cards-container {
     display: flex;
     gap: 3rem;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
     max-width: 1525px;
-    width: 100%; 
+    width: 100%;
   }
-  
+
   .team-card {
-    width: 205px; 
-    
+    width: 205px;
   }
 
   .team-image-wrapper {
@@ -1339,7 +1309,6 @@
   .team-name {
     font-size: 14px;
   }
-
 
   /* Question Form & Footer Contents */
 
@@ -1368,7 +1337,7 @@
 
   .footer-links a {
     font-size: 12px;
-  } 
+  }
 
   .footer-section {
     width: 100px;
@@ -1392,7 +1361,7 @@
     max-width: 1280px;
   }
 
-  .footer-bottom p{
+  .footer-bottom p {
     font-size: 14px !important;
   }
 
@@ -1407,9 +1376,8 @@
   }
 }
 
-
 .animate-in {
-  animation: fadeInUp 0.5s ease forwards;
+  animation: fadeInUp 0.6s ease forwards;
 }
 
 .hidden {
@@ -1431,23 +1399,23 @@
 
 /* Section-specific animations */
 .hero.animate-in {
-  animation-delay: 0.4s;
+  animation-delay: 0.6s;
 }
 
 .more-recipes.animate-in {
-  animation-delay: 0.4s;
+  animation-delay: 0.6s;
 }
 
 .chef-container.animate-in {
-  animation-delay: 0.4s;
+  animation-delay: 0.6s;
 }
 
 .team-container.animate-in {
-  animation-delay: 0.4s;
+  animation-delay: 0.6s;
 }
 
 .questions-section.animate-in {
-  animation-delay: 0.4s;
+  animation-delay: 0.6s;
 }
 
 /* Card animations */
@@ -1455,9 +1423,8 @@
 .community-card.animate-in,
 .chef-card.animate-in,
 .team-card.animate-in {
-  animation: fadeInUp 0.8s ease forwards;
+  animation: fadeInUp 0.6s ease forwards;
 }
-
 
 /* Email Loading Overlay */
 .email-loading-overlay {
@@ -1485,32 +1452,6 @@
   width: 120px;
   height: 120px;
   margin: 0 auto 1.5rem;
-}
-
-.chef-hat {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 40px;
-  background: #ffffff;
-  border: 3px solid #333;
-  border-radius: 30px 30px 0 0;
-  animation: hatBob 1.2s ease-in-out infinite;
-}
-
-.chef-hat:before {
-  content: '';
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 20px;
-  background: #ffffff;
-  border: 3px solid #333;
-  border-radius: 20px 20px 0 0;
 }
 
 .envelope {
@@ -1541,19 +1482,36 @@
 }
 
 @keyframes hatBob {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-8px); }
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-8px);
+  }
 }
 
 @keyframes envelopeShake {
-  0%, 100% { transform: translateX(-50%) rotate(0); }
-  25% { transform: translateX(-50%) rotate(-3deg); }
-  75% { transform: translateX(-50%) rotate(3deg); }
+  0%,
+  100% {
+    transform: translateX(-50%) rotate(0);
+  }
+  25% {
+    transform: translateX(-50%) rotate(-3deg);
+  }
+  75% {
+    transform: translateX(-50%) rotate(3deg);
+  }
 }
 
 @keyframes flapWave {
-  0%, 100% { transform: rotateX(0); }
-  50% { transform: rotateX(-45deg); }
+  0%,
+  100% {
+    transform: rotateX(0);
+  }
+  50% {
+    transform: rotateX(-45deg);
+  }
 }
 
 .email-loading-container p {
@@ -1574,7 +1532,7 @@
   border-radius: 0.75rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transform: translateX(120%);
-  animation: slideIn 0.5s forwards, fadeOut 0.5s 2.5s forwards;
+  animation: slideInToast 0.5s forwards, fadeOutToast 2.5s 2.5s forwards;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -1603,12 +1561,16 @@
   line-height: 1.4;
 }
 
-@keyframes slideIn {
-  from { transform: translateX(120%); }
-  to { transform: translateX(0); }
+@keyframes slideInToast {
+  from {
+    transform: translateX(120%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
-@keyframes fadeOut {
+@keyframes fadeOutToast {
   from {
     opacity: 1;
     transform: translateX(0);
