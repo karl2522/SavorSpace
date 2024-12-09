@@ -819,7 +819,7 @@ const StarRating = ({ userRating, averageRating, onRatingChange, totalRatings, o
         if(response.ok) {
             const data = await response.json();
             console.log('Fetched rating data: ', data);
-            setUserRating(data.userRating || 0); // Individual user's rating
+            setUserRating(data.rating || 0); // Individual user's rating
             setAverageRating(data.averageRating || 0); // Average rating
             setTotalRatings(data.totalRatings || 0);
         } else {
@@ -854,7 +854,7 @@ const handleRatingChange = async (newRating) => {
           const data = await response.json();
           console.log('Rating updated:', data);
           
-          setUserRating(newRating);
+          setUserRating(data.rating);
           setAverageRating(data.averageRating);
           setTotalRatings(data.totalRatings);
 
@@ -879,7 +879,9 @@ const handleRatingChange = async (newRating) => {
 };
 
 useEffect(() => {
-  fetchUserRating();
+    if (recipe.recipeID && token) {
+        fetchUserRating();
+    }
 }, [recipe.recipeID, token]);
 
 
