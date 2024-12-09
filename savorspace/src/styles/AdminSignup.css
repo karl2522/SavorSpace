@@ -17,7 +17,25 @@
 }
 
 .logo {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  animation: float 3s ease-in-out infinite;
+}
+
+.chef-hat-image {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover .chef-hat-image {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .signup-title {
@@ -165,4 +183,9 @@
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }

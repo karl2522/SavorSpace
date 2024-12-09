@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/AdminConfig';
 import '../styles/AdminLogin.css';
+import chefHatImage from '../images/chef_hat.png';
 
 const loginAdmin = async (loginData) => {
   try {
@@ -62,17 +63,11 @@ export default function AdminLogin() {
     <div className="login-container">
       <div className="login-form-container">
         <div className="logo">
-          <div className="chef-hat">
-            <div className="hat-top"></div>
-            <div className="utensils">
-              <div className="utensil-left"></div>
-              <div className="utensil-right"></div>
-            </div>
-            <div className="stars">
-              <span className="star"></span>
-              <span className="star"></span>
-            </div>
-          </div>
+          <img 
+            src={chefHatImage} 
+            alt="Chef Hat Logo" 
+            className="chef-hat-image" 
+          />
         </div>
         <h1 className="login-title">
           Login as <span className="highlight">Admin</span>

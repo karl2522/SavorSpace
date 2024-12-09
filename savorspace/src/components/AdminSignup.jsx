@@ -3,6 +3,8 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import api from "../api/AdminConfig";
 import "../styles/AdminSignup.css";
+import chefHatImage from '../images/chef_hat.png';
+
 
 const registerAdmin = async (formData) => {
   const response = await api.post(`/create-admin`, formData, {
@@ -99,18 +101,12 @@ export default function AdminSignup() {
         </div>
       </div>
       <div className="signup-form-container">
-        <div className="logo">
-          <div className="chef-hat">
-            <div className="hat-top"></div>
-            <div className="utensils">
-              <div className="utensil-left"></div>
-              <div className="utensil-right"></div>
-            </div>
-            <div className="stars">
-              <span className="star"></span>
-              <span className="star"></span>
-            </div>
-          </div>
+      <div className="logo">
+          <img 
+            src={chefHatImage} 
+            alt="Chef Hat Logo" 
+            className="chef-hat-image" 
+          />
         </div>
         <h1 className="signup-title">
           Create <span className="highlight">Admin</span> Account
