@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AiOutlineDelete, AiOutlineSave } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineSave, AiOutlineHeart, AiFillHeart} from "react-icons/ai";
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { FaComment, FaRegComment, FaRegStar, FaStar } from 'react-icons/fa';
+import { FaComment, FaRegComment, FaRegStar, FaStar} from 'react-icons/fa';
 import { FiDelete, FiEdit } from 'react-icons/fi';
 import { IoFlagOutline } from 'react-icons/io5';
 import { MdClose } from 'react-icons/md';
@@ -12,6 +12,7 @@ import { createPortal } from 'react-dom';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import '../styles/PostingPage.css';
 import { FiFlag } from 'react-icons/fi';
+
 
 const BACKEND_URL = 'http://localhost:8080';
 
@@ -619,6 +620,8 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
     const [isEditing, setIsEditing] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [favoriteNotification, setFavoriteNotification] = useState({ show: false, message: '', type: '' });
     const [isContentVisible, setIsContentVisible] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [editedRecipe, setEditedRecipe] = useState({
@@ -630,6 +633,64 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
     })
 
     const token = localStorage.getItem('authToken');
+
+    
+    const fetchFavoriteStatus = async () => {
+      if (!token || !currentUser) return;
+      
+      try {
+          const response = await fetch(`http://localhost:8080/api/favorites/check/${recipe.recipeID}`, {
+              headers: {
+                  'Authorization': `Bearer ${token}`
+              }
+          });
+          
+          if (response.ok) {
+              const data = await response.json();
+              setIsFavorite(data.isFavorite);
+          }
+      } catch (error) {
+          console.error('Error checking favorite status:', error);
+      }
+  };
+
+  const handleFavoriteClick = async (e) => {
+    e.stopPropagation();
+    if (!token) {
+        setFavoriteNotification({
+            show: true,
+            message: 'Please log in to add favorites',
+            type: 'error'
+        });
+        return;
+    }
+
+    try {
+        const method = isFavorite ? 'DELETE' : 'POST';
+        const response = await fetch(`http://localhost:8080/api/favorites/${recipe.recipeID}`, {
+            method: method,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            setIsFavorite(!isFavorite);
+            setFavoriteNotification({
+                show: true,
+                message: isFavorite ? 'Removed from favorites' : 'Added to favorites',
+                type: 'success'
+            });
+        }
+    } catch (error) {
+        console.error('Error toggling favorite:', error);
+        setFavoriteNotification({
+            show: true,
+            message: 'Failed to update favorites',
+            type: 'error'
+        });
+    }
+};
 
     const fetchCurrentUser = useCallback(async () => {
       if (!token || isLoading === false) return;
@@ -667,10 +728,11 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
           });
       }
 
+      fetchFavoriteStatus();
       return () => {
           mounted = false;
       };
-  }, [fetchCurrentUser, token, isLoading]);
+  }, [fetchCurrentUser, token, isLoading, recipe.recipeID]);
 
     const fetchUserRating = async () => {
       if(!token) return;
@@ -991,6 +1053,19 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
               <FiFlag className="report-icon" size={18} />
             </button>
           )}
+          {currentUser && currentUser.id !== recipe.user?.id && (
+                    <button 
+                        className={`favorite-button ${isFavorite ? 'is-favorite' : ''}`}
+                        onClick={handleFavoriteClick}
+                        title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                    >
+                        {isFavorite ? (
+                            <AiFillHeart className="favorite-icon filled" size={20} />
+                        ) : (
+                            <AiOutlineHeart className="favorite-icon" size={20} />
+                        )}
+                    </button>
+            )}
         </div>
         <div className="community-user">  
           <img
@@ -1233,6 +1308,15 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
           </div>
         </div>
       )}
+
+          {favoriteNotification.show && (
+                <div 
+                    className={`favorite-notification ${favoriteNotification.type === 'success' ? 'favorite-notification-success' : 'favorite-notification-error'}`}
+                    onAnimationEnd={() => setTimeout(() => setFavoriteNotification({ ...favoriteNotification, show: false }), 3000)}
+                >
+                    {favoriteNotification.message}
+                </div>
+            )}
           </div>
         );
       };

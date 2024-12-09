@@ -99,6 +99,78 @@
   top: 40px;
 }
 
+.action-buttons-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.favorite-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.favorite-button:hover {
+  transform: scale(1.1);
+}
+
+.favorite-icon {
+  color: #666;
+}
+
+.favorite-icon.filled {
+  color: #ff4444;
+}
+
+.favorite-notification {
+  position: fixed;
+  top: 20px;  /* Changed from bottom to top */
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  animation: slideInFromRight 0.5s ease-out;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.favorite-notification-success {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.favorite-notification-error {
+  background-color: #f44336;
+  color: white;
+}
+
+@keyframes slideInFromRight {
+  0% {
+      transform: translateX(100%) translateY(-100%);
+      opacity: 0;
+  }
+  50% {
+      transform: translateX(-10%) translateY(0);
+      opacity: 0.9;
+  }
+  100% {
+      transform: translateX(0) translateY(0);
+      opacity: 1;
+  }
+}
+
 
 .community-user {
   display: flex;

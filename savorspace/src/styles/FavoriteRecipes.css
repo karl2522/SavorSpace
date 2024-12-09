@@ -1,0 +1,159 @@
+.favorites-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.favorites-container h1 {
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.favorite-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.favorite-card:hover {
+    transform: translateY(-5px);
+}
+
+.favorite-image {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+.favorite-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-favorite {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.remove-favorite svg {
+    color: #ff4444;
+    font-size: 20px;
+}
+
+.remove-favorite:hover {
+    transform: scale(1.1);
+}
+
+.favorite-info {
+    padding: 15px;
+}
+
+.favorite-info h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.recipe-author {
+    margin: 5px 0 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.no-favorites {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+    margin: 20px;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.no-favorites-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.no-favorites-icon {
+    font-size: 64px;
+    color: #D6589F;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+
+.no-favorites h2 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.no-favorites p {
+    color: #6c757d;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.explore-button {
+    background-color: #D6589F;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.explore-button:hover {
+    background-color: #c14c8c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(214, 88, 159, 0.2);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

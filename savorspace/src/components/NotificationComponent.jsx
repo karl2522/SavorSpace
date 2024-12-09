@@ -3,6 +3,9 @@ import { IoMdNotificationsOutline } from 'react-icons/io';
 import WebSocketService from './WebSocketService';
 import '../styles/Notification.css';
 import { useNavigate } from 'react-router-dom';
+import { AiFillHeart, AiFillStar } from 'react-icons/ai';
+import { FiFlag } from 'react-icons/fi';
+import { FaComment } from 'react-icons/fa';
 
 
 const NotificationComponent = ({ username }) => {
@@ -17,7 +20,7 @@ const NotificationComponent = ({ username }) => {
 
             if(notification.recipeId) {
                 setIsNotificationModal(false);
-                console.log("Navigating to recipe:", notification.recipeId); // Debug log
+                console.log("Navigating to recipe:", notification.recipeId);
                 navigate(`/community`, {
                     state: {
                         scrollToRecipeId: notification.recipeId,
@@ -76,6 +79,21 @@ const NotificationComponent = ({ username }) => {
         }
     };
 
+    const getNotificationIcon = (type) => {
+        switch (type) {
+            case 'FAVORITE':
+                return <AiFillHeart className="notification-icon favorite" />;
+            case 'REPORT':
+                return <FiFlag className="notification-icon report" />;
+            case 'COMMENT':
+                return <FaComment className="notification-icon comment" />;
+            case 'RATING':
+                return <AiFillStar className="notification-icon rating" />;
+            default:
+                return <IoMdNotificationsOutline className="notification-icon" />;
+        }
+    };
+
     return (
         <div className="notification-container" ref={notificationRef}>
             <button className="notif-button" onClick={() => setIsNotificationModal(!isNotificationModal)}>
@@ -89,21 +107,22 @@ const NotificationComponent = ({ username }) => {
             {isNotificationModal && (
                 <div className="notification-modal">
                     {notifications.length > 0 ? (
-                        notifications.map((notification) => {
-                            return (
+                        notifications.map((notification) => (
                             <div 
                                 key={notification.id} 
-                                className={`notification-item ${notification.read ? 'read' : 'unread'}`}
+                                className={`notification-item ${notification.read ? 'read' : 'unread'} ${notification.type.toLowerCase()}`}
                                 onClick={() => handleNotificationClick(notification)}
                                 style={{ cursor: notification.read ? 'default' : 'pointer' }}
                             >
-                                <p className="notification-text">{notification.message}</p>
-                                <span className="notification-time">
-                                    {formatTimeAgo(notification.createdAt)}
-                                </span>
+                                {getNotificationIcon(notification.type)}
+                                <div className="notification-content">
+                                    <p className="notification-text">{notification.message}</p>
+                                    <span className="notification-time">
+                                        {formatTimeAgo(notification.createdAt)}
+                                    </span>
+                                </div>
                             </div>
-                        );
-                })
+                        ))
                     ) : (
                         <div className="notification-item">
                             <p className="notification-text">No notifications</p>

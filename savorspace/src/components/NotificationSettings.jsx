@@ -7,7 +7,8 @@ const NotificationSettings = () => {
     posts: false,
     comments: false,
     rates: false,
-
+    favorites: false,
+    reports: false,
   });
 
   const [emailPreferences, setEmailPreferences] = useState({
@@ -30,6 +31,28 @@ const NotificationSettings = () => {
       <div className="notification-settings-container">
         <div className="setting-group">
           <h2 className="notif-h2">General Notifications</h2>
+          <div className="setting-item">
+            <span>Report Notifications</span>
+            <label className="toggle">
+              <input
+                type="checkbox"
+                checked={notifications.reports}
+                onChange={() => handleToggle('reports')}
+              />
+              <span className="slider"></span>
+            </label>
+          </div>
+          <div className="setting-item">
+            <span>Favorite Notifications</span>
+            <label className="toggle">
+              <input
+                type="checkbox"
+                checked={notifications.favorites}
+                onChange={() => handleToggle('favorites')}
+              />
+              <span className="slider"></span>
+            </label>
+          </div>
           <div className="setting-item">
             <span>All Notifications</span>
             <label className="toggle">

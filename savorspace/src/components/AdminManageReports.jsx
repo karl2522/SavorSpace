@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import defaultProfile from '../images/defaultProfiles.png';
-import '../styles/AdminManageComments.css';
+import '../styles/AdminManageReports.css';
 
 const AdminManageReports = () => {
   const [admin, setAdmin] = useState(null);
@@ -10,6 +10,8 @@ const AdminManageReports = () => {
   const [loading, setLoading] = useState(true);
   const [profilePic, setProfilePic] = useState('');
   const navigate = useNavigate();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [reportToDelete, setReportToDelete] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -67,7 +69,6 @@ const AdminManageReports = () => {
 
   const handleActionClick = async (reportId, action) => {
     try {
-        const token = sessionStorage.getItem('adminToken');
         const report = reportedRecipes.find(r => r.id === reportId);
         
         if (!report) {
@@ -76,22 +77,11 @@ const AdminManageReports = () => {
         }
 
         if (action === 'DELETE') {
-            if (!report.recipe || !report.recipe.recipeID) {
-                console.error('Recipe information not found');
-                return;
-            }
-
-            // Use the new combined endpoint
-            await axios.delete(
-                `http://localhost:8080/admin/reports/${reportId}/recipe/${report.recipe.recipeID}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            setReportToDelete(report);
+            setShowDeleteModal(true);
+            return;
         } else {
-            // For non-delete actions, just update the status
+            const token = sessionStorage.getItem('adminToken');
             await axios.put(
                 `http://localhost:8080/admin/reports/${reportId}/status`,
                 { status: action },
@@ -101,13 +91,30 @@ const AdminManageReports = () => {
                     },
                 }
             );
+            await fetchReportedRecipes();
         }
-        
-        // Refresh the reports list
-        await fetchReportedRecipes();
     } catch (error) {
         console.error('Error handling report action:', error);
     }
+};
+
+const handleDeleteConfirm = async () => {
+  try {
+      const token = sessionStorage.getItem('adminToken');
+      await axios.delete(
+          `http://localhost:8080/admin/reports/${reportToDelete.id}/recipe/${reportToDelete.recipe.recipeID}`,
+          {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          }
+      );
+      await fetchReportedRecipes();
+      setShowDeleteModal(false);
+      setReportToDelete(null);
+  } catch (error) {
+      console.error('Error deleting report:', error);
+  }
 };
 
   const handleLogout = () => {
@@ -141,7 +148,8 @@ const AdminManageReports = () => {
   };
 
   return (
-    <div className="admin-reports">
+    <div className="amr-admin-reports">
+      {/* Keep the sidebar as is */}
       <aside className="sidebar">
         <div className="logo">
           <img src="/src/images/savorspaceLogo.png" alt="SavorSpace Logo" className="logo-image" />
@@ -170,25 +178,25 @@ const AdminManageReports = () => {
         )}
       </aside>
 
-      <main className="main-content">
-        <header className="content-header">
-          <div className="header-title">
+      <main className="amr-main-content">
+        <header className="amr-content-header">
+          <div className="amr-header-title">
             <h1>Reported <span>Recipes</span></h1>
             <p>Hello Admin, {admin?.fullName}!</p>
           </div>
         </header>
 
-        <section className="reports-section">
-          <div className="reports-header">
+        <section className="amr-reports-section">
+          <div className="amr-reports-header">
             <h2>Reported <span>Recipes</span></h2>
           </div>
 
-           {loading ? (
-            <div className="loading">Loading reported recipes...</div>
-            ) : !Array.isArray(reportedRecipes) || reportedRecipes.length === 0 ? (
-            <div className="no-reports">No reported recipes found.</div>
-            ) : (
-            <div className="reports-table">
+          {loading ? (
+            <div className="amr-loading">Loading reported recipes...</div>
+          ) : !Array.isArray(reportedRecipes) || reportedRecipes.length === 0 ? (
+            <div className="amr-no-reports">No reported recipes found.</div>
+          ) : (
+            <div className="amr-reports-table">
               <table>
                 <thead>
                   <tr>
@@ -204,15 +212,15 @@ const AdminManageReports = () => {
                   {reportedRecipes.map((report) => (
                     <tr key={report.id}>
                       <td>
-                        <div className="recipe-info">
+                        <div className="amr-recipe-info">
                           <img 
                             src={report.recipe?.imageURL 
-                                ? (report.recipe.imageURL.startsWith('http') 
-                                   ? report.recipe.imageURL 
-                                   : `http://localhost:8080${report.recipe.imageURL}`)
-                                : defaultProfile}
+                              ? (report.recipe.imageURL.startsWith('http') 
+                                ? report.recipe.imageURL 
+                                : `http://localhost:8080${report.recipe.imageURL}`)
+                              : defaultProfile}
                             alt={report.recipe?.title || "Recipe"}
-                            className="recipe-thumbnail"
+                            className="amr-recipe-thumbnail"
                             onError={(e) => {
                               e.target.onerror = null;
                               e.target.src = defaultProfile;
@@ -225,21 +233,21 @@ const AdminManageReports = () => {
                       <td>{report.reason}</td>
                       <td>{formatDate(report.createdAt)}</td>
                       <td>
-                        <span className={`status-badge ${report.status.toLowerCase()}`}>
+                        <span className={`amr-status-badge ${report.status.toLowerCase()}`}>
                           {report.status}
                         </span>
                       </td>
-                      <td className="action-buttons">
+                      <td className="amr-action-buttons">
                         {report.status === 'PENDING' && (
                           <>
                             <button 
-                              className="action-button approve"
+                              className="amr-action-button approve"
                               onClick={() => handleActionClick(report.id, 'RESOLVED')}
                             >
                               Dismiss
                             </button>
                             <button 
-                              className="action-button delete"
+                              className="amr-action-button delete"
                               onClick={() => handleActionClick(report.id, 'DELETE')}
                             >
                               Remove Recipe
@@ -255,6 +263,33 @@ const AdminManageReports = () => {
           )}
         </section>
       </main>
+
+      {showDeleteModal && (
+        <div className="amr-modal-overlay">
+          <div className="amr-modal-content">
+            <h2>Confirm Delete</h2>
+            <p>Are you sure you want to delete this recipe?</p>
+            <p>This action cannot be undone.</p>
+            <div className="amr-modal-actions">
+              <button 
+                className="cancel-button"
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setReportToDelete(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button 
+                className="delete-button"
+                onClick={handleDeleteConfirm}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

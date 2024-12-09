@@ -1,0 +1,166 @@
+.amr-admin-reports {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+  }
+  .amr-logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  .amr-logo-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  .amr-logo-text h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  .amr-logo-text p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+  .amr-admin-profile {
+    margin-top: auto;
+    padding: 20px 0;
+    border-top: 1px solid #333;
+  }
+  .amr-admin-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+  .amr-main-content {
+    flex: 1;
+    padding: 20px;
+  }
+  .amr-content-header {
+    margin-bottom: 30px;
+  }
+  .amr-header-title h1 {
+    margin: 0;
+    font-size: 2rem;
+  }
+  .amr-reports-section {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .amr-reports-header {
+    margin-bottom: 20px;
+  }
+  .amr-reports-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .amr-reports-table th,
+  .amr-reports-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
+  .amr-reports-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+  }
+  .amr-recipe-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .amr-recipe-thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  .amr-action-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .amr-action-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+  .amr-action-button.approve {
+    background-color: #28a745;
+    color: white;
+  }
+  .amr-action-button.delete {
+    background-color: #dc3545;
+    color: white;
+  }
+  .amr-status-badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  .amr-status-badge.pending {
+    background-color: #ffeeba;
+    color: #856404;
+  }
+  .amr-status-badge.resolved {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  .amr-status-badge.delete {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  .amr-loading,
+  .amr-no-reports {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.1rem;
+    color: #666;
+  }
+  /* Modal styles */
+  .amr-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .amr-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+  }
+  .amr-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .amr-modal-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .amr-modal-actions .cancel-button {
+    background-color: #6c757d;
+    color: white;
+  }
+  .amr-modal-actions .delete-button {
+    background-color: #dc3545;
+    color: white;
+  }
+  

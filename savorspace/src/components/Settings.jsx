@@ -12,6 +12,8 @@ import EditProfileSettings from './EditProfileSettings';
 import GeneralSettings from "./GeneralSettings";
 import NotificationSettings from "./NotificationSettings";
 import PrivacySettings from "./PrivacySettings";
+import { MdFavorite } from 'react-icons/md';
+import FavoriteRecipes from './FavoriteRecipes';
 
 export default function SettingsPage() {
   const location = useLocation();
@@ -110,6 +112,12 @@ export default function SettingsPage() {
             </Link>
           </li>
           <li>
+            <Link to="/profile/settings/favorites" style={isActive('/profile/settings/favorites')}>
+              <MdFavorite size={23} />
+              Your Favorites
+            </Link>
+          </li>
+          <li>
               <div
                 className="logout-button-settings"
                 style={isActive('/profile/settings/logout')}
@@ -145,6 +153,7 @@ export default function SettingsPage() {
           <Route path="account" element={<AccountSettings />} />
           <Route path="privacy" element={<PrivacySettings />} />
           <Route path="notifications" element= {< NotificationSettings />}/>
+          <Route path="favorites" element={<FavoriteRecipes />} />
         </Routes>
       </main>
     </div>
