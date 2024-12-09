@@ -149,6 +149,7 @@ const AdminManagePosts = () => {
             <li><Link to="/admin/ManagePosts" className="active">User Posts</Link></li>
             <li><Link to="/admin/ManageComments">User Comments</Link></li>
             <li><Link to="/admin/ManageNotifications">Notifications</Link></li>
+            <li><Link to="/admin/Reports">Reports</Link></li>
             <li><button onClick={handleLogout}>Logout</button></li>
           </ul>
         </nav>

@@ -158,6 +158,7 @@ const AdminManageNotifications = () => {
             <li><Link to="/admin/ManagePosts">User Posts</Link></li>
             <li><Link to="/admin/ManageComments">User Comments</Link></li>
             <li><Link to="/admin/ManageNotifications" className="active">Notifications</Link></li>
+            <li><Link to="/admin/Reports">Reports</Link></li>
             <li><button onClick={handleLogout}>Logout</button></li>
           </ul>
         </nav>

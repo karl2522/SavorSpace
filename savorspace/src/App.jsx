@@ -29,12 +29,13 @@ import RecipePage from './components/RecipePage';
 import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
+import AdminManageReports from './components/AdminManageReports';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard', '/forgot-password','/admin/ManagePosts','/admin/ManageComments', '/admin/ManageNotifications'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
+  const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard', '/forgot-password','/admin/ManagePosts','/admin/ManageComments', '/admin/ManageNotifications', '/admin/Reports'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
   const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname) || location.pathname.startsWith('/community/recipe/');
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
@@ -281,6 +282,9 @@ const App = () => {
           <Route 
           path="/admin/ManageNotifications" 
           element={<AdminManageNotifications/>} />
+          <Route 
+          path="/admin/Reports" 
+          element={<AdminManageReports/>} />
           <Route path="/about-us" element={<AboutUs />} /> {}
           <Route path='/404' element={<NotFound />} />
           <Route path='/reactivate-account' element={<ReactivateAccount />} />

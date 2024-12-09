@@ -150,6 +150,7 @@
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease;
+  position: relative;
 
 }
 
@@ -882,4 +883,116 @@
       transform: translateY(0) translateX(0);
       opacity: 1;
   }
+}
+
+.report-button-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 2;
+}
+
+.post-card:hover .report-button-container {
+  opacity: 1;
+}
+
+.report-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.report-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.report-icon {
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.report-button:hover .report-icon {
+  color: #dc3545;
+}
+
+/* Report Modal Styles */
+.report-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.report-modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.report-form {
+  margin-top: 16px;
+}
+
+.report-select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.report-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancel-report-btn,
+.submit-report-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.cancel-report-btn {
+  background-color: #e0e0e0;
+}
+
+.cancel-report-btn:hover {
+  background-color: #d0d0d0;
+}
+
+.submit-report-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.submit-report-btn:hover {
+  background-color: #c82333;
+}
+
+.submit-report-btn:disabled {
+  background-color: #e9858d;
+  cursor: not-allowed;
 }

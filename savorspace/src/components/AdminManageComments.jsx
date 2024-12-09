@@ -181,6 +181,7 @@ const AdminManageComments = () => {
             <li><Link to="/admin/ManagePosts">User Posts</Link></li>
             <li><Link to="/admin/ManageComments" className="active">User Comments</Link></li>
             <li><Link to="/admin/ManageNotifications">Notifications</Link></li>
+            <li><Link to="/admin/Reports">Reports</Link></li>
             <li><button onClick={handleLogout}>Logout</button></li>
           </ul>
         </nav>

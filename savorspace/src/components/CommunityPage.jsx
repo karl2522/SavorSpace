@@ -11,7 +11,7 @@ import CreateRecipeModal from './RecipeModal';
 import { createPortal } from 'react-dom';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import '../styles/PostingPage.css';
-
+import { FiFlag } from 'react-icons/fi';
 
 const BACKEND_URL = 'http://localhost:8080';
 
@@ -613,6 +613,9 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
     const [showRatingModal, setShowRatingModal] = useState(false);
     const [ratingNotification, setRatingNotification] = useState({ show: false, message: '', type: '' });
     const [saveNotification, setSaveNotification] = useState({ show: false, message: '', type: '' });
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [reportReason, setReportReason] = useState('');
+    const [reportNotification, setReportNotification] = useState({ show: false, message: '', type: '' });
     const [isEditing, setIsEditing] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -930,6 +933,45 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
       setIsCommentsVisible(!isCommentsVisible);
   };
 
+  const handleReportClick = (e) => {
+    e.stopPropagation();
+    setShowReportModal(true);
+  }
+
+  const handleSubmitReport = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/reports/recipe/${recipe.recipeID}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          reason: reportReason
+        })
+      });
+
+      if(response.ok) {
+        setNotification({
+          show: true,
+          message: 'Recipe report successfully',
+          type: 'success'
+        });
+        setShowReportModal(false);
+        setReportReason('');
+      }else {
+        throw new Error('Failed to report recipe');
+      }
+    }catch(error) {
+      console.error('Failed to report recipe:', error);
+      setNotification({
+        show: true,
+        message: 'You already reported this recipe',
+        type: 'error'
+      });
+    }
+  };
+
   return (
     <div 
       id={`recipe-${recipe.recipeID}`}
@@ -939,6 +981,17 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
       }}
     >
       <div className="post-card">
+      <div className="report-button-container">
+          {currentUser && currentUser.id !== recipe.user?.id && (
+            <button 
+              className="report-button" 
+              onClick={handleReportClick}
+              title="Report Recipe"
+            >
+              <FiFlag className="report-icon" size={18} />
+            </button>
+          )}
+        </div>
         <div className="community-user">  
           <img
             src={recipe.user?.imageURL
@@ -1142,9 +1195,47 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
               {saveNotification.message}
           </div>
       )}
-    </div>
-  );
-};
+
+      {showReportModal && (
+        <div className="report-modal-backdrop">
+          <div className="report-modal-content">
+            <h3>Report Recipe</h3>
+            <div className="report-form">
+              <select 
+                value={reportReason} 
+                onChange={(e) => setReportReason(e.target.value)}
+                className="report-select"
+              >
+                <option value="">Select a reason</option>
+                <option value="inappropriate">Inappropriate Content</option>
+                <option value="spam">Spam Content</option>
+                <option value="offensive">Offensive Content</option>
+                <option value="copyright">Copyright Violation</option>
+                <option value="other">Other</option>
+              </select>
+              
+              <div className="report-modal-actions">
+                <button 
+                  onClick={() => setShowReportModal(false)}
+                  className="cancel-report-btn"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={handleSubmitReport}
+                  disabled={!reportReason}
+                  className="submit-report-btn"
+                >
+                  Submit Report
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+          </div>
+        );
+      };
 
 StarRating.propTypes = {
   rating: PropTypes.number,
