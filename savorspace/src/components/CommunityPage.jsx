@@ -12,6 +12,7 @@ import { createPortal } from 'react-dom';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import '../styles/PostingPage.css';
 import { FiFlag } from 'react-icons/fi';
+import { FiGitBranch } from 'react-icons/fi';
 
 
 const BACKEND_URL = 'http://localhost:8080';
@@ -560,46 +561,66 @@ RecipeComments.propTypes = {
 };
 
 
-const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments}) => {
-  const [hover, setHover] = useState(0);
-  const stars = [1, 2, 3, 4, 5];
-  const [isHovered, setIsHovered] = useState(false);
+const StarRating = ({ userRating, averageRating, onRatingChange, totalRatings, onToggleComments, recipeId, commentsCount = 0, isCommentsVisible}) => {
+  const [isUpdated, setIsUpdated] = useState(false);
+
+  useEffect(() => {
+      if (userRating || averageRating) {
+          setIsUpdated(true);
+          const timer = setTimeout(() => setIsUpdated(false), 500);
+          return () => clearTimeout(timer);
+      }
+  }, [userRating, averageRating]);
 
   return (
-      <div className="rating-container">
-        <div className="rating-stats">
-              <span className="rating-value">Rating: {rating || 0}</span>
-              <span className="total-ratings"></span>
+      <div className="">
+          <div className={`rating-stats ${isUpdated ? 'updated' : ''}`}>
+              <div className="average-rating">
+                  <span className="rating-label">Average Rating</span>
+                  <div className="stars">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                          <span
+                              key={star}
+                              className={`star ${star <= averageRating ? 'filled' : ''}`}
+                          >
+                              ★
+                          </span>
+                      ))}
+                  </div>
+                  <span className="rating-value">{averageRating.toFixed(1)}</span>
+              </div>
+              <div className="user-rating">
+                  <span className="rating-label">Your Rating</span>
+                  <div className="stars">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                          <span
+                              key={star}
+                              className={`star ${star <= userRating ? 'filled' : ''}`}
+                              onClick={() => onRatingChange(star)}
+                          >
+                              ★
+                          </span>
+                      ))}
+                  </div>
+              </div>
+              <div className="total-ratings">
+                  {totalRatings} {totalRatings === 1 ? 'rating' : 'ratings'}
+              </div>
           </div>
-          <div className="star-ratings">
-              {stars.map(star => (
-                  <span
-                      key={star}
-                      onClick={() => onRatingChange(star)}
-                      onMouseEnter={() => setHover(star)}
-                      onMouseLeave={() => setHover(0)}
-                      style={{ cursor: 'pointer' }}
-                  >
-                {star <= (hover || rating) ? (
-                    <FaStar size={20} color="#D6589F" />
-                  ) : (
-                    <FaRegStar size={20} color="#D6589F" />
-                  )}
-                  </span>
-              ))}
-          </div>
-          <div 
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onClick={onToggleComments}
-            className="comment-icon"
-          >
-            {isHovered ? (
-              <FaComment size={20} cursor={'pointer'} color="#D6589F"/>
-            ) : (
-              <FaRegComment size={20} cursor={'pointer'} color="#D6589F"/>
-            )}
-          </div>
+          <button 
+                className={`comments-toggle ${isCommentsVisible ? 'active' : ''}`} 
+                onClick={onToggleComments}
+            >
+                <FaComment />
+                <span>
+                    {isCommentsVisible ? 'Hide Comments' : 'Show Comments'}
+                </span>
+                {commentsCount > 0 && (
+                    <span className="comments-count">
+                        {commentsCount}
+                    </span>
+                )}
+            </button>
       </div>
   );
 };
@@ -623,6 +644,11 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
     const [isFavorite, setIsFavorite] = useState(false);
     const [favoriteNotification, setFavoriteNotification] = useState({ show: false, message: '', type: '' });
     const [isContentVisible, setIsContentVisible] = useState(false);
+    const [showForkModal, setShowForkModal] = useState(false);
+    const [changeDescription, setChangeDescription] = useState('');
+    const [userRating, setUserRating] = useState(0);
+    const [averageRating, setAverageRating] = useState(recipe.averageRating || 0);
+    const [forkNotification, setForkNotification] = useState({ show: false, message: '', type: '' });
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [editedRecipe, setEditedRecipe] = useState({
       title: recipe.title,
@@ -633,6 +659,50 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
     })
 
     const token = localStorage.getItem('authToken');
+
+    const handleFork = async () => {
+      if (!token) {
+          setForkNotification({
+              show: true,
+              message: 'Please log in to fork recipes',
+              type: 'error'
+          });
+          return;
+      }
+  
+      try {
+          const response = await fetch(`http://localhost:8080/api/recipes/${recipe.recipeID}/fork`, {
+              method: 'POST',
+              headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ changeDescription })
+          });
+  
+          if (response.ok) {
+              const forkedRecipe = await response.json();
+              setForkNotification({
+                  show: true,
+                  message: 'Recipe forked successfully!',
+                  type: 'success'
+              });
+              setShowForkModal(false);
+              window.location.reload();
+              // Optionally navigate to the new forked recipe
+              // navigate(`/recipes/${forkedRecipe.recipeID}`);
+          } else {
+              throw new Error('Failed to fork recipe');
+          }
+      } catch (error) {
+          console.error('Error forking recipe:', error);
+          setForkNotification({
+              show: true,
+              message: 'Failed to fork recipe. Please try again.',
+              type: 'error'
+          });
+      }
+  };
 
     
     const fetchFavoriteStatus = async () => {
@@ -734,11 +804,11 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
       };
   }, [fetchCurrentUser, token, isLoading, recipe.recipeID]);
 
-    const fetchUserRating = async () => {
-      if(!token) return;
-        try {
-            const response = await fetch(
-                `http://localhost:8080/api/ratings/recipe/${recipe.recipeID}`,
+  const fetchUserRating = async () => {
+    if(!token) return;
+    try {
+        const response = await fetch(
+            `http://localhost:8080/api/ratings/recipe/${recipe.recipeID}`,
             {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -747,81 +817,70 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
         );
         
         if(response.ok) {
-          const data = await response.json();
-          console.log('Fetched rating data: ', data);
-          setRating(data.rating || 0 || data.averageRating);
-          setTotalRatings(data.totalRatings || 0);
-        }else {
-          console.error('Failed to fetch rating:', await response.text());
+            const data = await response.json();
+            console.log('Fetched rating data: ', data);
+            setUserRating(data.userRating || 0); // Individual user's rating
+            setAverageRating(data.averageRating || 0); // Average rating
+            setTotalRatings(data.totalRatings || 0);
+        } else {
+            console.error('Failed to fetch rating:', await response.text());
         }
-    }catch(error) {
+    } catch(error) {
         console.error('Failed to fetch user rating:', error);
     }
 };
 
-    const handleRatingChange = async (newRating) => {
-      if(!token) {
-          setRatingNotification({
-              show: true,
-              message: 'Please log in to rate recipes',
-              type: 'error'
-          });
-          return;
-      }
+const handleRatingChange = async (newRating) => {
+  if(!token) {
+      setRatingNotification({
+          show: true,
+          message: 'Please log in to rate recipes',
+          type: 'error'
+      });
+      return;
+  }
 
-      setRating(newRating);
-
-      try {
-          const params = new URLSearchParams({
-              recipeId: recipe.recipeID,
-              rating: newRating
-          }).toString();
-
-          const response = await fetch(`http://localhost:8080/api/ratings/rate?${params}`, {
-              method: 'POST',
-              headers: {
-                  'Authorization': `Bearer ${token}`,
-                  'Content-Type': 'application/json'
-              },
-          });
-
-          if(response.ok) {
-              const data = await response.json();
-              console.log('Rating updated:', data);
-              setRating(newRating || data.averageRating);
-              setTotalRatings(data.totalRatings || 0);
-
-              if(recipe.averageRating !== undefined) {
-                  recipe.averageRating = data.averageRating;
-              }
-
-              localStorage.setItem(`recipe-${recipe.recipeID}-rating`, newRating);
-              setRatingNotification({
-                  show: true,
-                  message: 'Rating updated successfully',
-                  type: 'success'
-              });
-          } else {
-              const errorText = await response.text();
-              console.error('Failed to update rating: ', errorText);
-              throw new Error(errorText);
+  try {
+      // Use URL parameters instead of JSON body
+      const response = await fetch(`http://localhost:8080/api/ratings/rate?recipeId=${recipe.recipeID}&rating=${newRating}`, {
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
           }
-      } catch(error) {
-          console.error('Failed to rate recipe:', error);
+      });
+
+      if(response.ok) {
+          const data = await response.json();
+          console.log('Rating updated:', data);
+          
+          setUserRating(newRating);
+          setAverageRating(data.averageRating);
+          setTotalRatings(data.totalRatings);
+
           setRatingNotification({
               show: true,
-              message: 'Failed to update rating. Please try again.',
-              type: 'error'
+              message: 'Rating updated successfully',
+              type: 'success'
           });
+      } else {
+          const errorText = await response.text();
+          console.error('Failed to update rating: ', errorText);
+          throw new Error(errorText);
       }
-    }
+  } catch(error) {
+      console.error('Failed to rate recipe:', error);
+      setRatingNotification({
+          show: true,
+          message: 'Failed to update rating. Please try again.',
+          type: 'error'
+      });
+  }
+};
 
-    useEffect(() => {
-      const savedRating = localStorage.getItem(`recipe-${recipe.recipeID}-rating`);
-      if (savedRating) {
-          setRating(Number(savedRating));
-      }
-  }, []); // Empty dependency array means this runs once on mount
+useEffect(() => {
+  fetchUserRating();
+}, [recipe.recipeID, token]);
 
 
     // Clean up double uploads in path
@@ -1044,15 +1103,24 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
     >
       <div className="post-card">
       <div className="report-button-container">
-          {currentUser && currentUser.id !== recipe.user?.id && (
+      {currentUser && currentUser.id !== recipe.user?.id && (
+        <>
             <button 
-              className="report-button" 
-              onClick={handleReportClick}
-              title="Report Recipe"
+                className="report-button" 
+                onClick={handleReportClick}
+                title="Report Recipe"
             >
-              <FiFlag className="report-icon" size={18} />
+                <FiFlag className="report-icon" size={18} />
             </button>
-          )}
+            <button 
+                className="fork-button" 
+                onClick={() => setShowForkModal(true)}
+                title="Fork Recipe"
+            >
+                <FiGitBranch className="fork-icon" size={18} />
+            </button>
+        </>
+    )}
           {currentUser && currentUser.id !== recipe.user?.id && (
                     <button 
                         className={`favorite-button ${isFavorite ? 'is-favorite' : ''}`}
@@ -1218,11 +1286,12 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
   
         <div className="recipe-engagement-community">
           <StarRating 
-            rating={rating}
-            onRatingChange={handleRatingChange}
-            totalRatings={totalRatings}
-            onToggleComments={handleToggleComments}
-            recipeId={recipe.recipeID}
+             userRating={userRating}
+             averageRating={averageRating}
+             onRatingChange={handleRatingChange}
+             totalRatings={totalRatings}
+             onToggleComments={handleToggleComments}
+             recipeId={recipe.recipeID}
           />
   
           <RecipeComments
@@ -1317,6 +1386,48 @@ const StarRating = ({ rating, onRatingChange, totalRatings = 0, onToggleComments
                     {favoriteNotification.message}
                 </div>
             )}
+
+{showForkModal && (
+    <div className="fork-modal-backdrop">
+        <div className="fork-modal-content">
+            <h3>Fork Recipe</h3>
+            <p>Create your own version of "{recipe.title}"</p>
+            <div className="fork-form">
+                <textarea
+                    value={changeDescription}
+                    onChange={(e) => setChangeDescription(e.target.value)}
+                    placeholder="Describe what changes you plan to make..."
+                    className="fork-description"
+                />
+                
+                <div className="fork-modal-actions">
+                    <button 
+                        onClick={() => setShowForkModal(false)}
+                        className="cancel-fork-btn"
+                    >
+                        Cancel
+                    </button>
+                    <button 
+                        onClick={handleFork}
+                        disabled={!changeDescription.trim()}
+                        className="submit-fork-btn"
+                    >
+                        Fork Recipe
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+)}
+
+{forkNotification.show && (
+    <div 
+        className={`fork-notification ${forkNotification.type === 'success' ? 'fork-notification-success' : 'fork-notification-error'}`}
+        onAnimationEnd={() => setTimeout(() => setForkNotification({ ...forkNotification, show: false }), 3000)}
+    >
+        {forkNotification.message}
+    </div>
+)}
           </div>
         );
       };

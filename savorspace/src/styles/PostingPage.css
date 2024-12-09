@@ -1068,3 +1068,224 @@
   background-color: #e9858d;
   cursor: not-allowed;
 }
+
+.fork-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.fork-button:hover {
+  transform: scale(1.1);
+}
+
+.fork-icon {
+  color: #666;
+}
+
+.fork-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.fork-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.fork-description {
+  width: 100%;
+  min-height: 100px;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.fork-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.submit-fork-btn {
+  background-color: #D6589F;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-fork-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.cancel-fork-btn {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.fork-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 4px;
+  color: white;
+  z-index: 1000;
+  animation: slideInFromRight 0.5s ease-out;
+}
+
+.fork-notification-success {
+  background-color: #28a745;
+}
+
+.fork-notification-error {
+  background-color: #dc3545;
+}
+
+.rating-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.average-rating,
+.user-rating {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.rating-label {
+  font-weight: 500;
+  color: #666;
+  font-size: 0.9em;
+  min-width: 100px;
+}
+
+.stars {
+  display: flex;
+  gap: 4px;
+}
+
+.star {
+  color: #e0e0e0;
+  font-size: 20px;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.star.filled {
+  color: #D6589F;
+}
+
+.user-rating .star:hover {
+  color: #D6589F;
+}
+
+.rating-value {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.total-ratings {
+  font-size: 0.8em;
+  color: #999;
+  text-align: right;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 8px;
+}
+
+/* Comments toggle button */
+.comments-toggle {
+  width: 100%;
+  padding: 10px;
+  margin-top: 12px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.comments-toggle:hover {
+  background: #f9f9f9;
+  border-color: #e0e0e0;
+}
+
+.comments-toggle svg {
+  color: #D6589F;
+  font-size: 1em;
+}
+
+.comments-count {
+  background: #f0f0f0;
+  color: #666;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8em;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .average-rating,
+  .user-rating {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .rating-label {
+    margin-bottom: 2px;
+  }
+}
+
+/* Simple hover effect for container */
+.star-rating-container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Simple animation for rating updates */
+@keyframes subtle-fade {
+  0% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+.rating-stats.updated {
+  animation: subtle-fade 0.3s ease;
+}
