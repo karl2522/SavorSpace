@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import defaultProfile from '../images/defaultProfiles.png';
+import { Avatar } from '@mui/material';
 import '../styles/AdminManagePosts.css';
 
 const AdminManagePosts = () => {
@@ -71,6 +72,7 @@ const AdminManagePosts = () => {
         username: post.user?.username || 'Unknown User'
       })));
 
+
     } catch (error) {
       console.error('Error fetching posts:', error);
     } finally {
@@ -110,8 +112,10 @@ const AdminManagePosts = () => {
       {showDeleteModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Confirm Delete</h2>
+            <h2 style={{ fontWeight: 500 }}>Confirm Delete</h2>
             <p>Are you sure you want to delete this recipe post?</p>
+            <p style={{ fontWeight: 500 }}>Recipe Title: {postToDelete?.title}</p>
+            <p style={{ fontWeight: 500 }}>Posted by: {postToDelete?.user?.username || 'Unknown User'}</p>
             <p>This action cannot be undone.</p>
             <div className="modal-actions">
               <button 
@@ -190,16 +194,17 @@ const AdminManagePosts = () => {
                 {posts.map((post) => (
                   <tr key={post.recipeID}>
                     <td>
-                      <div className="recipe-image">
-                        <img 
-                          src={post.imageUrl} 
-                          alt={post.title}
-                          onError={(e) => {
+                      <Avatar 
+                        src={post.imageUrl} 
+                        alt={post.title}
+                        sx={{ width: 56, height: 56 }}
+                        imgProps={{
+                          onError: (e) => {
                             e.target.onerror = null;
                             e.target.src = '/src/images/default-recipe.jpg';
-                          }}
-                        />
-                      </div>
+                          }
+                        }}
+                      />
                     </td>
                     <td>{post.user?.username || 'Unknown User'}</td>
                     <td>{post.title}</td>
@@ -207,6 +212,7 @@ const AdminManagePosts = () => {
                     <td>
                       <button 
                         className="action-button delete"
+                        style={{ backgroundColor: 'red', color: 'white' }}
                         onClick={() => handleDeleteClick(post)}
                       >
                         Delete
