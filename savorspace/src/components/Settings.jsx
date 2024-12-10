@@ -14,6 +14,8 @@ import NotificationSettings from "./NotificationSettings";
 import PrivacySettings from "./PrivacySettings";
 import { MdFavorite } from 'react-icons/md';
 import FavoriteRecipes from './FavoriteRecipes';
+import { IoCalendarOutline } from 'react-icons/io5';
+import MealPlanSettings from './MealPlanSettings';
 
 export default function SettingsPage() {
   const location = useLocation();
@@ -118,6 +120,12 @@ export default function SettingsPage() {
             </Link>
           </li>
           <li>
+            <Link to="/profile/settings/meal-planning" style={isActive('/profile/settings/meal-planning')}>
+                <IoCalendarOutline size={23} />
+                Meal Planning
+            </Link>
+        </li>
+          <li>
               <div
                 className="logout-button-settings"
                 style={isActive('/profile/settings/logout')}
@@ -154,6 +162,7 @@ export default function SettingsPage() {
           <Route path="privacy" element={<PrivacySettings />} />
           <Route path="notifications" element= {< NotificationSettings />}/>
           <Route path="favorites" element={<FavoriteRecipes />} />
+          <Route path="meal-planning" element={<MealPlanSettings />} />
         </Routes>
       </main>
     </div>
