@@ -1,7 +1,8 @@
 .admin-accounts {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
     font-family: Arial, sans-serif;
+    overflow: hidden;
   }
   
   /* Sidebar Styles */
@@ -109,6 +110,9 @@
     flex: 1;
     background-color: #f5f5f5;
     padding: 30px;
+    overflow-y: auto;
+    height: 100vh;
+    box-sizing: border-box;
   }
   
   .content-header {
@@ -138,6 +142,9 @@
     border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
   }
   
   .users-header {
@@ -146,6 +153,7 @@
     align-items: center;
     padding: 20px;
     border-bottom: 1px solid #eee;
+    background-color: #ffffff;
   }
   
   .users-header h2 {
@@ -169,7 +177,8 @@
   
   .users-table {
     width: 100%;
-    overflow-x: auto;
+    overflow-y: auto;
+    flex: 1;
   }
   
   table {

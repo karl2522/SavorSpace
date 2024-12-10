@@ -1,321 +1,175 @@
 .admin-comments {
     display: flex;
-    min-height: 100vh;
-  }
-  
-  .sidebar {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sidebar {
     width: 280px;
     background-color: #ffffff;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .logo {
+}
+
+.logo {
     display: flex;
     align-items: center;
     margin-bottom: 30px;
-  }
-  
-  .logo-image {
+}
+
+.logo-image {
     width: 50px;
     height: 50px;
     margin-right: 10px;
-  }
-  
-  .logo-text h2 {
+}
+
+.logo-text h2 {
     margin: 0;
     color: #333;
-  }
-  
-  .logo-text p {
+}
+
+.logo-text p {
     margin: 0;
     color: #666;
-  }
-  
-  .sidebar-nav ul {
+}
+
+.sidebar-nav ul {
     list-style: none;
     padding: 0;
-  }
-  
-  .sidebar-nav li {
+}
+
+.sidebar-nav li {
     margin-bottom: 10px;
-  }
-  
-  .sidebar-nav a, .sidebar-nav button {
+}
+
+.sidebar-nav a, .sidebar-nav button {
     display: block;
     padding: 10px;
     color: #666;
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s;
-  }
-  
-  .sidebar-nav a:hover, .sidebar-nav button:hover {
+}
+
+.sidebar-nav a:hover, .sidebar-nav button:hover {
     background-color: #f0f0f0;
-  }
-  
-  .sidebar-nav a.active {
-    background-color: #d6589f;
+}
+
+.sidebar-nav a.active {
+    background-color: d6589a;
     color: white;
-  }
-  
-  .admin-profile {
+}
+
+.admin-profile {
     margin-top: 30px;
     text-align: center;
-  }
-  
-  .admin-avatar {
+}
+
+.admin-avatar {
     width: 80px;
     height: 80px;
     border-radius: 50%;
     margin-bottom: 10px;
-  }
-  
-  .main-content {
+}
+
+.main-content {
     flex: 1;
     padding: 20px;
     background-color: #f8f9fa;
-  }
-  
-  .content-header {
+}
+
+.content-header {
     margin-bottom: 30px;
-  }
-  
-  .header-title h1 {
+}
+
+.header-title h1 {
     margin: 0;
     color: #333;
-  }
-  
-  .header-title span {
-    color: #d6589f;
-  }
-  
-  .user-image {
+}
+
+.header-title span {
+    color: d6589a;
+}
+
+.user-image {
     width: 50px;
     height: 50px;
     overflow: hidden;
     border-radius: 50%;
-  }
-  
-  .user-image img {
+}
+
+.user-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-  
-  .comments-table {
-    margin-top: 20px;
-    background: white;
-    border-radius: 10px;
+}
+
+.comments-section {
+    background-color: #ffffff;
+    border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-  }
-  
-  .comments-table table {
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.comments-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    background-color: #ffffff;
+}
+
+.comments-table {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.comments-table table {
     width: 100%;
     border-collapse: collapse;
-  }
-  
-  .comments-table th,
-  .comments-table td {
+}
+
+.comments-table th,
+.comments-table td {
     padding: 15px;
     text-align: left;
     border-bottom: 1px solid #eee;
-  }
-  
-  .comments-table th {
-    background-color: #f8f9fa;
-    font-weight: 600;
-  }
-  
-  .comment-content {
-    max-width: 300px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  .action-button {
-    padding: 6px 12px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    font-weight: 500;
-  }
-  
-  .action-button.delete {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  .action-button.delete:hover {
-    background-color: #c82333;
-  }
-  
-  .modal-overlay {
-    position: fixed;
+}
+
+.comments-table th {
+    position: sticky;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align.admin-comments {
-    display: flex;
-    min-height: 100vh;
-  }
-  
-  .sidebar {
-    width: 280px;
-    background-color: #ffffff;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
-  }
-  
-  .logo-image {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-  }
-  
-  .logo-text h2 {
-    margin: 0;
-    color: #333;
-  }
-  
-  .logo-text p {
-    margin: 0;
-    color: #666;
-  }
-  
-  .sidebar-nav ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .sidebar-nav li {
-    margin-bottom: 10px;
-  }
-  
-  .sidebar-nav a, .sidebar-nav button {
-    display: block;
-    padding: 10px;
-    color: #666;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .sidebar-nav a:hover, .sidebar-nav button:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .sidebar-nav a.active {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .admin-profile {
-    margin-top: 30px;
-    text-align: center;
-  }
-  
-  .admin-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-  }
-  
-  .main-content {
-    flex: 1;
-    padding: 20px;
-    background-color: #f8f9fa;
-  }
-  
-  .content-header {
-    margin-bottom: 30px;
-  }
-  
-  .header-title h1 {
-    margin: 0;
-    color: #333;
-  }
-  
-  .header-title span {
-    color: #007bff;
-  }
-  
-  .user-image {
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-    border-radius: 50%;
-  }
-  
-  .user-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .comments-table {
-    margin-top: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-  }
-  
-  .comments-table table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .comments-table th,
-  .comments-table td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .comments-table th {
+    z-index: 1;
     background-color: #f8f9fa;
     font-weight: 600;
-  }
-  
-  .comment-content {
+}
+
+.comment-content {
     max-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-  
-  .action-button {
+}
+
+.action-button {
     padding: 6px 12px;
     border-radius: 4px;
     border: none;
     cursor: pointer;
     font-weight: 500;
-  }
-  
-  .action-button.delete {
+}
+
+.action-button.delete {
     background-color: #dc3545;
     color: white;
-  }
-  
-  .action-button.delete:hover {
+}
+
+.action-button.delete:hover {
     background-color: #c82333;
-  }
-  
-  .modal-overlay {
+}
+
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -421,6 +275,4 @@
     color: #dc3545;
     text-align: center;
     margin: 20px 0;
-}
-
 }
