@@ -30,13 +30,14 @@ import SettingsPage from './components/Settings';
 import Register from './components/SignupScreen';
 import './styles/MainStyles.css';
 import AdminManageReports from './components/AdminManageReports';
+import VideoRecipePage from './components/VideoRecipePage';
 
 // Navbar Component
 const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const showNavbar = !['/login', '/register', '/admin/login', '/admin/signup', '/profile', '/reactivate-account', '/deactivate-account', '/admin/ManageUser','/admin/dashboard', '/forgot-password','/admin/ManagePosts','/admin/ManageComments', '/admin/ManageNotifications', '/admin/Reports'].includes(location.pathname) && !location.pathname.startsWith('/profile/settings');
-  const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/'].includes(location.pathname) || location.pathname.startsWith('/community/recipe/');
+  const isMainPage = ['/homepage', '/recipes', '/community', '/about-us', '/', '/community/videos'].includes(location.pathname) || location.pathname.startsWith('/community/recipe/');
 
   const activeLinkStyle = { color: '#D6589F', fontWeight: 'bold' };
   const [showDropdown, setShowDropdown] = useState(false);
@@ -111,7 +112,15 @@ const Navbar = ({ profilePic, handleLogout, isAuthenticated }) => {
               <Link to="/recipes" style={location.pathname === '/recipes' ? activeLinkStyle : {}}>Recipes</Link>
             </li>
             <li className={location.pathname === '/community' ? 'active' : ''}>
-              <Link to="/community" style={location.pathname === '/community' ? activeLinkStyle : {}}>Community</Link>
+              <div className="dropdown">
+                <Link to="/community" style={location.pathname === '/community' ? activeLinkStyle : {}}>
+                  Community
+                </Link>
+                <div className="dropdown-content">
+                  <Link to="/community">Image Recipes</Link>
+                  <Link to="/community/videos">Video Recipes</Link>
+                </div>
+              </div>
             </li>
             <li className={location.pathname === '/about-us' ? 'active' : ''}>
               <Link to="/about-us" style={location.pathname === '/about-us' ? activeLinkStyle : {}}>About Us</Link>
@@ -292,6 +301,8 @@ const App = () => {
           <Route path='/forgot-password' element= {<ForgotPasswordForm />} />
           <Route path="/community/recipe/:recipeId" element={<RecipeDetail />} />
           <Route path="/community/:recipeId" element={<PostingPage />} />
+          <Route path="/community/videos" element={<VideoRecipePage />} />
+          <Route path="/community/videos/:videoId" element={<VideoRecipePage />} />
         </Routes>
       </div>
     </Router>

@@ -51,7 +51,7 @@ const PostingPage = () => {
               throw new Error('No authentication token found');
           }
 
-          const response = await fetch('http://localhost:8080/recipes', {
+          const response = await fetch('http://localhost:8080/recipes/images', {
               headers: {
                   'Authorization': `Bearer ${token}`,
                   'Accept': 'application/json'

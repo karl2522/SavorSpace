@@ -98,7 +98,7 @@ export default function RecipePage() {
         navigate('/login')
       }
 
-      const response = await fetch(`http://localhost:8080/recipes?page=${page}&size=${size}`, {
+      const response = await fetch(`http://localhost:8080/recipes/images?page=${page}&size=${size}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json'
