@@ -158,8 +158,8 @@
     margin-top: 32px;
 }
 
-.btn-primary,
-.btn-secondary,
+.btn-primarys,
+.btn-secondarys,
 .btn-submit {
     padding: 16px 32px;
     border-radius: 12px;
@@ -173,7 +173,7 @@
     transition: all 0.3s ease;
 }
 
-.btn-primary {
+.btn-primarys {
     background-color: #D6589F;
     color: white;
 }
@@ -183,12 +183,12 @@
     transform: translateY(-2px);
 }
 
-.btn-secondary {
+.btn-secondarys {
     background-color:#eac9dc;
     color: #111;
 }
 
-.btn-secondary:hover {
+.btn-secondarys:hover {
     background-color: #d59bbd;
     transform: translateY(-2px);
 }

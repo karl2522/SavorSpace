@@ -29,10 +29,25 @@ const VideoRecipePage = () => {
 
     const token = localStorage.getItem('authToken');
 
+    const cleanImagePath = (path) => {
+        if(!path) return null;
+        return path.replace(/\/uploads\/+/g, '/uploads/');
+    };
+  
+    const getImageURL = (imageURL) => {
+        if(!imageURL) return "/src/images/defaultProfiles.png";
+
+        const cleanPath = cleanImagePath(imageURL);
+        return cleanPath.startsWith('http')
+            ? cleanPath
+            : `http://localhost:8080${cleanPath}`;
+    };
+
     const fetchCurrentUser = useCallback(async () => {
-        if (!token || isLoading === false) return;
+        if (!token) return;
     
         try {
+            setIsLoading(true);
             const response = await fetch('http://localhost:8080/users/me', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -76,6 +91,15 @@ const VideoRecipePage = () => {
                 message: 'You are not authorized to edit this video',
                 type: 'error'
             });
+    
+            // Hide notification after 5 seconds
+            setTimeout(() => {
+                setNotification({
+                    show: false,
+                    message: '',
+                    type: ''
+                });
+            }, 5000); // matches the animation duration
         }
     };
     
@@ -318,7 +342,12 @@ const VideoRecipePage = () => {
                             <div className="video-info">
                                 <h3>{video.title}</h3>
                                 <div className="video-creator">
-                                    Created by: {video.user ? video.user.fullName: 'Unknown'}
+                                    <img 
+                                        src={getImageURL(video.user?.imageURL) || "/src/images/defaultProfiles.png"} 
+                                        alt="Creator" 
+                                        className="creator-thumbnail"
+                                    />
+                                    <span>Created by: {video.user ? video.user.fullName : 'Unknown'}</span>
                                 </div>
                                 <p>{video.description}</p>
                                 <div className="video-actions">
@@ -380,75 +409,103 @@ const VideoRecipePage = () => {
                     </div>
                 )}
 
-                {showEditModal && editingVideo && (
-                    <div className="modal-backdrop">
-                        <div className="edit-modal">
-                            <button 
-                                className="close-modal"
-                                onClick={() => setShowEditModal(false)}
-                            >
-                                <FaTimes />
-                            </button>
-                            <h2>Edit Video Recipe</h2>
-                            <form onSubmit={handleUpdate}>
-                                <input
-                                    type="text"
-                                    placeholder="Recipe Title"
-                                    value={editingVideo.title}
-                                    onChange={e => setEditingVideo({
-                                        ...editingVideo,
-                                        title: e.target.value
-                                    })}
-                                    required
-                                />
-                                <textarea
-                                    placeholder="Description"
-                                    value={editingVideo.description}
-                                    onChange={e => setEditingVideo({
-                                        ...editingVideo,
-                                        description: e.target.value
-                                    })}
-                                    required
-                                />
-                                <textarea
-                                    placeholder="Ingredients"
-                                    value={editingVideo.ingredients}
-                                    onChange={e => setEditingVideo({
-                                        ...editingVideo,
-                                        ingredients: e.target.value
-                                    })}
-                                    required
-                                />
-                                <textarea
-                                    placeholder="Instructions"
-                                    value={editingVideo.instructions}
-                                    onChange={e => setEditingVideo({
-                                        ...editingVideo,
-                                        instructions: e.target.value
-                                    })}
-                                    required
-                                />
-                                <input
-                                    type="file"
-                                    accept="video/mp4,video/quicktime,video/webm"
-                                    onChange={e => setEditingVideo({
-                                        ...editingVideo,
-                                        newVideo: e.target.files[0]
-                                    })}
-                                />
-                                <div className="modal-buttons">
-                                    <button type="submit">Update</button>
-                                    <button 
-                                        type="button" 
-                                        onClick={() => setShowEditModal(false)}
-                                    >
-                                        Cancel
-                                    </button>
+                    {showEditModal && editingVideo && (
+                        <div className="modal-backdrop">
+                            <div className="edit-recipe-modal">
+                                <button 
+                                    className="edit-close-btn"
+                                    onClick={() => setShowEditModal(false)}
+                                >
+                                    <FaTimes />
+                                </button>
+                                <div className="edit-modal-header">
+                                    <h2 className="edit-modal-title">Edit Video Recipe</h2>
                                 </div>
-                            </form>
+                                <form className="edit-modal-form" onSubmit={handleUpdate}>
+                                    <div className="edit-form-group">
+                                        <label className="edit-form-label">Recipe Title</label>
+                                        <input
+                                            type="text"
+                                            className="edit-form-input"
+                                            value={editingVideo.title}
+                                            onChange={e => setEditingVideo({
+                                                ...editingVideo,
+                                                title: e.target.value
+                                            })}
+                                            required
+                                        />
+                                    </div>
+                                    
+                                    <div className="edit-form-group">
+                                        <label className="edit-form-label">Description</label>
+                                        <input
+                                            className="edit-form-input edit-form-textarea"
+                                            value={editingVideo.description}
+                                            onChange={e => setEditingVideo({
+                                                ...editingVideo,
+                                                description: e.target.value
+                                            })}
+                                            required
+                                        />
+                                    </div>
+                                    
+                                    <div className="edit-form-group">
+                                        <label className="edit-form-label">Ingredients</label>
+                                        <input
+                                            className="edit-form-input edit-form-textarea"
+                                            value={editingVideo.ingredients}
+                                            onChange={e => setEditingVideo({
+                                                ...editingVideo,
+                                                ingredients: e.target.value
+                                            })}
+                                            required
+                                        />
+                                    </div>
+                                    
+                                    <div className="edit-form-group">
+                                        <label className="edit-form-label">Instructions</label>
+                                        <input
+                                            className="edit-form-input edit-form-textarea"
+                                            value={editingVideo.instructions}
+                                            onChange={e => setEditingVideo({
+                                                ...editingVideo,
+                                                instructions: e.target.value
+                                            })}
+                                            required
+                                        />
+                                    </div>
+
+                                    <div className="edit-file-input-wrapper">
+                                        <label className="edit-file-input-label">
+                                            <span>Click to update video (optional)</span>
+                                            <input
+                                                type="file"
+                                                className="edit-file-input"
+                                                accept="video/mp4,video/quicktime,video/webm"
+                                                onChange={e => setEditingVideo({
+                                                    ...editingVideo,
+                                                    newVideo: e.target.files[0]
+                                                })}
+                                            />
+                                        </label>
+                                    </div>
+
+                                    <div className="edit-modal-buttons">
+                                        <button type="submit" className="edit-update-btn">
+                                            Update Recipe
+                                        </button>
+                                        <button 
+                                            type="button" 
+                                            className="edit-cancel-btn"
+                                            onClick={() => setShowEditModal(false)}
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
 
                 {showDetailsModal && selectedVideo && (
                     <div className="modal-backdrop">
@@ -471,9 +528,16 @@ const VideoRecipePage = () => {
                                 <h2>{selectedVideo.title}</h2>
                                 
                                 <div className="recipe-metadata">
-                                    <div className="metadata-item">
-                                        <span className="metadata-label">Created by</span>
-                                        <span className="metadata-value">{selectedVideo.user?.fullName|| 'Unknown'}</span>
+                                <div className="metadata-item">
+                                        <img 
+                                            src={getImageURL(selectedVideo.user?.imageURL) || "/src/images/defaultProfiles.png"} 
+                                            alt="Creator profile" 
+                                            className="creator-profile-pic"
+                                        />
+                                        <div className="metadata-text">
+                                            <span className="metadata-label">Created by</span>
+                                            <span className="metadata-value">{selectedVideo.user?.fullName || 'Unknown'}</span>
+                                        </div>
                                     </div>
                                     <div className="metadata-item">
                                         <span className="metadata-label">Created on</span>

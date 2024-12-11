@@ -65,6 +65,33 @@
     position: relative;
 }
 
+.video-creator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.creator-thumbnail {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #FF1493;
+    box-shadow: 0 2px 4px rgba(255, 20, 147, 0.15);
+}
+
+.creator-thumbnail:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+
+.video-creator span {
+    color: #666;
+    font-size: 0.9rem;
+}
+
 .video-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
@@ -126,20 +153,21 @@
     filter: brightness(110%);
 }
 
-/* Enhanced Modal Styles */
 .modal-backdrop {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     animation: fadeIn 0.3s ease;
 }
+
 
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -315,9 +343,22 @@
 
 .metadata-item {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: 10px;
+}
+
+.creator-profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #FF1493;
+    box-shadow: 0 2px 8px rgba(255, 20, 147, 0.2);
+}
+
+.metadata-text {
+    display: flex;
+    flex-direction: column;
 }
 
 .metadata-label {
@@ -326,9 +367,13 @@
 }
 
 .metadata-value {
-    font-size: 1.1rem;
-    color: #FF1493;
-    font-weight: 600;
+    font-weight: 500;
+    color: #333;
+}
+
+.creator-profile-pic:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
 }
 
 /* Responsive adjustments */
@@ -361,7 +406,7 @@
 /* Enhanced notification styles */
 .notification {
     position: fixed;
-    bottom: 30px;
+    top: 30px;  /* Changed from bottom to top */
     right: 30px;
     padding: 1rem 2rem;
     border-radius: 12px;
@@ -370,23 +415,24 @@
     z-index: 1001;
     animation: slideInOut 5s ease forwards;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    min-width: 300px; /* Optional: ensures consistent width */
 }
 
 @keyframes slideInOut {
     0% {
-        transform: translateX(100%);
+        transform: translateY(-100%) translateX(100%); /* Changed to slide from top */
         opacity: 0;
     }
     10% {
-        transform: translateX(0);
+        transform: translateY(0) translateX(0);
         opacity: 1;
     }
     90% {
-        transform: translateX(0);
+        transform: translateY(0) translateX(0);
         opacity: 1;
     }
     100% {
-        transform: translateX(100%);
+        transform: translateY(-100%) translateX(100%); /* Slides out to top-right */
         opacity: 0;
     }
 }
@@ -399,7 +445,22 @@
     background: linear-gradient(45deg, #e74c3c, #c0392b);
 }
 
-/* Upload Modal Styles */
+
+.notification {
+    transform-origin: top right;
+    animation: slideInOut 5s ease forwards, scaleNotification 0.2s ease;
+}
+
+@keyframes scaleNotification {
+    0% {
+        transform: scale(0.8);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+
 .upload-modal {
     position: fixed;
     top: 0;
@@ -491,3 +552,324 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
+
+.edit-recipe-modal {
+    background: white;
+    border-radius: 25px;
+    padding: 2rem 3rem; /* Less vertical padding, keep horizontal padding */
+    width: 95%;
+    max-width: 900px; /* Increased width */
+    position: relative;
+    animation: editModalSlide 0.4s ease;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .edit-modal-form {
+        grid-template-columns: 1fr; /* Single column on mobile */
+    }
+    
+    .edit-recipe-modal {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .edit-recipe-modal {
+        width: 95%;
+        padding: 2rem;
+        margin: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .edit-recipe-modal {
+        width: 100%;
+        padding: 1.5rem;
+        margin: 10px;
+        border-radius: 20px;
+    }
+}
+
+@keyframes editModalSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-70px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.edit-modal-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.edit-modal-title {
+    font-size: 2rem;
+    background: linear-gradient(45deg, #FF69B4, #FF1493);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.edit-modal-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 1.5rem;
+    max-height: 70vh; /* Limit maximum height */
+    overflow-y: auto;
+}
+
+.edit-form-group:first-child {
+    grid-column: 1 / -1;
+}
+
+.edit-form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+
+.edit-form-label {
+    position: absolute;
+    left: 12px;
+    bottom: -20px; /* Position it below the input */
+    font-size: 0.85rem;
+    color: #FF1493;
+    font-weight: 500;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.edit-form-input:focus + .edit-form-label {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+
+.edit-form-input {
+    width: 100%;
+    padding: 1.2rem;
+    border: 2px solid rgba(255, 105, 180, 0.2);
+    border-radius: 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    position: relative;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.edit-form-group::before {
+    content: '//';
+    position: absolute;
+    left: 15px;
+    bottom: 10px;
+    color: #FF69B4;
+    font-size: 0.8rem;
+    opacity: 0.5;
+    font-family: monospace;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.edit-form-group::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, #FF69B4, transparent);
+    border-radius: 2px;
+}
+
+.edit-form-input {
+    width: 100%;
+    padding: 1.2rem 1.2rem 1.2rem 2.5rem; /* Added left padding for the // */
+    border: 2px solid rgba(255, 105, 180, 0.2);
+    border-radius: 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    position: relative;
+}
+
+.edit-form-input:focus {
+    border-color: #FF1493;
+    box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.1);
+    outline: none;
+}
+
+
+.edit-form-input:focus {
+    background: linear-gradient(
+        to right bottom,
+        rgba(255, 255, 255, 0.95),
+        rgba(255, 105, 180, 0.05)
+    );
+}
+
+/* Specific styling for textarea */
+.edit-form-textarea {
+    min-height: 100px; /* Reduced height */
+    max-height: 150px; /* Limited maximum height */
+    resize: vertical;
+}
+
+/* Enhanced hover state */
+.edit-form-input:hover {
+    border-color: rgba(255, 105, 180, 0.4);
+}
+
+/* Style placeholder text */
+.edit-form-input::placeholder {
+    color: rgba(102, 102, 102, 0.6);
+    font-style: italic;
+}
+
+/* Add a subtle transition when typing */
+.edit-form-input:not(:placeholder-shown) {
+    transform: translateY(-2px);
+}
+
+/* Optional: Add character count styling */
+.edit-form-group .char-count {
+    position: absolute;
+    right: 15px;
+    bottom: 10px;
+    font-size: 0.8rem;
+    color: #FF69B4;
+    opacity: 0.7;
+}
+
+/* Optional: Add required field indicator */
+.edit-form-group.required .edit-form-label::after {
+    content: '*';
+    color: #FF1493;
+    margin-left: 4px;
+}
+
+/* Optional: Add success state */
+.edit-form-input.is-valid {
+    border-color: #2ecc71;
+    background: rgba(46, 204, 113, 0.05);
+}
+
+/* Optional: Add error state */
+.edit-form-input.is-invalid {
+    border-color: #e74c3c;
+    background: rgba(231, 76, 60, 0.05);
+}
+
+.edit-form-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.edit-file-input-wrapper {
+    grid-column: 1 / -1;
+    margin-top: 0.5rem;
+}
+
+.edit-file-input-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem;
+    background: linear-gradient(45deg, rgba(255, 105, 180, 0.1), rgba(255, 20, 147, 0.1));
+    border: 2px dashed #FF69B4;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-file-input-label:hover {
+    background: linear-gradient(45deg, rgba(255, 105, 180, 0.2), rgba(255, 20, 147, 0.2));
+}
+
+.edit-file-input {
+    display: none;
+}
+
+.edit-modal-buttons {
+    grid-column: 1 / -1;
+    margin-top: 1.5rem;
+}
+
+
+
+.edit-update-btn, .edit-cancel-btn {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.edit-update-btn {
+    background: linear-gradient(45deg, #FF69B4, #FF1493);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+}
+
+.edit-cancel-btn {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.edit-update-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+}
+
+.edit-cancel-btn:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+.edit-close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: #FF1493;
+}
+
+.edit-close-btn:hover {
+    transform: rotate(90deg);
+    background: #FF1493;
+    color: white;
+}
+
+/* Optional loading state for file input */
+.edit-file-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+}
+

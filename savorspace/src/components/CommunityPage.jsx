@@ -651,11 +651,11 @@ const StarRating = ({ userRating, averageRating, onRatingChange, totalRatings, o
     const [forkNotification, setForkNotification] = useState({ show: false, message: '', type: '' });
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [editedRecipe, setEditedRecipe] = useState({
-      title: recipe.title,
-      description: recipe.description,
-      ingredients: recipe.ingredients,
-      instructions: recipe.instructions,
-      imageURL: recipe.imageURL
+      title: recipe.title || '',
+      description: recipe.description || '',
+      ingredients: recipe.ingredients || '',
+      instructions: recipe.instructions || '',
+      imageURL: recipe.imageURL || ''
     })
 
     const token = localStorage.getItem('authToken');
@@ -958,13 +958,28 @@ useEffect(() => {
       }
   
       try {
+          // Create FormData and append all fields
+          const formData = new FormData();
+          formData.append('title', editedRecipe.title);
+          formData.append('description', editedRecipe.description);
+          formData.append('ingredients', editedRecipe.ingredients);
+          formData.append('instructions', editedRecipe.instructions);
+          
+          // Convert FormData to URLSearchParams
+          const params = new URLSearchParams();
+          for (const [key, value] of formData.entries()) {
+              params.append(key, value);
+          }
+
+          console.log('Sending data:', Object.fromEntries(params.entries()));
+  
           const response = await fetch(`http://localhost:8080/recipes/${recipe.recipeID}`, {
               method: 'PUT',
               headers: {
                   'Authorization': `Bearer ${token}`,
-                  'Content-Type': 'application/json'
+                  'Content-Type': 'application/x-www-form-urlencoded' // Changed content type
               },
-              body: JSON.stringify(editedRecipe)
+              body: params.toString() // Send as URL encoded form data
           });
   
           if (response.ok) {
@@ -1221,6 +1236,7 @@ useEffect(() => {
                 <div className="post-card-recipes-details">
                   {isEditing ? (
                     <input
+                      name='title'
                       type="text"
                       className="edit-title"
                       value={editedRecipe.title}
@@ -1231,7 +1247,8 @@ useEffect(() => {
                   )}
   
                   {isEditing ? (
-                    <textarea
+                    <input
+                      name="description"
                       className="edit-description"
                       value={editedRecipe.description}
                       onChange={(e) => setEditedRecipe({ ...editedRecipe, description: e.target.value })}
@@ -1244,7 +1261,8 @@ useEffect(() => {
                     <div className="ingredients-section">
                       <h4>Ingredients:</h4>
                       {isEditing ? (
-                        <textarea
+                        <input
+                          name="ingredients"
                           className="edit-ingredients"
                           value={editedRecipe.ingredients}
                           onChange={(e) => setEditedRecipe({ ...editedRecipe, ingredients: e.target.value })}
@@ -1259,7 +1277,8 @@ useEffect(() => {
                     <div className="instructions-section">
                       <h4>Instructions</h4>
                       {isEditing ? (
-                        <textarea
+                        <input
+                          name="instructions"
                           className="edit-instructions"
                           value={editedRecipe.instructions}
                           onChange={(e) => setEditedRecipe({ ...editedRecipe, instructions: e.target.value })}

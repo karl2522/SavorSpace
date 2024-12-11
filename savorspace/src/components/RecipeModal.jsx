@@ -112,7 +112,7 @@ const CreateRecipeModal = memo(
                 className="modal-input"
                 required
               />
-              <textarea
+              <input
                 placeholder="Recipe Description"
                 value={formData.description}
                 onChange={handleChange("description")}
@@ -130,7 +130,7 @@ const CreateRecipeModal = memo(
               className="modal-step"
               required
             >
-              <textarea
+              <input
                 placeholder="Enter ingredients (one per line)"
                 value={formData.ingredients}
                 onChange={handleChange("ingredients")}
@@ -148,7 +148,7 @@ const CreateRecipeModal = memo(
               className="modal-step"
               required
             >
-              <textarea
+              <input
                 placeholder="Enter cooking instructions"
                 value={formData.instructions}
                 onChange={handleChange("instructions")}
@@ -252,7 +252,7 @@ const CreateRecipeModal = memo(
                     <button
                       type="button"
                       onClick={() => setStep((prev) => prev - 1)}
-                      className="btn-secondary"
+                      className="btn-secondarys"
                     >
                       <IoChevronBack /> Previous
                     </button>
@@ -267,7 +267,7 @@ const CreateRecipeModal = memo(
                           alert("Please fill in all fields");
                         }
                       }}
-                      className="btn-primary"
+                      className="btn-primarys"
                     >
                       Next <IoChevronForward />
                     </button>
