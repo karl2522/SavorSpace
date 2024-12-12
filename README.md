@@ -21,8 +21,7 @@ A web-based platform where users can share, explore, and discover a variety of r
 
 ## UI/UX Design
 https://www.figma.com/design/eufIhOptnti7xwCxPScxPb/SavorSpace?node-id=0-1&node-type=canvas&t=QobigUtTF8NGs4nQ-0
-Explore the design concepts created for SavorSpace:
-Figma Design Link
+
 ## Website Deployed
 https://savorspace.systems/
 
