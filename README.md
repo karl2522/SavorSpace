@@ -19,7 +19,9 @@ A web-based platform where users can share, explore, and discover a variety of r
 ## Project Diagrams
 [Click here to view the project diagrams](https://cebuinstituteoftechnology-my.sharepoint.com/:b:/g/personal/jaredkarl_omen_cit_edu/EW4NR6RHSitOm5iFY4AfwO8B9u5TvFCBnFdUmPBTrMS6Xw?e=Luh1Yg)
 
+## UI/UX Design
 Figma link : https://www.figma.com/design/eufIhOptnti7xwCxPScxPb/SavorSpace?node-id=0-1&node-type=canvas&t=QobigUtTF8NGs4nQ-0
+[Click here to view the UI/UX Design]([https://cebuinstituteoftechnology-my.sharepoint.com/:b:/g/personal/jaredkarl_omen_cit_edu/EW4NR6RHSitOm5iFY4AfwO8B9u5TvFCBnFdUmPBTrMS6Xw?e=Luh1Yg](https://www.figma.com/design/eufIhOptnti7xwCxPScxPb/SavorSpace?node-id=0-1&node-type=canvas&t=QobigUtTF8NGs4nQ-0))
 
 
 
