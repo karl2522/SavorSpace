@@ -1,5 +1,7 @@
 /* SignupScreen Styles */
-.register-container {
+/* This file contains the styles for the SignupScreen component */
+
+.register-container { /* This is the main container for the signup form */
   justify-content: center;
   max-width: 2000px;
   padding: 50px 50px 50px 50px;
@@ -9,6 +11,7 @@
 }
 
 .form-section {
+  /* This is the form section of the signup form */
   flex: 1;
   padding: 3rem;
   max-width: 600px;
@@ -17,24 +20,28 @@
   justify-content: center;
 }
 
+/* This is the heading of the form section */
 .form-section h2 {
   font-size: 40px;
   font-weight: 600;
   color: #000;
 }
 
+/* This is the form container */
 .register-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
+/* This is the label for the form fields */
 .register-form label {
   font-size: 14px;
   font-weight: 600;
   color: #000;
 }
 
+/* This is the input fields for the form */
 .register-form input[type="text"],
 .register-form input[type="email"],
 .register-form input[type="password"] {
@@ -45,6 +52,7 @@
   font-size: 14px;
 }
 
+/* This is the container for the profile upload */
 .profile-upload-container {
   display: flex;
   align-items: center;
@@ -52,6 +60,7 @@
   margin-top: 10px;
 }
 
+/* This is the custom file upload button */
 .custom-file-upload {
   display: inline-flex;
   align-items: center;
@@ -66,19 +75,23 @@
   transition: background-color 0.3s;
 }
 
+/* This is the custom file upload button hover state */
 .custom-file-upload:hover {
   background-color: #ce2786;
 }
 
+/* This is the file input field */
 .file-input {
   display: none;
 }
 
+/* This is the file name */
 .file-name {
   color: #666;
   font-size: 14px;
 }
 
+/* This is the checkbox container */
 .profile-preview {
   width: 50px;
   height: 50px;
@@ -86,10 +99,12 @@
   object-fit: cover;
 }
 
+/* This is the checkbox container */
 .file-input {
   display: none;
 }
 
+/* This is the file name */
 .profile-preview {
   margin-top: 10px;
   width: 40px;
@@ -99,6 +114,7 @@
   border: 2px solid #ddd;
 }
 
+/* This is the checkbox container */
 .signup-checkbox {
   display: flex;
   align-items: center;
@@ -107,6 +123,7 @@
   color: #000;
 }
 
+/* This is the checkbox input */
 .register-btn {
   font-family: "Montserrat", sans-serif;
   padding: 10px;
@@ -120,16 +137,19 @@
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
+/* This is the button hover state */
 .register-btn:hover {
   background-color: #ce2786;
 }
 
+/* This is the social options container */
 .social-options {
   display: flex;
   gap: 2rem;
   align-items: ce;
 }
 
+/* This is the login options container */
 .login-options {
   color: #000;
   font-weight: 400;
@@ -138,12 +158,14 @@
   text-align: center;
 }
 
+/* This is the login link */
 .login-options .login {
   font-size: 14px;
   color: #d6589f;
   font-weight: 600;
 }
 
+/* This is the google button */
 .google-btn,
 .github-btn {
   display: flex;
@@ -162,17 +184,20 @@
   cursor: pointer;
 }
 
+/* This is the google button hover state */
 .google-btn {
   color: #000;
   border: 2px solid #d6589f;
   background-color: #fff;
 }
 
+/* This is the google button hover state */
 .google-btn:hover {
   background-color: #d6589f;
   color: #fff;
 }
 
+/* This is the github button */
 .github-btn {
   background-color: #000;
   color: #fff;
@@ -180,11 +205,13 @@
   text-decoration: none;
 }
 
+/* This is the github button hover state */
 .github-btn:hover {
   background-color: #333;
   border-color: #333;
 }
 
+/* This is the register hero container */
 .register-hero {
   width: 100%;
   max-width: 695px;
@@ -201,6 +228,7 @@
   position: relative;
 }
 
+/* This is the register hero image */
 .register-hero img {
   position: absolute;
   width: 646px;
@@ -210,6 +238,7 @@
   image-rendering: -webkit-optimize-contrast;
 }
 
+/* This is the register hero heading */
 .register-hero h3 {
   font-size: 48px;
   color: #fff;
@@ -218,6 +247,7 @@
   left: 50px;
 }
 
+/* This is the file size error container */
 .file-size-error {
   position: fixed;
   top: 50%;
@@ -238,6 +268,7 @@
   transition: opacity 0.5s ease-in-out;
 }
 
+/* This is the file size error container hidden state */
 /*Responsiveness for Screen 1366px to 1567px */
 @media (max-width: 1567px) {
   .register-container {
@@ -248,6 +279,7 @@
     gap: 1rem;
   }
 
+  /* This is the form section of the signup form */
   .form-section {
     flex: 1;
     padding: 3rem;
@@ -257,24 +289,28 @@
     justify-content: center;
   }
 
+  /* This is the heading of the form section */
   .form-section h2 {
     font-size: 30px;
     font-weight: 600;
     color: #000;
   }
 
+  /* This is the form container */
   .register-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
 
+  /* This is the label for the form fields */
   .register-form label {
     font-size: 12 px;
     font-weight: 600;
     color: #000;
   }
 
+  /* This is the input fields for the form */
   .register-form input[type="text"],
   .register-form input[type="email"],
   .register-form input[type="password"] {
@@ -285,27 +321,32 @@
     font-size: 12px;
   }
 
+  /* This is the container for the profile upload */
   .register-hero {
     width: 100%;
     max-width: 500px;
     height: 597px;
   }
 
+  /* This is the register hero image */
   .register-hero img {
     position: absolute;
     width: 100%;
     max-width: 690px;
   }
 
+  /* This is the register hero heading */
   .register-hero h3 {
     font-size: 35px;
     color: #fff;
   }
 
+  /* This is the file size error container */
   .register-btn {
     font-size: 13px;
   }
 
+  /* This is the file size error container */
   .login-options {
     color: #000;
     font-weight: 400;
@@ -314,12 +355,14 @@
     text-align: center;
   }
 
+  /* This is the login link */
   .login-options .login {
     font-size: 14px;
     color: #d6589f;
     font-weight: 600;
   }
 
+  /* This is the google button */
   .google-btn,
   .github-btn {
     font-size: 14px;
@@ -327,36 +370,44 @@
   }
 }
 
+/*Responsiveness for Screen 1366px to 1567px */
 @media (max-width: 1366px) {
   .register-hero {
     max-width: 400px;
     max-height: 497px;
   }
 
+  /* This is the register hero image */
   .register-hero img {
     max-width: 500px;
     max-height: 520px;
   }
 
+  /* This is the register hero heading */
   .register-hero h3 {
     font-size: 30px;
   }
 
+  /* This is the file size error container */
   .form-section {
     max-height: 500px;
   }
 
+  /* This is the file size error container */
   .form-section h2 {
     font-size: 30px;
   }
 
+  /* This is the form container */
   .register-form {
     gap: 10px;
   }
+  /* This is the label for the form fields */
   .register-form label {
     font-size: 12px;
   }
 
+  /* This is the input fields for the form */
   .register-form input[type="text"],
   .register-form input[type="email"],
   .register-form input[type="password"] {
@@ -367,23 +418,28 @@
     font-size: 10px !important;
   }
 
+  /* This is the container for the profile upload */
   .file-name {
     font-size: 12px;
   }
 
+  /* This is the checkbox container */
   .checkbox {
     font-size: 10px;
   }
 
+  /* This is the checkbox input */
   .login-options {
     font-size: 12px;
   }
 
+  /* This is the login link */
   .login-options .login {
     font-size: 13px;
   }
 }
 
+/*Responsiveness for Screen 1366px to 1567px */
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -399,12 +455,14 @@
   animation: fadeIn 0.3s ease;
 }
 
+/* This is the loader container */
 .loader-container {
   position: relative;
   width: 120px;
   height: 120px;
 }
 
+/* This is the loader ring */
 .loader-ring {
   position: absolute;
   width: 100%;
@@ -415,6 +473,7 @@
   animation: spin 1.5s linear infinite;
 }
 
+/* This is the loader ring 2 */
 .loader-ring-2 {
   position: absolute;
   width: 80%;
@@ -427,6 +486,7 @@
   animation: spin 2s linear infinite reverse;
 }
 
+/* This is the loader icon */
 .loader-icon {
   position: absolute;
   top: 50%;
@@ -436,6 +496,7 @@
   animation: bounce 1s ease infinite;
 }
 
+/* This is the loader text */
 .loading-text {
   margin-top: 24px;
   font-size: 20px;
@@ -444,11 +505,13 @@
   animation: pulse 1.5s ease-in-out infinite;
 }
 
+/* This is the loader dots */
 .loading-dots::after {
   content: "";
   animation: dots 2s infinite;
 }
 
+/* This is the loader dots */
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -458,6 +521,7 @@
   }
 }
 
+/* This is the loader bounce */
 @keyframes bounce {
   0%,
   100% {
@@ -468,6 +532,7 @@
   }
 }
 
+/* This is the loader pulse */
 @keyframes pulse {
   0%,
   100% {
@@ -480,6 +545,7 @@
   }
 }
 
+/* This is the loader dots */
 @keyframes dots {
   0% {
     content: "";
@@ -498,6 +564,7 @@
   }
 }
 
+/* This is the loader fade in */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -509,29 +576,35 @@
   }
 }
 
+/* This is the password field container */
 .password-field {
   width: 100%;
   position: relative;
 }
 
+/* This is the password field input */
 .password-field input {
   width: 100%;
   padding-right: 40px; /* Make space for the eye icon */
 }
 
+/* This is the password field button */
 .password-field button {
   opacity: 0.7;
   transition: opacity 0.2s;
 }
 
+/* This is the password field button hover state */
 .password-field button:hover {
   opacity: 1;
 }
 
+/* This is the password field button focus state */
 .password-field button:focus {
   outline: none;
 }
 
+/* This is the password field button icon */
 .password-validation {
   margin-top: 5px;
   font-size: 12px;
@@ -539,6 +612,7 @@
   overflow: hidden;
 }
 
+/* This is the password field button icon */
 .validation-item {
   display: flex;
   align-items: center;
@@ -547,19 +621,23 @@
   margin: 2px 0;
 }
 
+/* This is the password field button icon */
 .validation-item.valid {
-  color: #4caf50;
+  color: #4caf50; /* Green color */
 }
 
+/* This is the password field button icon */
 .validation-item.invalid {
-  color: #f44336;
+  color: #f44336; /* Red color */
 }
 
+/* This is the password field button icon */
 .validation-icon {
   display: flex;
   align-items: center;
 }
 
+/* This is the password field button icon */
 .password-strength-indicator {
   height: 4px;
   background-color: #e0e0e0;
@@ -567,32 +645,38 @@
   border-radius: 2px;
 }
 
+/* This is the password field button icon */
 .strength-meter {
   height: 100%;
   border-radius: 2px;
   transition: all 0.3s ease;
 }
 
+/* This is the password field button icon */
 .strength-weak {
   width: 25%;
-  background-color: #f44336;
+  background-color: #f44336; /* Red color */
 }
 
+/* This is the password field button icon */
 .strength-medium {
   width: 50%;
-  background-color: #ffa726;
+  background-color: #ffa726; /* Orange color */
 }
 
+/* This is the password field button icon */
 .strength-strong {
   width: 75%;
-  background-color: #66bb6a;
+  background-color: #66bb6a; /* Green color */
 }
 
+/* This is the password field button icon */
 .strength-very-strong {
   width: 100%;
-  background-color: #43a047;
+  background-color: #43a047; /* Dark green color */
 }
 
+/* This is the password field button icon */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -606,23 +690,27 @@
   }
 }
 
+/* This is the password field button icon */
 .validation-item {
   display: flex;
   align-items: center;
   gap: 5px;
-  color: #666;
+  color: #666; /* Gray color */
   margin: 2px 0;
   transition: all 0.2s ease;
 }
 
+/* This is the password field button icon */
 .validation-item.valid {
-  color: #4caf50;
+  color: #4caf50; /* Green color */
 }
 
+/* This is the password field button icon */
 .validation-item.invalid {
-  color: #f44336;
+  color: #f44336; /* Red color */
 }
 
+/* This is the password field button icon */
 @keyframes fadeInSlideRight {
   0% {
     opacity: 0;

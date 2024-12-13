@@ -1,3 +1,4 @@
+/* Notification styles */
 .notification-badge {
     position: absolute;
     top: -5px;
@@ -12,7 +13,7 @@
 .notification-item.unread {
     background-color: #f0f7ff;
 }
-
+/* Add hover effects */
 .notification-item.read {
     background-color: #ffffff;
 }
