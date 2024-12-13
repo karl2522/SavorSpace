@@ -1,10 +1,12 @@
 import '../styles/GeneralStyles.css';
 
+// GeneralSettings component
 const GeneralSettings = () => {
   return (
     <div className="general-settings-container">
       <h1 className="general-title">General Settings</h1>
-      
+
+      // Display Preferences
       <section className="settings-section">
         <h2 className="general-h2">Display Preferences</h2>
         <div className="form-group-general">
@@ -25,6 +27,7 @@ const GeneralSettings = () => {
         </div>
       </section>
 
+      // Recipe Display
       <section className="settings-section">
         <h2 className="general-h2">Recipe Display</h2>
         <div className="form-group-general checkbox">
@@ -41,6 +44,7 @@ const GeneralSettings = () => {
         </div>
       </section>
 
+      // Language and Region
       <section className="settings-section">
         <h2 className="general-h2">Language and Region</h2>
         <div className="form-group-general">
@@ -66,7 +70,7 @@ const GeneralSettings = () => {
         </div>
       </section>
 
-      <button className="save-general-button">Save Changes</button>
+      <button className="save-general-button">Save Changes</button> // Save Changes button
     </div>
   );
 };
