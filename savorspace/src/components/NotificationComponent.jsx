@@ -7,13 +7,14 @@ import { AiFillHeart, AiFillStar } from 'react-icons/ai';
 import { FiFlag } from 'react-icons/fi';
 import { FaComment } from 'react-icons/fa';
 
-
+/*Notification Component*/
 const NotificationComponent = ({ username }) => {
     const [notifications, setNotifications] = useState([]);
     const [isNotificationModal, setIsNotificationModal] = useState(false);
     const notificationRef = useRef(null);
     const navigate = useNavigate();
 
+    //Notif click
     const handleNotificationClick = async (notification) => {
         try {
             await markAsRead(notification.id);
@@ -32,7 +33,7 @@ const NotificationComponent = ({ username }) => {
             console.error('Error marking notification as read:', error);
         }
     };
-
+    
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
