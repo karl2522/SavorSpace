@@ -56,51 +56,54 @@ const AdminManageReports = () => {
   const fetchReportedRecipes = async () => {
     try {
       setError(null);
-      const token = sessionStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken'); // Get admin token from session storage
       const response = await axios.get('http://localhost:8080/admin/reported-recipes', {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Set authorization header with token
         },
       });
       console.log('Reported Recipes Response:', response.data); // Debug log
       setReportedRecipes(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-      console.error('Error fetching reported recipes:', error);
-      setError('Failed to load reported recipes');
+      console.error('Error fetching reported recipes:', error); // Log error
+      setError('Failed to load reported recipes'); // Set error message
       setReportedRecipes([]);
     } finally {
-      setLoading(false);
+      setLoading(false); // Set loading to false
     }
   };
 
+  // Handle action button click
   const handleActionClick = async (reportId, action) => {
     try {
-        const report = reportedRecipes.find(r => r.id === reportId);
-        
+        const report = reportedRecipes.find(r => r.id === reportId); // Find report by ID
+
+        // Check if report exists
         if (!report) {
-            console.error('Report not found');
+            console.error('Report not found'); // Log error
             return;
         }
 
+        // Handle action based on action type
         if (action === 'DELETE') {
             setReportToDelete(report);
-            setShowDeleteModal(true);
+            setShowDeleteModal(true); // Show delete modal
             return;
         } else {
             const token = sessionStorage.getItem('adminToken');
             await axios.put(
-                `http://localhost:8080/admin/reports/${reportId}/status`,
+                `http://localhost:8080/admin/reports/${reportId}/status`, // Update report status
                 { status: action },
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`, // Set authorization header with token
                     },
                 }
             );
-            await fetchReportedRecipes();
+            await fetchReportedRecipes(); // Fetch reported recipes
         }
     } catch (error) {
-        console.error('Error handling report action:', error);
+        console.error('Error handling report action:', error); // Log error
     }
 };
 
