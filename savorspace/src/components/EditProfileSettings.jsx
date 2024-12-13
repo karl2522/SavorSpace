@@ -180,20 +180,20 @@ const EditProfileSettings = () => {
         if (!token || !userId) return; // Return if no token or user ID
 
         try {
-            if (passwordData.newPassword || passwordData.oldPassword) {
+            if (passwordData.newPassword || passwordData.oldPassword) { // Check if password fields are filled
                 if (!validatePasswords()) {
                     return;
-                }
-                const passwordResponse = await fetch('http://localhost:8080/users/change-password', {
+                } // Validate passwords
+                const passwordResponse = await fetch('http://localhost:8080/users/change-password', { // Fetch password change
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
-                    },
+                    }, // Set headers
                     body: JSON.stringify({
                         oldPassword: passwordData.oldPassword,
                         newPassword: passwordData.newPassword
-                    })
+                    }) // Set body
                 });
 
                 if (!passwordResponse.ok) {
