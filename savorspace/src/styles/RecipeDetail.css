@@ -1,13 +1,15 @@
+/* This CSS file is for styling the RecipeDetail component */
 * {
   box-sizing: border-box;
 }
 
+/* Recipe Detail Page Styles */
 .recipe-detail-container {
     max-width: 1500px;
     margin: 0 auto;
     padding: 20px;
   }
-  
+
   .back-button {
     position: absolute;
     left: 50px;
