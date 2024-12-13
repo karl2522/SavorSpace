@@ -5,6 +5,7 @@ import '../styles/FavoriteRecipes.css';
 import { MdFavorite } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
+
 const FavoriteRecipes = () => {
     const [favorites, setFavorites] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,13 +15,14 @@ const FavoriteRecipes = () => {
         fetchFavorites();
     }, []);
 
+    /* Fetch favorites */
     const fetchFavorites = async () => {
         try {
             const token = localStorage.getItem('authToken');
             console.log('Token:', token ? 'Token exists' : 'No token');
 
             if (!token) {
-                throw new Error('No authentication token found');
+                throw new Error('No authentication token found'); /* Error handling */
             }
 
             console.log('Fetching favorites...');
@@ -33,38 +35,41 @@ const FavoriteRecipes = () => {
             console.log('Response status:', response.status);
 
             if (!response.ok) {
-                throw new Error('Failed to fetch favorites');
+                throw new Error('Failed to fetch favorites'); /* Error handling */
             }
 
             const data = await response.json();
-            console.log('Received data:', data);
+            console.log('Received data:', data); /* Debugging */
 
             if (Array.isArray(data)) {
                 setFavorites(data);
-                console.log('Favorites set:', data.length, 'items');
+                console.log('Favorites set:', data.length, 'items'); /* Debugging */
             } else {
                 console.error('Invalid data format:', data);
                 setFavorites([]);
             }
         } catch (error) {
             console.error('Error fetching favorites:', error);
-            setError(error.message || 'Failed to load favorites');
+            setError(error.message || 'Failed to load favorites'); /* Error handling */
         } finally {
             setLoading(false);
         }
     };
-
+    /* Debugging */
     useEffect(() => {
-        console.log('Current favorites state:', favorites);
+        console.log('Current favorites state:', favorites); /* Debugging */
     }, [favorites]);
 
+    /* Remove favorite */
     const handleRemoveFavorite = async (recipeId) => {
         try {
             const token = localStorage.getItem('authToken');
             if (!token) {
                 throw new Error('No authentication token found');
             }
-    
+            /* Error handling */
+
+            /* Debugging */
             const response = await fetch(`http://localhost:8080/api/favorites/${recipeId}`, {
                 method: 'DELETE',
                 headers: {
@@ -73,12 +78,12 @@ const FavoriteRecipes = () => {
             });
     
             if (!response.ok) {
-                throw new Error('Failed to remove favorite');
+                throw new Error('Failed to remove favorite'); /* Error handling */
             }
     
             setFavorites(prev => prev.filter(fav => fav.recipeId !== recipeId));
         } catch (error) {
-            console.error('Error removing favorite:', error);
+            console.error('Error removing favorite:', error); /* Error handling */
         }
     };
 
