@@ -4,6 +4,7 @@ import axios from 'axios';
 import defaultProfile from '../images/defaultProfiles.png';
 import '../styles/AdminManageReports.css';
 
+// AdminManageReports component
 const AdminManageReports = () => {
   const [admin, setAdmin] = useState(null);
   const [reportedRecipes, setReportedRecipes] = useState([]);
@@ -14,11 +15,13 @@ const AdminManageReports = () => {
   const [reportToDelete, setReportToDelete] = useState(null);
   const [error, setError] = useState(null);
 
+  // Fetch admin and reported recipes on component mount
   useEffect(() => {
     fetchAdmin();
     fetchReportedRecipes();
   }, []);
 
+  // Fetch admin details
   const fetchAdmin = async () => {
     try {
       const token = sessionStorage.getItem('adminToken');
