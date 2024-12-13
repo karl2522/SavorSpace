@@ -1,0 +1,145 @@
+/* General container styling */
+.placeholder-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    color: #333;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode styling */
+.placeholder-container.dark-mode {
+    background-color: #333;
+    color: #f9f9f9;
+    border-color: #444;
+}
+
+/* Header styles */
+.placeholder-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.placeholder-header h1 {
+    font-size: 28px;
+    color: inherit;
+}
+
+.placeholder-header p {
+    font-size: 16px;
+}
+
+/* Info section */
+.placeholder-info {
+    margin-bottom: 20px;
+}
+
+.placeholder-info h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.placeholder-info p {
+    font-size: 16px;
+}
+
+/* Current count section */
+.placeholder-count {
+    margin-bottom: 20px;
+}
+
+.placeholder-count h3 {
+    font-size: 20px;
+}
+
+.placeholder-count p {
+    font-size: 16px;
+}
+
+/* Actions section */
+.placeholder-actions {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.action-button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: #0056b3;
+    color: #fff;
+}
+
+.clear-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.clear-button:hover {
+    background-color: #a71d2a;
+}
+
+.toggle-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.detail-button {
+    background-color: #28a745;
+    color: white;
+}
+
+.detail-button:hover {
+    background-color: #19692c;
+}
+
+/* List section */
+.placeholder-list {
+    margin-bottom: 20px;
+}
+
+.placeholder-list h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.item-list {
+    list-style: none;
+    padding: 0;
+}
+
+.item {
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Details section */
+.placeholder-details {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* Footer */
+.placeholder-footer {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+}
