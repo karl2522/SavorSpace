@@ -18,12 +18,13 @@ const AccountReactivation = () => {
         setShowModal(true);
 
     };
-
+    /* Function to show toast message */
     const showToast = (message, type) => {
         setToast({ show: true, message, type });
         setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
     };
 
+    /* Function to confirm account reactivation */
     const confirmReactivation = async () => {
         setIsLoading(true);
         setError('');
@@ -64,7 +65,7 @@ const AccountReactivation = () => {
             setShowModal(false);
         }
     };
-
+    /* Function to cancel account reactivation */
     const handleCancelReactivation = () => {
         setShowModal(false);
     }
@@ -80,7 +81,7 @@ const AccountReactivation = () => {
                         <p>{toast.message}</p>
                     </div>
                 </div>
-            )}
+            )} //Toast Message
             <h2>Reactivate Your Account</h2>
             <form onSubmit={handleReactivate}>
                 <div className="form-deactivate">
