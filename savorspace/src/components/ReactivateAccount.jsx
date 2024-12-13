@@ -119,7 +119,7 @@ const AccountReactivation = () => {
                             border: 'none',
                             cursor: 'pointer',
                             padding: '0',
-                        }}
+                        }} /* Show/Hide Password Button */
                     >
                         {showPassword ? <IoEyeOffOutline size={20} /> : <IoEyeOutline size={20} />}
                     </button>            
