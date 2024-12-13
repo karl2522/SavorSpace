@@ -196,18 +196,20 @@ const EditProfileSettings = () => {
                     }) // Set body
                 });
 
+                // Handle password response
                 if (!passwordResponse.ok) {
                     const errorText = await passwordResponse.text();
                     setPasswordError(errorText || 'Failed to update password');
                     return;
                 }
 
+                // Set update message
                 setUpdateMessage('Password updated successfully');
                 setPasswordData({
                     oldPassword: '',
                     newPassword: '',
                     confirmPassword: ''
-                });
+                }); // Clear password fields
             }
 
             // Handle profile update
@@ -218,22 +220,23 @@ const EditProfileSettings = () => {
                 }
             });
 
+            // Handle me response
             if (!meResponse.ok) throw new Error('Failed to get user data');
-            const userData = await meResponse.json();
+            const userData = await meResponse.json(); // Get user data
 
-            const formDataToSend = new FormData();
+            const formDataToSend = new FormData(); // Create form data
 
             const userUpdatedData = {
                 fullName: formData.fullName,
                 email: formData.email,
-            };
+            }; // Set user updated data
             formDataToSend.append('user', new Blob([JSON.stringify(userUpdatedData)], {
                 type: 'application/json'
-            }));
+            })); // Append user data
 
             if(selectedFile) {
                 formDataToSend.append('profilePic', selectedFile);
-            }
+            } // Append profile picture
 
             const response = await fetch(`http://localhost:8080/users/${userData.id}`, {
                 method: 'PUT',
@@ -242,11 +245,11 @@ const EditProfileSettings = () => {
                     //'Content-Type': 'application/json'
                 },
                 body: formDataToSend
-            });
+            }); // Fetch profile update
 
             if (!response.ok) {
                 throw new Error('Failed to update profile');
-            }
+            } // Throw error if response is not ok
 
             const updatedData = await response.json();
             setUsername(updatedData.fullName);
