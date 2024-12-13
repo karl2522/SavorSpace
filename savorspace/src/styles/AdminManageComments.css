@@ -1,47 +1,48 @@
+/* CSS for the AdminManageComments component */
 .admin-comments {
     display: flex;
     height: 100vh;
     overflow: hidden;
 }
-
+/* Sidebar Styles */
 .sidebar {
     width: 280px;
-    background-color: #ffffff;
+    background-color: white;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
-
+/* Logo Styles */
 .logo {
     display: flex;
     align-items: center;
     margin-bottom: 30px;
 }
-
+/* Logo Image */
 .logo-image {
     width: 50px;
     height: 50px;
     margin-right: 10px;
 }
-
+/* Logo Text */
 .logo-text h2 {
     margin: 0;
     color: #333;
 }
-
+/* Logo Text Paragraph */
 .logo-text p {
     margin: 0;
     color: #666;
 }
-
+/* Sidebar Navigation */
 .sidebar-nav ul {
     list-style: none;
     padding: 0;
 }
-
+/* Sidebar Navigation List */
 .sidebar-nav li {
     margin-bottom: 10px;
 }
-
+/* Sidebar Navigation Link */
 .sidebar-nav a, .sidebar-nav button {
     display: block;
     padding: 10px;
@@ -50,60 +51,60 @@
     border-radius: 5px;
     transition: background-color 0.3s;
 }
-
+/* Sidebar Navigation Link Hover */
 .sidebar-nav a:hover, .sidebar-nav button:hover {
     background-color: #f0f0f0;
 }
-
+/* Sidebar Navigation Link Active */
 .sidebar-nav a.active {
     background-color: d6589a;
     color: white;
 }
-
+/* Main Content Styles */
 .admin-profile {
     margin-top: 30px;
     text-align: center;
 }
-
+/* Admin Avatar */
 .admin-avatar {
     width: 80px;
     height: 80px;
     border-radius: 50%;
     margin-bottom: 10px;
 }
-
+/* Main Content */
 .main-content {
     flex: 1;
     padding: 20px;
     background-color: #f8f9fa;
 }
-
+/* Content Header */
 .content-header {
     margin-bottom: 30px;
 }
-
+/* Header Title */
 .header-title h1 {
     margin: 0;
     color: #333;
 }
-
+/* Header Subtitle */
 .header-title span {
     color: d6589a;
 }
-
+/* User Image */
 .user-image {
     width: 50px;
     height: 50px;
     overflow: hidden;
     border-radius: 50%;
 }
-
+/* User Image */
 .user-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
+/* Comments Section */
 .comments-section {
     background-color: #ffffff;
     border-radius: 12px;
@@ -113,30 +114,30 @@
     display: flex;
     flex-direction: column;
 }
-
+/* Comments Header */
 .comments-header {
     padding: 20px;
     border-bottom: 1px solid #eee;
     background-color: #ffffff;
 }
-
+/* Comments Header Title */
 .comments-table {
     overflow-y: auto;
     flex: 1;
 }
-
+/* Comments Table */
 .comments-table table {
     width: 100%;
     border-collapse: collapse;
 }
-
+/* Comments Table Header and Data Cells */
 .comments-table th,
 .comments-table td {
     padding: 15px;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
-
+/* Comments Table Header */
 .comments-table th {
     position: sticky;
     top: 0;
@@ -144,14 +145,14 @@
     background-color: #f8f9fa;
     font-weight: 600;
 }
-
+/* Comment Content */
 .comment-content {
     max-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
+/* Comment Actions */
 .action-button {
     padding: 6px 12px;
     border-radius: 4px;
@@ -159,16 +160,16 @@
     cursor: pointer;
     font-weight: 500;
 }
-
+/* Edit Button */
 .action-button.delete {
-    background-color: #dc3545;
+    background-color: #dc3545; /* Red */
     color: white;
 }
-
+/* Delete Button */
 .action-button.delete:hover {
-    background-color: #c82333;
+    background-color: #c82333; /* Darker red */
 }
-
+/* Modal Styles */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -181,31 +182,31 @@
     align-items: center;
     z-index: 1000;
 }
-
+/* Modal Overlay */
 .modal-content {
     background: white;
     padding: 20px;
     border-radius: 8px;
     width: 400px;
 }
-
+/* Modal Content */
 .modal-content h2 {
     color: #333;
     margin-bottom: 15px;
 }
-
+/* Modal Content Title */
 .modal-content p {
     color: #666;
     margin-bottom: 10px;
 }
-
+/* Modal Content Paragraph */
 .modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     margin-top: 20px;
 }
-
+/* Modal Actions */
 .cancel-button {
     padding: 8px 16px;
     border: 1px solid #ddd;
@@ -235,42 +236,42 @@
 .delete-button:hover {
     background-color: #c82333;
 }
-
+/* Delete Button Hover */
 .user-profile-pic {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
 }
-
+/* User Profile Picture */
 .comment-header {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
+/* Comment Header */
 .comment-info {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stack the elements vertically */
 }
-
+/* Comment Info */
 .comment-username {
     font-weight: 500;
     color: #333;
 }
-
+/* Comment Username */
 .comment-date {
     font-size: 0.85rem;
     color: #666;
 }
-
+/* Loading Spinner */
 .loading-spinner {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 200px;
 }
-
+/* Error Message */
 .error-message {
     color: #dc3545;
     text-align: center;
