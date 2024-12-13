@@ -1,87 +1,110 @@
+/*This file contains the styles for the AdminManageReports component.*/
+/* You can add more styles to this file to customize the component. */
+
+
 .amr-admin-reports {
     display: flex;
     min-height: 100vh;
     background-color: #f5f5f5;
   }
+
+/* Sidebar Styles */
   .amr-logo {
     display: flex;
     align-items: center;
     margin-bottom: 30px;
   }
+  /* Logo Image */
   .amr-logo-image {
     width: 40px;
     height: 40px;
     margin-right: 10px;
   }
+  /* Logo Text */
   .amr-logo-text h2 {
     margin: 0;
     font-size: 1.5rem;
   }
+  /* Logo Text Paragraph */
   .amr-logo-text p {
     margin: 0;
     font-size: 0.9rem;
     opacity: 0.7;
   }
+  /* Sidebar Navigation */
   .amr-admin-profile {
     margin-top: auto;
     padding: 20px 0;
     border-top: 1px solid #333;
   }
+  /* Sidebar Navigation List */
   .amr-admin-avatar {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     margin-bottom: 10px;
   }
+  /* Sidebar Navigation Heading */
   .amr-main-content {
     flex: 1;
     padding: 20px;
   }
+  /* Main Content Styles */
   .amr-content-header {
     margin-bottom: 30px;
   }
+  /* Content Header Title */
   .amr-header-title h1 {
     margin: 0;
     font-size: 2rem;
   }
+  /* Content Header Subtitle */
   .amr-reports-section {
     background-color: white;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
+  /* Reports Section */
   .amr-reports-header {
     margin-bottom: 20px;
   }
+  /* Reports Header Title */
   .amr-reports-table table {
     width: 100%;
     border-collapse: collapse;
   }
+  /* Reports Table */
   .amr-reports-table th,
   .amr-reports-table td {
     padding: 15px;
     text-align: left;
     border-bottom: 1px solid #eee;
   }
+  /* Reports Table Header */
   .amr-reports-table th {
     background-color: #f8f9fa;
     font-weight: 600;
   }
+  /* Reports Table Data */
   .amr-recipe-info {
     display: flex;
     align-items: center;
     gap: 10px;
   }
+  /* Recipe Info */
   .amr-recipe-thumbnail {
     width: 50px;
     height: 50px;
     object-fit: cover;
     border-radius: 5px;
   }
+  /* Recipe Thumbnail */
   .amr-action-buttons {
     display: flex;
     gap: 10px;
   }
+  /* Action Buttons */
   .amr-action-button {
     padding: 8px 16px;
     border: none;
@@ -90,32 +113,39 @@
     font-weight: 500;
     transition: background-color 0.3s;
   }
+  /* Action Button Styles */
   .amr-action-button.approve {
     background-color: #28a745;
     color: white;
   }
+  /* Approve Button */
   .amr-action-button.delete {
     background-color: #dc3545;
     color: white;
   }
+  /* Delete Button */
   .amr-status-badge {
     padding: 5px 10px;
     border-radius: 15px;
     font-size: 0.85rem;
     font-weight: 500;
   }
+  /* Status Badge */
   .amr-status-badge.pending {
     background-color: #ffeeba;
     color: #856404;
   }
+  /* Pending Status */
   .amr-status-badge.resolved {
     background-color: #d4edda;
     color: #155724;
   }
+  /* Resolved Status */
   .amr-status-badge.delete {
     background-color: #f8d7da;
     color: #721c24;
   }
+  /* Delete Status */
   .amr-loading,
   .amr-no-reports {
     text-align: center;
@@ -123,6 +153,7 @@
     font-size: 1.1rem;
     color: #666;
   }
+  /* Loading and No Reports Styles */
   /* Modal styles */
   .amr-modal-overlay {
     position: fixed;
@@ -136,6 +167,7 @@
     align-items: center;
     z-index: 1000;
   }
+  /* Modal Overlay */
   .amr-modal-content {
     background-color: white;
     padding: 20px;
@@ -143,22 +175,26 @@
     width: 400px;
     max-width: 90%;
   }
+  /* Modal Content */
   .amr-modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     margin-top: 20px;
   }
+  /* Modal Actions */
   .amr-modal-actions button {
     padding: 8px 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
   }
+  /* Modal Buttons */
   .amr-modal-actions .cancel-button {
     background-color: #6c757d;
     color: white;
   }
+  /* Cancel Button */
   .amr-modal-actions .delete-button {
     background-color: #dc3545;
     color: white;

@@ -1,3 +1,6 @@
+/*AdminSignup.css*/
+
+/*signup-container*/
 .signup-container {
   padding: 50px 50px 50px 50px;
   display: flex;
@@ -6,7 +9,7 @@
   overflow: hidden;
   height: 100vh;
 }
-
+/*signup-form-container*/
 .signup-form-container {
   flex: 1;
   display: flex;
@@ -15,7 +18,7 @@
   justify-content: center;
   padding: 2rem;
 }
-
+/*logo*/
 .logo {
   margin-bottom: 2rem;
   position: relative;
@@ -26,36 +29,36 @@
   cursor: pointer;
   animation: float 3s ease-in-out infinite;
 }
-
+/*chef-hat-image*/
 .chef-hat-image {
   width: 100px;
   height: auto;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
-
+/*logo:hover .chef-hat-image*/
 .logo:hover .chef-hat-image {
   transform: scale(1.1) rotate(5deg);
 }
-
+/*login-title*/
 .signup-title {
   font-size: 3rem;
   margin-bottom: 5rem;
   color: #111827;
 }
-
+/*highlight*/
 .form-group {
   width: 100%;
   max-width: 300px;
   margin-bottom: 1.5rem;
 }
-
+/*form-group label*/
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
   color: #374151;
 }
-
+/*form-group input*/
 .form-group input {
   width: 100%;
   padding: 0.75rem;
@@ -64,23 +67,23 @@
   outline: none;
   transition: border-color 0.2s;
 }
-
+/*form-group input:focus*/
 .form-group input:focus {
   border-color: #ce2786;
 }
-
+/*file-container*/
 .file-container {
   display: flex;
   gap: 20px;
   justify-content: center;
   align-self: center;
 }
-
+/*file-name-admin*/
 .file-name-admin {
   font-size: 12px;
   color: #374151;
 }
-
+/*custom-file-upload-admin*/
 .custom-file-upload-admin {
   display: inline-flex;
   width: 17%;
@@ -95,11 +98,11 @@
   font-size: 14px;
   transition: background-color 0.3s;
 }
-
+/*custom-file-upload-admin:hover*/
 .custom-file-upload-admin:hover {
   background-color: #ce2786;
 }
-
+/*create-account-btn*/
 .create-account-btn {
   width: 100%;
   max-width: 300px;
@@ -112,32 +115,32 @@
   font-weight: 500;
   transition: background-color 0.2s;
 }
-
+/*create-account-btn:hover*/
 .create-account-btn:hover {
   background-color: #ce2786;
 }
-
+/*welcome-container*/
 .welcome-container {
   flex: 1;
-  background-color: #d6589f;
+  background-color: #d6589f; /* pink */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: white; /*just white*/
   text-align: center;
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
 }
-
+/*welcome-content*/
 .welcome-content {
   padding: 2rem;
 }
-
+/*welcome-content h2*/
 .welcome-content h2 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
 }
-
+/*welcome-content p*/
 .welcome-content p {
   margin-bottom: 2rem;
   opacity: 0.9;
@@ -145,7 +148,7 @@
   margin-left: auto;
   margin-right: auto;
 }
-
+/*sign-in-btn*/
 .sign-in-btn {
   padding: 0.75rem 2rem;
   background-color: transparent;
@@ -156,35 +159,35 @@
   font-weight: 500;
   transition: all 0.2s;
 }
-
+/*sign-in-btn:hover*/
 .sign-in-btn:hover {
   background-color: white;
   color: #ce2786;
 }
-
+/*sign-up-btn*/
 @media (max-width: 768px) {
   .signup-container {
     flex-direction: column;
   }
-
+/*sign-up-btn*/
   .welcome-container {
     border-radius: 0;
     border-top-left-radius: 2rem;
     border-top-right-radius: 2rem;
   }
 }
-
+/*fadeInSlideRight*/
 @keyframes fadeInSlideRight {
   0% {
     opacity: 0;
     transform: translateX(50px);
   }
-  100% {
+  100% { /*100%*/
     opacity: 1;
     transform: translateX(0);
   }
 }
-
+/*float*/
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
