@@ -24,32 +24,35 @@ const AdminManageReports = () => {
   // Fetch admin details
   const fetchAdmin = async () => {
     try {
-      const token = sessionStorage.getItem('adminToken');
+      const token = sessionStorage.getItem('adminToken'); // Get admin token from session storage
       if (!token) {
         navigate('/admin/login');
         return;
       }
 
+      // Fetch admin details from the server
       const response = await axios.get('http://localhost:8080/admin/ad', {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Set authorization header with token
         },
       });
 
+      // Set profile picture URL
       if(response.data.imageURL) {
         const profilePicURL = response.data.imageURL.startsWith('http')
-            ? response.data.imageURL 
+            ? response.data.imageURL // Use full URL if available
             : `http://localhost:8080${response.data.imageURL}`;
         setProfilePic(profilePicURL);
       } else {
-        setProfilePic(defaultProfile);
+        setProfilePic(defaultProfile); // Use default profile picture if no URL is available
       }
       setAdmin(response.data);
-    } catch (error) {
+    } catch (error) { // Handle errors
       console.error('Error fetching admin:', error);
     }
   };
 
+  // Fetch reported recipes
   const fetchReportedRecipes = async () => {
     try {
       setError(null);
