@@ -8,6 +8,7 @@ import pejanaImage from '../images/pejana.png';
 import '../styles/AboutUs.css';
 
 export default function AboutUs() {
+ //Team members data
   const teamMembers = [
     {
       name: "Jared Karl Omen",
@@ -60,7 +61,7 @@ export default function AboutUs() {
     { 
       name: "Jes Chavez",
       role: "UI/UX Designer",
-      description: "Jes is dedicated to crafting user experiences that are not only visually appealing but also accessible, creating products that serve diverse user needs.",
+      description: "Jes is dedicated to crafting user experiences that are not only visually appealing but also accessible, creating products that serve diverse user needs.", /*kuyawa*/
       expertise: "Sketch Figma AdobeXD CSS HTML",
       projects: [
         "Website Redesign for Tech Company",
@@ -70,9 +71,9 @@ export default function AboutUs() {
       image: chavezImage
     }
   ];
-
+  //Intersection Observer
   const observer = useRef(null);
-
+  //Fade-in effect
   useEffect(() => {
     observer.current = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -81,20 +82,21 @@ export default function AboutUs() {
         }
       });
     });
-
+  //Observe fade-in elements
     const elements = document.querySelectorAll('.fade-in');
     elements.forEach(element => observer.current.observe(element));
 
     return () => {
       if (observer.current) {
-        observer.current.disconnect();
+        observer.current.disconnect(); //disconnect observer
       }
     };
   }, []);
 
+  //Render
   return (
     <div className="about-container">
-      <header className="hero-section fade-in">
+      <header className="hero-section fade-in"> //Hero Section
         <h1>About Savor<span>Space</span></h1>
         <p>Bringing food lovers together, one recipe at a time</p>
         <Link to="/register">
@@ -102,6 +104,7 @@ export default function AboutUs() {
         </Link>
       </header>
 
+      //Mission Section
       <section className="mission-section fade-in">
         <h2>Our Mission</h2>
         <div className="mission-cards">
@@ -116,6 +119,7 @@ export default function AboutUs() {
         </div>
       </section>
 
+      //Team Section
       <section className="team-section fade-in">
         <h2>Meet Our Team</h2>
         <div className="team-grid">
@@ -141,14 +145,16 @@ export default function AboutUs() {
         </div>
       </section>
 
+      //Join Section
       <section className="join-section fade-in">
-        <h2>Join Our Culinary Community</h2>
+        <h2>Join Our Culinary Community</h2> //Join our culinary community
         <p>Whether you&apos;re a seasoned chef or a curious beginner, there&apos;s a place for you at SavorSpace. Start your flavorful journey today!</p>
         <Link to="/register">
           <button className="sign-up-button">Sign Up Now</button>
         </Link>
       </section>
 
+      //Contact Section
       <footer className="contact-section fade-in">
         <h2>Contact US</h2>
         <div className="social-links">
