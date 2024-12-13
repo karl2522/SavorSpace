@@ -93,48 +93,53 @@ const EditProfileSettings = () => {
         return true; // Return true if all checks pass
     };
 
+    // Fetch profile data
     useEffect(() => {
         fetchProfileData();
     }, []);
 
+    // Fetch profile data
     const fetchProfileData = async () => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('authToken'); // Get auth token
         if (!token) return;
 
+        // Fetch user data
         try {
             const response = await fetch('http://localhost:8080/users/me', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
-                }
+                } // Set headers
             });
-            if (!response.ok) throw new Error('Network response was not ok');
+            if (!response.ok) throw new Error('Network response was not ok'); // Throw error if response is not ok
 
-            const data = await response.json();
+            const data = await response.json(); // Get data
 
-            setUsername(data.fullName);
-            setUserId(data.id);
-            setIsAuthenticated(true);
+            setUsername(data.fullName); // Set username
+            setUserId(data.id); // Set user ID
+            setIsAuthenticated(true); // Set authentication status
 
+            // Set profile picture
             if(data.imageURL) {
-                const profilePicUrl = data.imageURL?.startsWith('http')
+                const profilePicUrl = data.imageURL?.startsWith('http') // Check if URL is absolute
                     ? data.imageURL
-                    : `http://localhost:8080${data.imageURL}`;
-                setProfilePic(profilePicUrl);
+                    : `http://localhost:8080${data.imageURL}`; // Set profile pic URL
+                setProfilePic(profilePicUrl); // Set profile pic
             }else {
-                setProfilePic(null);
+                setProfilePic(null); // Set profile pic to null
             }
             
             setFormData({
                 fullName: data.fullName,
                 email: data.email,
                 imageURL: data.imageURL
-            });
+            }); // Set form data
         } catch (error) {
             console.error('Failed to fetch profile data:', error);
-        }
+        } // Log error
     };
 
+    // Handle input change
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
