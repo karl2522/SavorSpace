@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/DeActivateStyles.css';
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 
+/* Account Reactivation Component */
 const AccountReactivation = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,12 +14,14 @@ const AccountReactivation = () => {
     const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
     const [showPassword, setShowPassword] = useState(false);
 
+    /* Handle Reactivate Account */
     const handleReactivate = async (e) => {
         e.preventDefault();
         setShowModal(true);
 
     };
 
+    /* Show Toast Message */
     const showToast = (message, type) => {
         setToast({ show: true, message, type });
         setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
