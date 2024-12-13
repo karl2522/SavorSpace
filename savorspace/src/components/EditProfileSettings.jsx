@@ -3,6 +3,7 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import '../styles/EditProfileStyles.css';
 
+// EditProfileSettings component
 const EditProfileSettings = () => {
     const [profilePic, setProfilePic] = useState(null);
     const [username, setUsername] = useState('');
@@ -13,36 +14,41 @@ const EditProfileSettings = () => {
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    // Form data
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
         imageURL: ''
     });
 
+    // Password data
     const [passwordData, setPasswordData] = useState({
         oldPassword: '',
         newPassword: '',
         confirmPassword: ''
     });
 
+    // Error messages
     const [passwordError, setPasswordError] = useState('');
     const [updateMessage, setUpdateMessage] = useState('');
-    
+
+    // Default profile picture
     const defaultProfilePic = "/src/images/defaultProfiles.png";
     
-  
+  // Image source
     const [imgSrc, setImgSrc] = useState(profilePic || defaultProfilePic);
-
+// Handle image error
     const handleImageError = () => {
         console.log("Image failed to load, using default");
         setImgSrc(defaultProfilePic);
     }
-    useEffect(() => {
+    useEffect(() => { // Update image source when profilePic changes
         setImgSrc(profilePic || defaultProfilePic);
     }, [profilePic]);
 
 
 
+    // Navigation
     const navigate = useNavigate();
 
     useEffect(() => {
