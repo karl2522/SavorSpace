@@ -51,6 +51,7 @@ const EditProfileSettings = () => {
     // Navigation
     const navigate = useNavigate();
 
+    // Show password fields
     useEffect(() => {
         if (updateMessage || passwordError) {
             const timer = setTimeout(() => {
@@ -60,31 +61,36 @@ const EditProfileSettings = () => {
             return () => clearTimeout(timer); 
         }
     }, [updateMessage, passwordError]);
-    
+
+    // Handle password change
     const handlePasswordChange = (e) => {
         const { name, value } = e.target;
         setPasswordData(prev => ({
             ...prev,
             [name]: value
         }));
-        setPasswordError('');
+        setPasswordError(''); // Clear password error
     };
 
+    // Validate passwords
     const validatePasswords = () => {
         if (passwordData.newPassword !== passwordData.confirmPassword) {
-            setPasswordError("New passwords don't match");
-            return false;
-        }
-        if (passwordData.newPassword && !passwordData.oldPassword) {
-            setPasswordError("Current password is required");
+            setPasswordError("New passwords don't match"); // Set error message
             return false;
         }
 
+        // Check if old password is provided when new password is
+        if (passwordData.newPassword && !passwordData.oldPassword) {
+            setPasswordError("Current password is required");
+            return false; // Return false if old password is missing
+        }
+
+        // Check if new password is at least 6 characters long
         if (passwordData.newPassword.length < 6) {
             setPasswordError("New password must be at least 6 characters long");
-            return false;
+            return false; // Return false if new password is too short
         }
-        return true;
+        return true; // Return true if all checks pass
     };
 
     useEffect(() => {
