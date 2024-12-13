@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { AiFillHeart} from 'react-icons/ai';
+import { AiFillHeart } from 'react-icons/ai';
 import defaultProfile from '../images/defaultProfiles.png';
 import '../styles/FavoriteRecipes.css';
 import { MdFavorite } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
 const FavoriteRecipes = () => {
+    // State hooks for managing favorite recipes, loading state, and errors
     const [favorites, setFavorites] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Effect hook to fetch favorites when the component mounts
     useEffect(() => {
         fetchFavorites();
     }, []);
@@ -54,10 +56,12 @@ const FavoriteRecipes = () => {
         }
     };
 
+    // Debugging effect to log favorites whenever they change
     useEffect(() => {
         console.log('Current favorites state:', favorites);
     }, [favorites]);
 
+    // Function to handle the removal of a favorite recipe
     const handleRemoveFavorite = async (recipeId) => {
         try {
             const token = localStorage.getItem('authToken');
@@ -76,15 +80,19 @@ const FavoriteRecipes = () => {
                 throw new Error('Failed to remove favorite');
             }
     
+            // Update the favorites state by filtering out the removed recipe
             setFavorites(prev => prev.filter(fav => fav.recipeId !== recipeId));
         } catch (error) {
             console.error('Error removing favorite:', error);
         }
     };
 
+    // Display a loading message while data is being fetched
     if (loading) return <div className="favorites-loading">Loading your favorites...</div>;
+    // Display an error message if fetching fails
     if (error) return <div className="favorites-error">{error}</div>;
 
+    // Function to format dates from an array
     const formatDate = (dateArray) => {
         if (!dateArray || !Array.isArray(dateArray)) return 'Unknown date';
         const [year, month, day] = dateArray;
@@ -94,23 +102,24 @@ const FavoriteRecipes = () => {
     return (
         <div className="favorites-container">
             <h1>Your Favorite Recipes</h1>
+            {/* Conditional rendering based on whether there are any favorites */}
             {!favorites || favorites.length === 0 ? (
-                    <div className="no-favorites">
-                        <div className="no-favorites-content">
-                            <div className="no-favorites-icon">
-                                <MdFavorite />
-                            </div>
-                            <h2>No Favorites Yet</h2>
-                            <p>
-                                Looks like you haven't discovered your favorite recipes yet! 
-                                Start exploring our amazing collection of recipes and save the ones you love.
-                            </p>
-                            <Link to="/community" className="explore-button">
-                                Explore Recipes
-                            </Link>
+                <div className="no-favorites">
+                    <div className="no-favorites-content">
+                        <div className="no-favorites-icon">
+                            <MdFavorite />
                         </div>
+                        <h2>No Favorites Yet</h2>
+                        <p>
+                            Looks like you haven't discovered your favorite recipes yet! 
+                            Start exploring our amazing collection of recipes and save the ones you love.
+                        </p>
+                        <Link to="/community" className="explore-button">
+                            Explore Recipes
+                        </Link>
                     </div>
-                ) : (
+                </div>
+            ) : (
                 <div className="favorites-grid">
                     {favorites.map((favorite) => (
                         <div key={favorite.id} className="favorite-card">

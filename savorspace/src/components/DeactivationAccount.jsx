@@ -3,24 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/DeActivateStyles.css';
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 
+// Main component for account deactivation
 const AccountDeactivation = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
+    // State hooks to manage input and UI behavior
+    const [email, setEmail] = useState(''); // User email
+    const [password, setPassword] = useState(''); // User password
+    const [error, setError] = useState(''); // Error message
+    const [isLoading, setIsLoading] = useState(false); // Loading state
+    const [showModal, setShowModal] = useState(false); // Modal visibility
+    const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
     const [deactivateNotification, setDeactivateNotification] = useState({ show: false, message: '', type: '' });
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // React Router navigation
 
+    // Handle form submission
     const handleDeactivate = async (e) => {
-        e.preventDefault();
-        setShowModal(true);
+        e.preventDefault(); // Prevent page reload on form submit
+        setShowModal(true); // Show confirmation modal
     };
 
+    // Confirm account deactivation
     const confirmDeactivation = async () => {
-        setIsLoading(true);
-        setError('');
+        setIsLoading(true); // Set loading state to true
+        setError(''); // Clear any previous errors
 
         try {
             const response = await fetch('http://localhost:8080/auth/deactivate', {
@@ -40,7 +44,7 @@ const AccountDeactivation = () => {
                 throw new Error(data.error || 'Failed to deactivate account');
             }
 
-            // Clear local storage
+            // Clear local storage (example of unused tokens removal)
             localStorage.removeItem('token');
             localStorage.removeItem('refreshToken');
 
@@ -50,13 +54,14 @@ const AccountDeactivation = () => {
                 message: data.message || 'Account deactivated successfully',
                 type: 'success'
             });
-            
-            // Navigate to login after 3 seconds
+
+            // Redirect user after 3 seconds
             setTimeout(() => {
                 navigate('/login');
             }, 3000);
 
         } catch (error) {
+            // Handle errors (example of error setting)
             setError(error.message);
             setDeactivateNotification({
                 show: true,
@@ -64,18 +69,25 @@ const AccountDeactivation = () => {
                 type: 'error'
             });
         } finally {
-            setIsLoading(false);
-            setShowModal(false);  
+            setIsLoading(false); // Reset loading state
+            setShowModal(false);  // Hide modal
         }
     };
 
+    // Cancel account deactivation
     const handleCancelDeactivation = () => {
-        setShowModal(false); 
+        setShowModal(false); // Close confirmation modal
     };
+
+    // Example of additional variable (not used)
+    const unusedVariable = "This is an unused variable for demonstration purposes.";
 
     return (
         <div className="deactivate-account-container">
+            {/* Main heading for the page */}
             <h2>Deactivate Your Account</h2>
+
+            {/* Warning section */}
             <div className="warning-message">
                 <p>⚠️ Warning: Deactivating your account will:</p>
                 <ul>
@@ -84,6 +96,8 @@ const AccountDeactivation = () => {
                     <li>Require reactivation to access your account again</li>
                 </ul>
             </div>
+
+            {/* Form section */}
             <form onSubmit={handleDeactivate}>
                 <div className="form-deactivate">
                     <label>Email</label>
@@ -94,6 +108,7 @@ const AccountDeactivation = () => {
                         required
                     />
                 </div>
+
                 <div className="form-deactivate">
                     <label>Password</label>
                     <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
@@ -130,7 +145,11 @@ const AccountDeactivation = () => {
                         </button>            
                     </div>
                 </div>
+
+                {/* Error message display */}
                 {error && <div className="error-message">{error}</div>}
+
+                {/* Submit button */}
                 <button 
                     type="submit" 
                     disabled={isLoading}
@@ -138,8 +157,12 @@ const AccountDeactivation = () => {
                 >
                     {isLoading ? 'Deactivating...' : 'Deactivate Account'}
                 </button>
+                
+                {/* Cancel button */}
                 <button className="deactivate-cancel" onClick={() => navigate('/profile')}>Cancel Deactivation</button>
             </form>
+
+            {/* Confirmation modal */}
             {showModal && (
                 <div className="modal-deactivate">
                     <div className="modal-content">
@@ -152,6 +175,7 @@ const AccountDeactivation = () => {
                 </div>
             )}
 
+            {/* Deactivation notification */}
             {deactivateNotification.show && (
                 <div 
                     className={`deactivate-notification ${deactivateNotification.type === 'success' ? 'deactivate-notification-success' : 'deactivate-notification-error'}`}
