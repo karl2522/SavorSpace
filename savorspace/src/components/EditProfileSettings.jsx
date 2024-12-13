@@ -148,12 +148,14 @@ const EditProfileSettings = () => {
         }));
     };
 
+    // Handle deactivate account
     const handleDeactivate = (e) => {
         e.preventDefault();
-        navigate('/deactivate-account');
+        navigate('/deactivate-account'); // Navigate to deactivate account page
       };
 
 
+    // Handle image change
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -162,18 +164,20 @@ const EditProfileSettings = () => {
             reader.onloadend = () => {
                 setProfilePic(reader.result);// para set yung image
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(file); // read the file
         }
     };
 
+    // Handle upload click
     const handleUploadClick = () => {
-        document.getElementById('profileImageInput').click();
+        document.getElementById('profileImageInput').click(); // click the input
     };
 
+    // Handle form submit
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('authToken');
-        if (!token || !userId) return;
+        if (!token || !userId) return; // Return if no token or user ID
 
         try {
             if (passwordData.newPassword || passwordData.oldPassword) {
